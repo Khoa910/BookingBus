@@ -25,13 +25,13 @@ public class Payment {
     @JoinColumn(name = "ticket_id", referencedColumnName = "id")
     private Ticket ticket;
 
-    private Integer payment_method;
+    private String payment_method;
 
     private BigDecimal amount;
 
     private LocalDateTime payment_time;
 
-    private Integer status;
+    private String status;
 
     @PrePersist
     public void onCreate() {

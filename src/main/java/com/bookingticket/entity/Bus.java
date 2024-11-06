@@ -21,7 +21,7 @@ public class Bus {
 
     private  Integer seat_count;
 
-    private Integer bus_type;
+    private String bus_type;
 
     @ManyToOne
     @JoinColumn(name = "bus_company_id", referencedColumnName = "id")

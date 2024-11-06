@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter
 @Entity
@@ -35,6 +36,6 @@ public class User {
 	@JoinColumn(name = "role", referencedColumnName = "id")
 	private Role role;
 
-	@OneToMany(mappedBy = "user")
-	private List<Ticket> tickets;
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Ticket> tickets = new HashSet<>();
 }

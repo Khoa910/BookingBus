@@ -20,7 +20,7 @@ public class Seat {
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     private Bus bus;
 
-    private Integer status;
+    private String status;
 
     private String seat_name;
 

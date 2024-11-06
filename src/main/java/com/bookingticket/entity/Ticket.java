@@ -34,6 +34,6 @@ public class Ticket {
 
     private BigDecimal price;
 
-    private  Integer status;
+    private  String status;
 
 }
