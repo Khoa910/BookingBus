@@ -27,7 +27,7 @@ public class DatabaseConnectionTest {
 
         assertNotNull(result, "Query result should not be null");
         assert(result == 1);
-        
+
         logger.info("Database connection test passed successfully!");
     }
 }
