@@ -18,22 +18,21 @@ import java.time.LocalDateTime;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     private Bus bus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    private  String seat_number;
+    private String seat_number;
 
     private LocalDateTime departure_time;
 
     private BigDecimal price;
 
-    private  String status;
-
+    private String status;
 }

@@ -15,23 +15,23 @@ import lombok.Setter;
 public class Bus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     private String license_plate;
 
-    private  Integer seat_count;
+    private Integer seat_count;
 
     private String bus_type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bus_company_id", referencedColumnName = "id")
     private BusCompany bus_company;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departure_station_id", referencedColumnName = "id")
     private BusStation departureStation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arrival_station_id", referencedColumnName = "id")
     private BusStation arrivalStation;
 }

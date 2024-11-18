@@ -1,6 +1,6 @@
 -- Tạo bảng `role` lưu trữ các giá trị role
 CREATE TABLE `role` (
-                        `id` INT PRIMARY KEY,
+                        `id` BIGINT PRIMARY KEY,
                         `name` VARCHAR(50) NOT NULL
 );
 
@@ -65,7 +65,7 @@ CREATE TABLE `user` (
                         `phone_number` VARCHAR(15) NOT NULL,
                         `email` VARCHAR(100),
                         `address` VARCHAR(255),
-                        `role` INT NOT NULL DEFAULT 1,  -- Trường role là INTEGER
+                        `role` BIGINT NOT NULL DEFAULT 1,  -- Trường role là INTEGER
                         FOREIGN KEY (`role`) REFERENCES `role`(`id`)  -- Khóa ngoại tới bảng `role`
 );
 

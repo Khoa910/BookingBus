@@ -20,15 +20,15 @@ public class BusSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     private Bus bus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departure_station_id", referencedColumnName = "id")
     private BusStation departureStation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arrival_station_id", referencedColumnName = "id")
     private BusStation arrivalStation;
 
@@ -37,6 +37,4 @@ public class BusSchedule {
     private LocalDateTime arrival_time;
 
     private BigDecimal price;
-
-
 }

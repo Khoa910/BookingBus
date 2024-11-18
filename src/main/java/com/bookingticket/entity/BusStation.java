@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class BusStation {
 
         private String address;
 
-        @OneToMany(mappedBy = "departureStation",cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(mappedBy = "departureStation", cascade = CascadeType.ALL, orphanRemoval = true)
         private Set<BusSchedule> departures = new HashSet<>();
 
         @OneToMany(mappedBy = "arrivalStation", cascade = CascadeType.ALL, orphanRemoval = true)

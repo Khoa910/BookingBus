@@ -16,12 +16,11 @@ public class Seat {
     @Id
     private String id_seat;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     private Bus bus;
 
     private String status;
 
     private String seat_name;
-
 }

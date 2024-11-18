@@ -11,13 +11,16 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor @AllArgsConstructor @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private String username;
 
@@ -32,10 +35,11 @@ public class User {
 
 	private String address;
 
-	@ManyToOne
+	// Điều chỉnh cascade
+	@ManyToOne(fetch = FetchType.LAZY)  // Chỉ tải Role khi cần thiết
 	@JoinColumn(name = "role", referencedColumnName = "id")
 	private Role role;
 
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Ticket> tickets = new HashSet<>();
 }
