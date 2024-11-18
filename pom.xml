@@ -7,11 +7,11 @@
 		<version>3.0.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.hoangminh</groupId>
-	<artifactId>HoangMinhWeb</artifactId>
+	<groupId>com.bookingticket</groupId>
+	<artifactId>BookingTicket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>HoangMinhWeb</name>
-	<description>Web du lich hoang minh</description>
+	<description>Web dat xe</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -69,7 +69,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.4.4.Final</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
