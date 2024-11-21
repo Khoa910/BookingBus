@@ -9,6 +9,7 @@ import com.bookingticket.repository.BusRepository;
 import com.bookingticket.repository.BusCompanyRepository;
 import com.bookingticket.repository.SeatTypeRepository;
 import com.bookingticket.repository.BusStationRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -105,4 +106,27 @@ public class BusTest {
 
        System.out.println("Bus with ID " + existingId + " has been deleted.");
    }
+
+    @Test
+    @Transactional
+    public void testFindAllBuses() {
+        // Lấy tất cả các đối tượng Bus từ cơ sở dữ liệu
+        Iterable<Bus> buses = busRepository.findAll();
+
+        // Kiểm tra xem danh sách các xe có rỗng không
+        assertNotNull(buses, "The list of buses should not be null");
+        assertTrue(buses.iterator().hasNext(), "The list of buses should not be empty");
+
+        // In ra thông tin của tất cả các xe đã tìm thấy
+        System.out.println("List of all buses:");
+        buses.forEach(bus -> {
+            System.out.println("Bus ID: " + bus.getId());
+            System.out.println("Bus License Plate: " + bus.getLicense_plate());
+            System.out.println("Bus Type: " + bus.getBus_type());
+            // Các quan hệ lazy-loaded sẽ không gặp vấn đề khi session vẫn mở
+            System.out.println("Bus Company: " + bus.getBus_company().getName());
+            System.out.println("Departure Station: " + bus.getDepartureStation().getName());
+            System.out.println("Arrival Station: " + bus.getArrivalStation().getName());
+        });
+    }
 }

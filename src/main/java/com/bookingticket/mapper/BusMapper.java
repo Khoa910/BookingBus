@@ -5,26 +5,33 @@ import com.bookingticket.dto.respond.BusRespond;
 import com.bookingticket.entity.Bus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BusMapper {
 
     BusMapper INSTANCE = Mappers.getMapper(BusMapper.class);
 
-    // Ánh xạ từ BusRequest sang Bus entity
-//    @Mapping(target = "busCompany.id", source = "bus_company_id")  // Thay đổi tên từ "bus_company.id"
-//    @Mapping(target = "seatType.id", source = "seat_type_id")
-//    @Mapping(target = "departureStation.id", source = "departureStation_id")
-//    @Mapping(target = "arrivalStation.id", source = "arrivalStation_id")
-//    @Mapping(target = "busType", source = "bus_type")  // Thay đổi tên từ "bus_type"
+    @Mappings({
+            @Mapping(source = "license_plate", target = "license_plate"),
+            @Mapping(source = "seat_type_id", target = "seatType.id"),
+            @Mapping(source = "bus_type", target = "bus_type"),
+            @Mapping(source = "bus_company_id", target = "bus_company.id"),
+            @Mapping(source = "departureStation_id", target = "departureStation.id"),
+            @Mapping(source = "arrivalStation_id", target = "arrivalStation.id")
+    })
     Bus toEntity(BusRequest busRequest);
 
-    // Ánh xạ từ Bus entity sang BusRespond
-//    @Mapping(target = "bus_company_id", source = "busCompany.id")  // Thay đổi tên từ "busCompany.id"
-//    @Mapping(target = "seat_type_id", source = "seatType.id")
-//    @Mapping(target = "departureStation_id", source = "departureStation.id")
-//    @Mapping(target = "arrivalStation_id", source = "arrivalStation.id")
-//    @Mapping(target = "bus_type", source = "busType")  // Thay đổi tên từ "busType"
+    @Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "license_plate", target = "license_plate"),
+            @Mapping(source = "seatType.id", target = "seat_type_id"),
+            @Mapping(source = "bus_type", target = "bus_type"),
+            @Mapping(source = "bus_company.id", target = "bus_company_id"),
+            @Mapping(source = "departureStation.id", target = "departureStation_id"),
+            @Mapping(source = "arrivalStation.id", target = "arrivalStation_id")
+    })
     BusRespond toRespond(Bus bus);
+
 }

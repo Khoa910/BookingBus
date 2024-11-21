@@ -4,12 +4,14 @@ import com.bookingticket.dto.request.BusCompanyRequest;
 import com.bookingticket.dto.respond.BusCompanyRespond;
 import com.bookingticket.entity.BusCompany;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-21T19:25:06+0700",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
+    date = "2024-11-21T19:51:07+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
+@Component
 public class BusCompanyMapperImpl implements BusCompanyMapper {
 
     @Override
