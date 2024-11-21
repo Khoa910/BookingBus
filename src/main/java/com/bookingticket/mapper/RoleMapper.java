@@ -4,16 +4,16 @@ import com.bookingticket.dto.request.RoleRequest;
 import com.bookingticket.dto.respond.RoleRespond;
 import com.bookingticket.entity.Role;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RoleMapper {
 
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
-
-    // Ánh xạ từ RoleRequest sang Role entity
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     Role toEntity(RoleRequest roleRequest);
 
-    // Ánh xạ từ Role entity sang RoleRespond
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     RoleRespond toRespond(Role role);
 }

@@ -5,17 +5,19 @@ import com.bookingticket.dto.respond.PaymentRespond;
 import com.bookingticket.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PaymentMapper {
 
-    PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
-
-    // Ánh xạ từ PaymentRequest sang Payment entity
+    @Mapping(target = "ticket.id", source = "ticket_id")
+    @Mapping(target = "payment_method", source = "payment_method")
+    @Mapping(target = "status", source = "status")
     Payment toEntity(PaymentRequest paymentRequest);
 
-    // Ánh xạ từ Payment entity sang PaymentRespond
-//    @Mapping(source = "ticket.id", target = "ticket_id")
+    @Mapping(target = "ticket_id", source = "ticket.id")
+    @Mapping(target = "payment_method", source = "payment_method")
+    @Mapping(target = "amount", source = "amount")
+    @Mapping(target = "payment_time", source = "payment_time")
+    @Mapping(target = "status", source = "status")
     PaymentRespond toRespond(Payment payment);
 }

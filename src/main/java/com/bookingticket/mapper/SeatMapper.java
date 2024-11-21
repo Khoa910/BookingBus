@@ -4,16 +4,18 @@ import com.bookingticket.dto.request.SeatRequest;
 import com.bookingticket.dto.respond.SeatRespond;
 import com.bookingticket.entity.Seat;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SeatMapper {
 
-    SeatMapper INSTANCE = Mappers.getMapper(SeatMapper.class);
 
-    // Ánh xạ từ SeatRequest sang Seat entity
+    @Mapping(target = "bus.id", source = "bus_id")
+    @Mapping(target = "seatType.id", source = "seat_type_id")
     Seat toEntity(SeatRequest seatRequest);
 
-    // Ánh xạ từ Seat entity sang SeatRespond
+
+    @Mapping(target = "bus_id", source = "bus.id")
+    @Mapping(target = "seat_type_id", source = "seatType.id")
     SeatRespond toRespond(Seat seat);
 }
