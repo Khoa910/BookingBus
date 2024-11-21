@@ -1,19 +1,19 @@
 package com.bookingticket.dto.request;
-import com.bookingticket.enumtype.SeatStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SeatRequest {
-    String id_seat;
-    Long bus_id;
-    SeatStatus status;
-    String seat_name;
-    Long seat_type_id;
+public class SeatTypeRequest {
+    Long seat_count;
+    String description;
+
 }

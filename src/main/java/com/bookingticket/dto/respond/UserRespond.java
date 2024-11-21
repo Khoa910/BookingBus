@@ -15,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 public class UserRespond {
     Long id;
     String username;
-    String password;
     String full_name;
     String phone_number;
     String email;

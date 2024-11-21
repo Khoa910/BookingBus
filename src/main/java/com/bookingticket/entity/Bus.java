@@ -19,7 +19,9 @@ public class Bus {
 
     private String license_plate;
 
-    private Integer seat_count;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_type_id", referencedColumnName = "id")
+    private SeatType seatType;
 
     private String bus_type;
 
@@ -34,4 +36,6 @@ public class Bus {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arrival_station_id", referencedColumnName = "id")
     private BusStation arrivalStation;
+
+
 }

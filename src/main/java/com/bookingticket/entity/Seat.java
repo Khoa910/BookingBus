@@ -23,4 +23,8 @@ public class Seat {
     private String status;
 
     private String seat_name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_type_id", referencedColumnName = "id")
+    private SeatType seatType;
 }

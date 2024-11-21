@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BusRequest {
     String license_plate;
-    Integer seat_count;
+    Long seat_type_id;
     BusType bus_type;
     Long bus_company_id;
     Long departureStation_id;
