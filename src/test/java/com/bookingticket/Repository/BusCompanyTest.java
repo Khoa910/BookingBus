@@ -1,34 +1,30 @@
 package com.bookingticket.Repository;
-
-import com.bookingticket.entity.BusCompany;
-import com.bookingticket.repository.BusCompanyRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.bookingticket.entity.BusCompany;
+import com.bookingticket.repository.BusCompanyRepository;
 
 @SpringBootTest
 public class BusCompanyTest {
 
-    @Autowired
-    private BusCompanyRepository busCompanyRepository;
+   @Autowired
+   private BusCompanyRepository busCompanyRepository;
 
-    @Test
-    public void testSaveBusCompany() {
-        // Tạo một BusCompany mới
-        BusCompany company = new BusCompany();
-        company.setName("Example Bus Company");
-        company.setPhone_number("123456789");
+   @Test
+   public void testSaveBusCompany() {
+       BusCompany company = new BusCompany();
+       company.setName("Test Company");
+       company.setPhone_number("123456789");
 
-        // Lưu BusCompany vào cơ sở dữ liệu
-        BusCompany savedCompany = busCompanyRepository.save(company);
+       BusCompany savedCompany = busCompanyRepository.save(company);
 
-        // Kiểm tra xem BusCompany đã được lưu thành công chưa
-        assertNotNull(savedCompany, "The saved BusCompany should not be null");
-        assertNotNull(savedCompany.getId(), "The saved BusCompany should have an ID");
-
-        // In ra thông tin để debug
-        System.out.println("Saved BusCompany ID: " + savedCompany.getId());
-    }
+       // Kiểm tra các trường hợp
+       assertNotNull(savedCompany.getId());  // Kiểm tra ID được sinh ra
+       assertEquals("Test Company", savedCompany.getName());  // Kiểm tra tên
+       assertEquals("123456789", savedCompany.getPhone_number());  // Kiểm tra số điện thoại
+   }
 }

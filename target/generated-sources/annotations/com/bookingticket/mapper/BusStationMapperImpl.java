@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-21T18:37:35+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2024-11-21T19:25:06+0700",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 public class BusStationMapperImpl implements BusStationMapper {
 
@@ -20,6 +20,9 @@ public class BusStationMapperImpl implements BusStationMapper {
 
         BusStation busStation = new BusStation();
 
+        busStation.setAddress( busStationRequest.getAddress() );
+        busStation.setName( busStationRequest.getName() );
+
         return busStation;
     }
 
@@ -30,6 +33,10 @@ public class BusStationMapperImpl implements BusStationMapper {
         }
 
         BusStationRespond busStationRespond = new BusStationRespond();
+
+        busStationRespond.setAddress( busStation.getAddress() );
+        busStationRespond.setId( busStation.getId() );
+        busStationRespond.setName( busStation.getName() );
 
         return busStationRespond;
     }

@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-21T18:37:35+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2024-11-21T19:25:06+0700",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 public class PaymentMapperImpl implements PaymentMapper {
 
@@ -20,6 +20,14 @@ public class PaymentMapperImpl implements PaymentMapper {
 
         Payment payment = new Payment();
 
+        payment.setAmount( paymentRequest.getAmount() );
+        if ( paymentRequest.getPayment_method() != null ) {
+            payment.setPayment_method( paymentRequest.getPayment_method().name() );
+        }
+        if ( paymentRequest.getStatus() != null ) {
+            payment.setStatus( paymentRequest.getStatus().name() );
+        }
+
         return payment;
     }
 
@@ -30,6 +38,12 @@ public class PaymentMapperImpl implements PaymentMapper {
         }
 
         PaymentRespond paymentRespond = new PaymentRespond();
+
+        paymentRespond.setAmount( payment.getAmount() );
+        paymentRespond.setId( payment.getId() );
+        paymentRespond.setPayment_method( payment.getPayment_method() );
+        paymentRespond.setPayment_time( payment.getPayment_time() );
+        paymentRespond.setStatus( payment.getStatus() );
 
         return paymentRespond;
     }

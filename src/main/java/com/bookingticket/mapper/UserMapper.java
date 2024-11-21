@@ -1,22 +1,22 @@
-package com.bookingticket.mapper;
+// package com.bookingticket.mapper;
 
-import com.bookingticket.entity.User;
-import com.bookingticket.dto.request.UserRequest;
-import com.bookingticket.dto.respond.UserRespond;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+// import org.mapstruct.Mapper;
+// import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
-public interface UserMapper {
+// import com.bookingticket.dto.request.UserRequest;
+// import com.bookingticket.dto.respond.UserRespond;
+// import com.bookingticket.entity.User;
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+// @Mapper(componentModel = "spring")
+// public interface UserMapper {
 
-    // Mapping from UserRequest to User entity
-//    @Mapping(source = "role", target = "role.id")
-    User userRequestToUser(UserRequest userRequest);
+//     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    // Mapping from User entity to UserRespond DTO
-//    @Mapping(source = "role", target = "role")
-    UserRespond userToUserRespond(User user);
-}
+//     // Mapping from UserRequest to User entity
+// //    @Mapping(source = "role", target = "role.id")
+//     User userToEntity(UserRequest userRequest);
+
+//     // Mapping from User entity to UserRespond DTO
+// //    @Mapping(source = "role", target = "role")
+//     UserRespond userToUserRespond(User user);
+// }

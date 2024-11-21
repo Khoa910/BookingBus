@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-21T18:37:35+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2024-11-21T19:25:06+0700",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 public class SeatTypeMapperImpl implements SeatTypeMapper {
 
@@ -20,6 +20,9 @@ public class SeatTypeMapperImpl implements SeatTypeMapper {
 
         SeatType seatType = new SeatType();
 
+        seatType.setDescription( seatTypeRequest.getDescription() );
+        seatType.setSeat_count( seatTypeRequest.getSeat_count() );
+
         return seatType;
     }
 
@@ -30,6 +33,10 @@ public class SeatTypeMapperImpl implements SeatTypeMapper {
         }
 
         SeatTypeRespond seatTypeRespond = new SeatTypeRespond();
+
+        seatTypeRespond.setDescription( seatType.getDescription() );
+        seatTypeRespond.setId( seatType.getId() );
+        seatTypeRespond.setSeat_count( seatType.getSeat_count() );
 
         return seatTypeRespond;
     }
