@@ -1,6 +1,5 @@
 package com.bookingticket.dto.respond;
 
-import com.bookingticket.enumtype.SeatStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,5 +17,5 @@ public class SeatRespond {
     Long bus_id;
     String status;
     String seat_name;
-
+    SeatRespond seat_type_id;
 }

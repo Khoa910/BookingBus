@@ -1,5 +1,5 @@
-package com.bookingticket.dto.request;
-import com.bookingticket.enumtype.SeatStatus;
+package com.bookingticket.dto.respond;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SeatRequest {
-    String id_seat;
-    Long bus_id;
-    SeatStatus status;
-    String seat_name;
-    Long seat_type_id;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SeatTypeRespond {
+    Long id;
+    Long seat_count;
+    String description;
 }

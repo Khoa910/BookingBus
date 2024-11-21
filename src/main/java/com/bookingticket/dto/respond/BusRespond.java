@@ -1,5 +1,6 @@
 package com.bookingticket.dto.respond;
 
+import com.bookingticket.entity.SeatType;
 import com.bookingticket.enumtype.BusType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 public class BusRespond {
     Long id;
     String license_plate;
-    Integer seat_count;
+    SeatTypeRespond seat_type_id;
     String bus_type;
     BusCompanyRespond bus_company_id;
     BusStationRespond departureStation_id;
