@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TicketRespond {
     Long id;
-    BusRespond bus_id;
-    UserRespond user_id;
+    Long bus_id;
+    Long user_id;
     String seat_number;
     LocalDateTime departure_time;
     BigDecimal price;

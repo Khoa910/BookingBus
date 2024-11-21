@@ -16,7 +16,7 @@ public class Seat {
     @Id
     private String id_seat;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     private Bus bus;
 

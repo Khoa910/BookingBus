@@ -16,5 +16,5 @@ public class UserRequest {
     String phone_number;
     String email;
     String address;
-    Integer role;
+    Long role;
 }

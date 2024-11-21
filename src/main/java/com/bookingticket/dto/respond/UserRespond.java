@@ -19,5 +19,5 @@ public class UserRespond {
     String phone_number;
     String email;
     String address;
-    Integer role;
+    RoleRespond role;
 }

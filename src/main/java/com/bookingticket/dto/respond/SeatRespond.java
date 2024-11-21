@@ -17,5 +17,5 @@ public class SeatRespond {
     Long bus_id;
     String status;
     String seat_name;
-    SeatRespond seat_type_id;
+    Long seat_type_id;
 }
