@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-21T23:29:56+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2024-11-22T16:50:02+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 23.0.1 (Homebrew)"
 )
 @Component
 public class SeatTypeMapperImpl implements SeatTypeMapper {
@@ -22,6 +22,9 @@ public class SeatTypeMapperImpl implements SeatTypeMapper {
 
         SeatType seatType = new SeatType();
 
+        seatType.setSeat_count( seatTypeRequest.getSeat_count() );
+        seatType.setDescription( seatTypeRequest.getDescription() );
+
         return seatType;
     }
 
@@ -32,6 +35,10 @@ public class SeatTypeMapperImpl implements SeatTypeMapper {
         }
 
         SeatTypeRespond seatTypeRespond = new SeatTypeRespond();
+
+        seatTypeRespond.setId( seatType.getId() );
+        seatTypeRespond.setSeat_count( seatType.getSeat_count() );
+        seatTypeRespond.setDescription( seatType.getDescription() );
 
         return seatTypeRespond;
     }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FUTA</title>
+</head>
+<body>
+<header>
+    <div>
+        <p><strong>Tổng đài hỗ trợ:</strong> 0902 1818 52</p>
+        <ul>
+            <li><a href="#">EN</a></li>
+            <li><a href="#">Đăng nhập</a></li>
+            <li><a href="#">Đăng ký</a></li>
+        </ul>
+    </div>
+    <div>
+        <h1>
+            <a href="/" th:href="@{/}">
+                Logo
+            </a>
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="#" th:href="@{/khuyenmai}">Khuyến mãi</a></li>
+                <li><a href="#" th:href="@{/lichtrinh}">Lịch trình</a></li>
+                <li><a href="#" th:href="@{/lienhe}">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h1>List Pages</h1>
+    <ul>
+        <li><a th:href="@{/home}">Trang chủ</a></li>
+        <li><a th:href="@{/step2}">Bước 2</a></li>
+        <li><a th:href="@{/step3}">Bước 3</a></li>
+        <li><a th:href="@{/step4}">Bước 4</a></li>
+        <li><a th:href="@{/dangky}">Đăng ký</a></li>
+        <li><a th:href="@{/danhgia}">Đánh giá</a></li>
+        <li><a th:href="@{/datve}">Đặt vé</a></li>
+        <li><a th:href="@{/khuyenmai}">Khuyến mãi</a></li>
+        <li><a th:href="@{/lichsumuave}">Lịch sử mua vé</a></li>
+        <li><a th:href="@{/lichsunaptien}">Lịch sử nạp tiền</a></li>
+        <li><a th:href="@{/lichtrinh}">Lịch trình</a></li>
+        <li><a th:href="@{/lienhe}">Liên hệ</a></li>
+        <li><a th:href="@{/login}">Đăng nhập</a></li>
+        <li><a th:href="@{/quenmatkhau}">Quên mật khẩu</a></li>
+        <li><a th:href="@{/thanhtoanthanhcong}">Thanh toán thành công</a></li>
+        <li><a th:href="@{/thongtincanhan}">Thông tin cá nhân</a></li>
+        <li><a th:href="@{/tintuc}">Tin tức</a></li>
+        <li><a th:href="@{/tuyendung}">Tuyển dụng</a></li>
+        <li><a th:href="@{/vechungtoi}">Về chúng tôi</a></li>
+    </ul>
+</main>
+</body>
+</html>
