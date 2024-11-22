@@ -26,8 +26,6 @@ public class UserService {
             throw new RuntimeException("Tên đăng nhập đã tồn tại!");
         }
         Role role = roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role không tồn tại"));
-
-
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword())); // Mã hóa mật khẩu
@@ -36,7 +34,6 @@ public class UserService {
         user.setEmail(dto.getEmail());
         user.setAddress(dto.getAddress());
         user.setRole(role);
-
         // Lưu người dùng
         userRepository.save(user);
     }

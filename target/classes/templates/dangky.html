@@ -81,49 +81,26 @@
                     <img th:src="@{/res/banner-dangky.jpg}" alt="Banner đăng ký"/>
                 </div>
                 <div>
-                    <form id="register-form">
-                        <h3>Đăng ký</h3>
-                        <p>Lưu ý: Không hỗ trợ hotmail và outlook email. Chỉ với 1 tài khoản Futabus ID, tham gia được tất cả các chương trình Futabus Lines</p>
-                        <div>
-                            <label>Địa chỉ email *</label>
-                            <input type="email" name="email"/>
-                        </div>
-                        <div>
-                            <label>Mật khẩu *</label>
-                            <input type="password" name="password"/>
-                            <label>Nhắc lại mật khẩu *</label>
-                            <input type="password" name="confirmPassword"/>
-                        </div>
-                        <h3>Thông tin khác</h3>
-                        <div>
-                            <label>Ngày sinh *</label>
-                            <select name="day">
-                                <option th:text="'01'">01</option>
-                            </select>
-                            <label>Tháng sinh *</label>
-                            <select name="month">
-                                <option th:text="'Tháng 01'">Tháng 01</option>
-                            </select>
-                            <label>Năm sinh *</label>
-                            <select name="year">
-                                <option th:text="'2015'">2015</option>
-                            </select>
-                            <label>
-                                <input type="radio" name="gender" value="female"/> Nữ
-                            </label>
-                            <label>
-                                <input type="radio" name="gender" value="male"/> Nam
-                            </label>
-                        </div>
-                        <div>
-                            <label>Số di động*</label>
-                            <input type="phone" name="phone"/>
-                            <label>Số CMNN *</label>
-                            <input type="text" name="idCard"/>
-                        </div>
-                        <button type="submit">HOÀN TẤT</button>
-                        <p>* Mục bắt buộc</p>
-                        <p>Nếu bạn đã có FUTA ID. Click <a href="#">đây</a> để đăng nhập</p>
+                    <form action="/dangky" method="post">
+                        <label for="username">Tên đăng nhập:</label>
+                        <input type="text" id="username" name="username" placeholder="Tên đăng nhập" required>
+
+                        <label for="password">Mật khẩu:</label>
+                        <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+
+                        <label for="fullName">Họ và tên:</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Họ và tên" required>
+
+                        <label for="phoneNumber">Số điện thoại:</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại" required>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" id="address" name="address" placeholder="Địa chỉ" required>
+
+                        <button type="submit">Đăng ký</button>
                     </form>
                 </div>
             </div>
