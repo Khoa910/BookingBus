@@ -1,0 +1,112 @@
+.image-fullwidth img{
+	width: 100%;
+	max-width: 100%;
+}
+
+.landing-page section{
+	margin-bottom: 30px;
+}
+
+#use-full h1{
+	font-size: 32px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+#use-full  h3{
+	font-weight: 600;
+	font-size: 16px;
+	display: block;
+}
+
+#noted-intro{
+	background: #5ab384;
+	padding: 30px 0;
+	color: #FFF;
+}
+
+.note-item h2{
+	font-size: 40px;
+	color: #FFF;
+	margin-left: 50px;
+}
+.note-item a{
+	font-weight: 600;
+	color: #FFF;
+}
+
+#fu-gifting h2{
+	font-size: 28px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+#fu-gifting > .row{
+	margin-bottom: 20px;
+}
+
+.gift-col-content img{
+	float: left;
+	margin-right: 5px;
+}
+.gift-col-content h3{
+	    font-weight: 600;
+    line-height: 40px;
+    padding-top: 10px;
+}
+
+#the-le-inner{
+	border: 2px dotted #ff2509;
+	padding: 20px; 
+}
+#the-le-inner h2{
+	font-size: 28px;
+	color: #ff2509;	
+}
+.number-list {
+	text-align: justify;
+	padding-left: 30px;
+}
+
+.number-list ul{
+	margin: 0;
+	padding-left: 8px;
+}
+.number-list .number{
+	display: inline-block;
+	border-radius: 50%;
+	background: #1f8456;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	color: #FFF;
+	line-height: 30px;
+	margin-right: 5px;
+	margin-left: -30px;
+}
+.sub-head{
+	font-weight: 600;
+}
+.sub-head span{
+	font-weight: normal;
+}
+.number-list ul li{
+	margin-bottom: 10px;
+}
+
+.sperate-left{
+	border-left: 2px solid #ff2509;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+	.note-item h2{
+		text-align: center;
+		margin-left: 0;
+		font-size: 33px;
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+	.sperate-left{
+		border-right: none;
+	}
+}
