@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTA</title>
+</head>
+<body>
+<div id="page">
+    <!-- Header -->
+    <header>
+        <div id="top">
+            <div class="container">
+                <div class="support">
+                    <i class="fa fa-phone"></i> Tổng đài hỗ trợ:
+                    <span>0902 1818 52</span>
+                </div>
+                <ul>
+                    <li><a href="#">EN</a></li>
+                    <li><a href="#">Đăng nhập</a></li>
+                    <li><a href="#">Đăng ký</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="header-body">
+            <div class="container">
+                <div class="row">
+                    <div>
+                        <h1 id="logo">
+                            <a th:href="@{/}"><img th:src="@{/img/logo.png}" alt="Logo"/></a>
+                        </h1>
+                    </div>
+                    <div>
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a th:href="@{/}" class="navbar-brand">Trang chủ</a>
+                        </div>
+                        <nav id="main-nav">
+                            <ul>
+                                <li><a href="#">Khuyến mãi</a></li>
+                                <li><a href="#">Lịch trình</a></li>
+                                <li><a href="#">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Body content -->
+    <section id="body-content">
+        <div class="container" id="login-page">
+            <div id="top-login" class="clearfix hidden-sm">
+                <div id="login-top-bar-left">
+                    <div class="row">
+                        <div>
+                            <div>An toàn</div>
+                        </div>
+                        <div>
+                            <div>Luôn có tuyến</div>
+                        </div>
+                        <div>
+                            <div>Hỏi đáp</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="login-top-bar-right" class="text-center">
+                    <p>Hãy tải app để chúng tôi phục vụ bạn tốt hơn</p>
+                </div>
+            </div>
+            <div id="body-login" class="row">
+                <div>
+                    <div id="login-form-left" class="border clearfix">
+                        <div>
+                            <h3 class="text-center">Tôi đã đăng ký tài khoản</h3>
+                            <form th:action="@{/login}" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label>Địa chỉ email*</label>
+                                    <input type="text" name="email" class="form-control" placeholder="abc@gmail.com"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu*</label>
+                                    <input type="password" name="password" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <a href="#">Quên mật khẩu?</a>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox"> Ghi nhớ
+                                    </label>
+                                    <button type="submit" class="btn btn-primary pull-right">Đăng nhập</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="login-form-right" class="border clearfix">
+                        <div>
+                            <h3 class="text-center">Bạn là khách hàng mới?</h3>
+                            <p class="text-center">
+                                <a th:href="@{/register}" class="btn btn-primary">Đăng ký</a>
+                            </p>
+                            <p class="text-muted text-center">
+                                Chỉ với 1 tài khoản Futabus ID, tham gia được tất cả các chương trình của Futa Bus Lines
+                            </p>
+                            <hr>
+                            <p class="text-center">Đăng nhập bằng tài khoản khác</p>
+                            <a href="#" class="btn btn-block btn-info">
+                                <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook
+                            </a>
+                            <a href="#" class="btn btn-block btn-primary">
+                                <i class="fa fa-google"></i> Đăng nhập bằng Google
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div id="footer-img">
+            <img th:src="@{/img/bg-top-footer.png}" alt="Footer Image"/>
+        </div>
+        <div id="footer-body">
+            <nav id="nav-f">
+                <ul>
+                    <li><a href="#">Lịch trình</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="#">Hỗ trợ khách hàng</a></li>
+                    <li><a href="#">Thanh toán oan toàn</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                </ul>
+            </nav>
+            <div id="f-info" class="row">
+                <div id="social">
+                    <ul>
+                        <li>Kết nối chúng tôi</li>
+                        <li><a href=""><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a href=""><i class="fa fa-google-plus-square"></i></a></li>
+                        <li><a href=""><i class="fa fa-twitter-square"></i></a></li>
+                    </ul>
+                </div>
+                <div id="info">
+                    <p>Công Ty CP Xe khách phương trang EAF</p>
+                    <p>Địa chỉ: 80 Trần Hưng Đạo, Q1, TP Hồ Chí Minh.</p>
+                    <p>Điện thoại: 0902 181852 - Fax: 0902 181852</p>
+                    <p>Website: <a href="#">viralwave.vn</a> - Email: info@viralwave.vn</p>
+                </div>
+            </div>
+            <div class="f-copy">
+                <p>&copy; 2015 Công ty TNHH ABC</p>
+                <p>Design by <a href="#">viralwave.vn</a></p>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
