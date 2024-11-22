@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RegistrationController {
 
     @PostMapping
-    public String registerUser(@ModelAttribute("RequestRegister") RequestRegister form, Model model) {
-        // Kiểm tra hoặc xử lý dữ liệu từ form
+    public RequestRegister registerUser(@ModelAttribute RequestRegister form) {
+        // In dữ liệu từ form (chỉ để kiểm tra, có thể bỏ khi triển khai thực tế)
         System.out.println("Tên đăng nhập: " + form.getUsername());
         System.out.println("Mật khẩu: " + form.getPassword());
         System.out.println("Họ và tên: " + form.getFullName());
         System.out.println("Số điện thoại: " + form.getPhoneNumber());
         System.out.println("Email: " + form.getEmail());
         System.out.println("Địa chỉ: " + form.getAddress());
-        model.addAttribute("message", "Đăng ký thành công!");
-        return "success"; // Tên file HTML để hiển thị kết quả
+        return form;
     }
 }
