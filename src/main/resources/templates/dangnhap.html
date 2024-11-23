@@ -80,7 +80,7 @@
                     <div id="login-form-left" class="border clearfix">
                         <div>
                             <h3 class="text-center">Tôi đã đăng ký tài khoản</h3>
-                            <form th:action="@{/login}" method="post" class="form-horizontal">
+                            <form th:action="@{/dangnhap}" method="post" class="form-horizontal">
                                 <div class="form-group">
                                     <label>Địa chỉ email*</label>
                                     <input type="text" name="email" class="form-control" placeholder="abc@gmail.com"/>
@@ -107,7 +107,7 @@
                         <div>
                             <h3 class="text-center">Bạn là khách hàng mới?</h3>
                             <p class="text-center">
-                                <a th:href="@{/register}" class="btn btn-primary">Đăng ký</a>
+                                <a th:href="@{/dangky}" class="btn btn-primary">Đăng ký</a>
                             </p>
                             <p class="text-muted text-center">
                                 Chỉ với 1 tài khoản Futabus ID, tham gia được tất cả các chương trình của Futa Bus Lines

@@ -1,5 +1,6 @@
 package com.bookingticket.service;
 
+import com.bookingticket.dto.request.LoginRequest;
 import com.bookingticket.dto.request.UserRequest;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.Role;
@@ -108,4 +109,19 @@ public class UserService {
         // Trả về phản hồi dưới dạng DTO
         return userMapper.toRespond(savedUser);
     }
+    public UserRespond loginUser(LoginRequest loginRequest) {
+        // Kiểm tra người dùng tồn tại theo email
+        User user = (User) userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("Email không tồn tại: " + loginRequest.getEmail()));
+
+        // Kiểm tra mật khẩu (giả lập hoặc sử dụng mã hóa BCrypt để so sánh)
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new RuntimeException("Mật khẩu không chính xác");
+        }
+
+        // Trả về phản hồi người dùng
+        return userMapper.toRespond(user);
+    }
+
+
 }

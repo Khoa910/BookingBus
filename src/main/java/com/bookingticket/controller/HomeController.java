@@ -15,6 +15,9 @@ public class HomeController {
     public String dangky() {
         return "dangky"; // Trả về tên file HTML 'dangky.html'
     }
-
+    @RequestMapping("/dangnhap")
+    public String login() {
+        return "dangnhap";
+    }
 
 }
