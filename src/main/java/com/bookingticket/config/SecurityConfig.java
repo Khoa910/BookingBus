@@ -20,17 +20,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll() // Thay thế antMatchers bằng requestMatchers
-                        .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true) // Chuyển hướng sau khi đăng nhập thành công
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/") // URL sau khi đăng xuất
-                );
+                .authorizeRequests()
+                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/img/**").permitAll() // Cho phép truy cập các URL công khai
+                .anyRequest().authenticated() // Các URL khác yêu cầu đăng nhập
+                .and()
+                .oauth2Login() // Kích hoạt OAuth2 Login
+                .loginPage("/login") // URL của trang login tùy chỉnh
+                .defaultSuccessUrl("/home", true) // Redirect sau khi login thành công
+                .failureUrl("/login?error=true"); // Redirect nếu login thất bại
         return http.build();
     }
 }

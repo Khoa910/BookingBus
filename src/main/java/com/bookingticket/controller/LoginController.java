@@ -6,12 +6,10 @@ import com.bookingticket.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
@@ -45,5 +43,13 @@ public class LoginController {
             model.addAttribute("error", ex.getMessage());
             return "Đăng nhập thất bại: " + ex.getMessage();
         }
+    }
+    @GetMapping("/home")
+    public String home(OAuth2AuthenticationToken authentication) {
+        // Lấy thông tin người dùng từ Facebook
+        if (authentication != null) {
+            System.out.println("User details: " + authentication.getPrincipal().getAttributes());
+        }
+        return "success"; // Trả về template home.html sau khi login thành công
     }
 }
