@@ -44,7 +44,7 @@ public class BusService {
 
     public BusRespond addBus(BusRequest busRequest) {
 
-        Optional<Bus> existingBus = busRepository.findByLicensePlate(busRequest.getLicense_plate());
+        Optional<Bus> existingBus = busRepository.findBylicense_plate(busRequest.getLicense_plate());
         if (existingBus.isPresent()) {
 
             throw new IllegalArgumentException("License plate already exists, please use another license plate!!!");

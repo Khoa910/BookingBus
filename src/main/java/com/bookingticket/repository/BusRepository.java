@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BusRepository extends JpaRepository<Bus, Long> {
-    Optional<Bus> findByLicensePlate(String licensePlate);
+
+    Optional<Bus> findBylicense_plate(String license_Plate);
 }

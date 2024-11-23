@@ -17,7 +17,7 @@ public class Bus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String licensePlate;
+    private String license_plate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_type_id", referencedColumnName = "id", nullable = true)
