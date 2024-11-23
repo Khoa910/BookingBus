@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentRespond {
     Long id;
-    TicketRespond ticket_id;
+    Long ticket_id;
     String payment_method;
     BigDecimal amount;
     LocalDateTime payment_time;

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTA</title>
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <link rel="pingback" href="http://vinpearlsafari.com/xmlrpc.php">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel='stylesheet' id='theme-style-css'  href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id=''  href='/plugins/flexslider/flexslider.css' type='text/css' media='all' />
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/plugins/flexslider/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="/js/theme.js"></script>
+</head>
+<body>git
+<div id="page">
+    <!-- header -->
+    <header>
+        <div id="top">
+            <div class="container">
+
+                <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span></div>
+                <ul>
+                    <li><a href="#">EN</a></li>
+                    <li><a href="#">Đăng nhập</a></li>
+                    <li><a href="#">Đăng ký</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div id="header-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                        <h1 id="logo">
+                            <a th:href="@{/}"><img th:src="@{/img/logo.png}" alt="Logo"/></a>
+                        </h1>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                        <div class="navbar-header">
+                            <button type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                                <span>Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a th:href="@{/}" class="navbar-brand">Trang chủ</a>
+                        </div>
+                        <nav id="main-nav" class="collapse navbar-collapse clearfix">
+                            <ul>
+                                <li><a href="#">Khuyến mãi</a></li>
+                                <li><a href="#">Lịch trình</a></li>
+                                <li><a href="#">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="body-content">
+        <div class="container" id="login-page">
+            <div id="top-login" class="clearfix hidden-sm">
+                <div>
+                    <div>
+                        <div>An toàn</div>
+                        <div>Luôn có tuyến</div>
+                        <div>Hỏi đáp</div>
+                    </div>
+                </div>
+                <div>
+                    <p>Hãy tải app để chúng tôi phục vụ bạn tốt hơn</p>
+                </div>
+            </div>
+            <div id="body-register">
+                <div>
+                    <img th:src="@{/res/banner-dangky.jpg}" alt="Banner đăng ký"/>
+                </div>
+                <div>
+                    <form th:action="@{/dangky}" method="post">
+                        <label for="username">Tên đăng nhập:</label>
+                        <input type="text" id="username" name="username" required>
+                        <br>
+
+                        <label for="password">Mật khẩu:</label>
+                        <input type="password" id="password" name="password" required>
+                        <br>
+
+                        <label for="fullName">Họ và tên:</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        <br>
+
+                        <label for="phoneNumber">Số điện thoại:</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber">
+                        <br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email">
+                        <br>
+
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" id="address" name="address">
+                        <br>
+
+                        <button type="submit">Đăng ký</button>
+                    </form>
+
+                    <p th:if="${error}" th:text="${error}"></p> <!-- Hiển thị lỗi nếu có -->
+                    <p th:if="${message}" th:text="${message}"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <div id="footer-header">
+            <div>
+                <div>
+                    <h4>Các tuyến xe miền nam</h4>
+                    <ul>
+                        <li><a href="#">TPHCM</a></li>
+                        <li><a href="#">Vũng tàu</a></li>
+                        <li><a href="#">Cần thơ</a></li>
+                        <li><a href="#">Đà Lạt</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>Công Ty CP Xe khách Phương Trang</p>
+            <p>Địa chỉ: 80 Trần Hưng Đạo, Q1, TP Hồ Chí Minh.</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

@@ -21,15 +21,15 @@ public class BusSchedule {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bus_id", referencedColumnName = "id")
+    @JoinColumn(name = "bus_id", referencedColumnName = "id", nullable = true)
     private Bus bus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "departure_station_id", referencedColumnName = "id")
+    @JoinColumn(name = "departure_station_id", referencedColumnName = "id", nullable = true)
     private BusStation departureStation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "arrival_station_id", referencedColumnName = "id")
+    @JoinColumn(name = "arrival_station_id", referencedColumnName = "id", nullable = true)
     private BusStation arrivalStation;
 
     private LocalDateTime departure_time;

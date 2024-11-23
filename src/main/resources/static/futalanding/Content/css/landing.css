@@ -1,0 +1,33 @@
+.image-fullwidth img{
+	width: 100%;
+	max-width: 100%;
+}
+
+#use-full h1{
+	font-size: 32px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+#use-full  h3{
+	font-weight: 600;
+	height: 35px;
+	display: block;
+}
+
+#noted-intro{
+	background: #E0E0E0;
+	padding: 20px 0;
+}
+#noted-intro h2{
+	font-size: 28px;
+    font-weight: 600;margin-top: 40px;
+}
+
+#fu-gifting h2{
+	font-weight: 600;
+}
+
+.fu-gifting-col img{
+	float: left;
+	margin-right: 10px;
+}

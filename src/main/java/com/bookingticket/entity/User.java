@@ -35,9 +35,8 @@ public class User {
 
 	private String address;
 
-	// Điều chỉnh cascade
-	@ManyToOne(fetch = FetchType.LAZY)  // Chỉ tải Role khi cần thiết
-	@JoinColumn(name = "role", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "role", referencedColumnName = "id", nullable = true)
 	private Role role;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

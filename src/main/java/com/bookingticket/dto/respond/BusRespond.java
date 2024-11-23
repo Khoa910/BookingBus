@@ -17,10 +17,10 @@ import lombok.experimental.FieldDefaults;
 public class BusRespond {
     Long id;
     String license_plate;
-    SeatTypeRespond seat_type_id;
+    Long seat_type_id;
     String bus_type;
-    BusCompanyRespond bus_company_id;
-    BusStationRespond departureStation_id;
-    BusStationRespond arrivalStation_id;
+    Long bus_company_id;
+    Long departureStation_id;
+    Long arrivalStation_id;
 }
 

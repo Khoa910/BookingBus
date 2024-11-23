@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BusScheduleRespond {
     Long id;
-    BusRespond bus_id;
-    BusStationRespond departureStation_id;
-    BusStationRespond arrivalStation_id;
+    Long bus_id;
+    Long departureStation_id;
+    Long arrivalStation_id;
     LocalDateTime departure_time;
     LocalDateTime arrival_time;
     BigDecimal price;
