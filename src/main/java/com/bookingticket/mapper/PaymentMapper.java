@@ -1,6 +1,5 @@
 package com.bookingticket.mapper;
 
-
 import com.bookingticket.dto.request.PaymentRequest;
 import com.bookingticket.dto.respond.PaymentRespond;
 import com.bookingticket.entity.Payment;

@@ -10,13 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-<<<<<<< HEAD
-    date = "2024-11-22T17:44:19+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
-=======
-    date = "2024-11-22T18:14:46+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
->>>>>>> 37c457d2319879f9e93748e309c95d1489ddc8f4
+    date = "2024-11-23T13:51:30+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 23.0.1 (Homebrew)"
 )
 @Component
 public class SeatMapperImpl implements SeatMapper {

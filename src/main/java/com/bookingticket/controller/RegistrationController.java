@@ -1,6 +1,8 @@
 package com.bookingticket.controller;
 
 import com.bookingticket.dto.request.RequestRegister;
+import com.bookingticket.dto.request.UserRequest;
+import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,18 +19,19 @@ public class RegistrationController {
 
 
     @PostMapping
-    public String registerUser(@ModelAttribute RequestRegister dto, Model model) {
-        // Lưu người dùng
-        boolean isRegistered = userService.registerUser(dto);
+    public String registerUser(@ModelAttribute UserRequest dto, Model model) {
+        try {
+            // Gọi service để đăng ký người dùng
+            UserRespond userRespond = userService.registerUser(dto);
 
-        if (isRegistered) {
             // Đăng ký thành công, chuyển hướng đến trang thành công
-            model.addAttribute("message", "Đăng ký thành công!");
+            model.addAttribute("message", "Đăng ký thành công! Người dùng: " + userRespond.getUsername());
             return "success"; // Tên file HTML cho trang thành công (success.html)
-        } else {
-            // Đăng ký thất bại (ví dụ: trùng tên đăng nhập), trả về trang đăng ký với thông báo lỗi
-            model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
+        } catch (RuntimeException ex) {
+            // Đăng ký thất bại, trả về trang đăng ký với thông báo lỗi
+            model.addAttribute("error", ex.getMessage());
             return "register"; // Tên file HTML cho trang đăng ký (register.html)
         }
     }
+
 }

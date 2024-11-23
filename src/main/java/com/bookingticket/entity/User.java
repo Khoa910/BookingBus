@@ -36,7 +36,7 @@ public class User {
 	private String address;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role", referencedColumnName = "id")
+	@JoinColumn(name = "role", referencedColumnName = "id", nullable = true)
 	private Role role;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

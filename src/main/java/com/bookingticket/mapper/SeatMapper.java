@@ -1,6 +1,5 @@
 package com.bookingticket.mapper;
 
-
 import com.bookingticket.dto.request.SeatRequest;
 import com.bookingticket.dto.respond.SeatRespond;
 import com.bookingticket.entity.Seat;

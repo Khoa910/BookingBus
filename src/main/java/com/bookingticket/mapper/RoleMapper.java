@@ -1,13 +1,14 @@
 package com.bookingticket.mapper;
 
-
 import com.bookingticket.dto.request.RoleRequest;
 import com.bookingticket.dto.respond.RoleRespond;
 import com.bookingticket.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface RoleMapper {
 
     @Mapping(target = "id", source = "id")

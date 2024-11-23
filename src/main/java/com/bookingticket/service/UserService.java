@@ -1,6 +1,5 @@
 package com.bookingticket.service;
 
-import com.bookingticket.dto.request.RequestRegister;
 import com.bookingticket.dto.request.UserRequest;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.Role;
@@ -9,7 +8,6 @@ import com.bookingticket.mapper.UserMapper;
 import com.bookingticket.repository.RoleRepository;
 import com.bookingticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,42 +17,95 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-
-    public boolean registerUser(RequestRegister request) {
-        // Kiểm tra xem tên đăng nhập đã tồn tại chưa
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return false; // Tên đăng nhập đã tồn tại
-        }
-        Role role = roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role không tồn tại"));
-
-        // Tạo đối tượng User từ RequestRegister
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword()); // Lưu ý: Mã hóa mật khẩu trước khi lưu
-        user.setFull_name(request.getFullName());
-        user.setPhone_number(request.getPhoneNumber());
-        user.setEmail(request.getEmail());
-        user.setAddress(request.getAddress());
-        user.setRole(role);
-        // Lưu vào cơ sở dữ liệu
-        userRepository.save(user);
-        return true;
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.roleRepository = roleRepository;
     }
+
     public List<UserRespond> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(userMapper::toRespond)
                 .collect(Collectors.toList());
+    }
+
+    public UserRespond getUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(userMapper::toRespond)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    public UserRespond createUser(UserRequest userRequest) {
+        User user = userMapper.toEntity(userRequest);
+        User savedUser = userRepository.save(user);
+        return userMapper.toRespond(savedUser);
+    }
+
+    public UserRespond updateUser(Long id, UserRequest userRequest) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUsername(userRequest.getUsername());
+            user.setFull_name(userRequest.getFull_name());
+            user.setPhone_number(userRequest.getPhone_number());
+            user.setEmail(userRequest.getEmail());
+            user.setAddress(userRequest.getAddress());
+
+            if (userRequest.getRole() != null) {
+                Optional<Role> roleOptional = roleRepository.findById(userRequest.getRole());
+                if (roleOptional.isPresent()) {
+                    user.setRole(roleOptional.get());
+                } else {
+                    throw new RuntimeException("Role not found with id: " + userRequest.getRole());
+                }
+            } else {
+                user.setRole(null);
+            }
+
+            User updatedUser = userRepository.save(user);
+            return userMapper.toRespond(updatedUser);
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+    }
+
+    // Xóa một người dùng
+    public void deleteUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+    }
+    public UserRespond registerUser(UserRequest userRequest) {
+        // Kiểm tra xem tên đăng nhập đã tồn tại chưa
+        if (userRepository.existsByUsername(userRequest.getUsername())) {
+            throw new RuntimeException("Tên đăng nhập đã tồn tại: " + userRequest.getUsername());
+        }
+
+        // Lấy role mặc định (có thể điều chỉnh id nếu cần)
+        Role role = roleRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Role không tồn tại"));
+
+        // Chuyển đổi UserRequest thành User entity
+        User user = userMapper.toEntity(userRequest);
+
+        // Mã hóa mật khẩu trước khi lưu (cần tích hợp công cụ mã hóa, ví dụ BCrypt)
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setRole(role);
+
+        // Lưu người dùng vào cơ sở dữ liệu
+        User savedUser = userRepository.save(user);
+
+        // Trả về phản hồi dưới dạng DTO
+        return userMapper.toRespond(savedUser);
     }
 }

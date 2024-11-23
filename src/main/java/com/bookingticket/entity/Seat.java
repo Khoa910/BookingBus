@@ -17,7 +17,7 @@ public class Seat {
     private String id_seat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bus_id", referencedColumnName = "id")
+    @JoinColumn(name = "bus_id", referencedColumnName = "id", nullable = true)
     private Bus bus;
 
     private String status;
@@ -25,6 +25,6 @@ public class Seat {
     private String seat_name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seat_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "seat_type_id", referencedColumnName = "id", nullable = true)
     private SeatType seatType;
 }

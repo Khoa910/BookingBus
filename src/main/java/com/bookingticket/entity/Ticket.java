@@ -21,11 +21,11 @@ public class Ticket {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bus_id", referencedColumnName = "id")
+    @JoinColumn(name = "bus_id", referencedColumnName = "id", nullable = true)
     private Bus bus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
     private String seat_number;
