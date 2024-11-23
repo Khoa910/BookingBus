@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -140,6 +141,45 @@ public class UserService {
         // Trả về phản hồi người dùng
         return userMapper.toRespond(user);
     }
+    public void forgotPassword(String email) {
+        // Kiểm tra email có tồn tại trong hệ thống
+        User user = (User) userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email không tồn tại trong hệ thống: " + email));
+
+        // Sinh mật khẩu mới ngẫu nhiên
+        String newPassword = generateRandomPassword();
+
+        // Mã hóa mật khẩu mới
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        // Cập nhật lại mật khẩu vào cơ sở dữ liệu
+        userRepository.save(user);
+
+        // Gửi email thông báo mật khẩu mới
+        try {
+            emailService.sendNewPasswordEmail(
+                    user.getEmail(),
+                    user.getFull_name(),
+                    newPassword
+            );
+        } catch (MessagingException e) {
+            throw new RuntimeException("Lỗi khi gửi email chứa mật khẩu mới: " + e.getMessage());
+        }
+    }
+
+    private String generateRandomPassword() {
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int PASSWORD_LENGTH = 10;
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(PASSWORD_LENGTH);
+
+        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+            password.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+        }
+
+        return password.toString();
+    }
+
 
 
 }

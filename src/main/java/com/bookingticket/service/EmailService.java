@@ -37,4 +37,22 @@ public class EmailService {
 
         mailSender.send(message);
     }
+    public void sendNewPasswordEmail(String toEmail, String name, String newPassword) throws MessagingException {
+        // Tạo context để truyền dữ liệu vào template
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("newPassword", newPassword);
+
+        // Render template email
+        String emailContent = templateEngine.process("reset-password-email-template", context);
+
+        // Tạo email và gửi
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(toEmail);
+        helper.setSubject("Mật khẩu mới của bạn");
+        helper.setText(emailContent, true);
+
+        mailSender.send(message);
+    }
 }
