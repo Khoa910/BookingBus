@@ -12,7 +12,7 @@ public class HomeController {
     }
 
     @RequestMapping("/register")
-    public String dangky() {
+    public String register() {
         return "register"; // Trả về tên file HTML 'register.html'
     }
     @RequestMapping("/login")

@@ -66,7 +66,6 @@
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/dto/request/BusScheduleRequest.java
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/mapper/UserMapper.java
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/utilities/DateUtils.java
-/Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/controller/UserController.java
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/dto/respond/TicketRespond.java
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/repository/RoleRepository.java
 /Users/eddie/Documents/HoangMinhWeb/HoangMinhWeb/BookingXe/src/main/java/com/bookingticket/mapper/BusScheduleMapper.java

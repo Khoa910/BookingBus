@@ -51,7 +51,6 @@ com/bookingticket/mapper/BusStationMapper.class
 com/bookingticket/controller/RegistrationController.class
 com/bookingticket/dto/request/RequestRegister.class
 com/bookingticket/mapper/SeatTypeMapperImpl.class
-com/bookingticket/controller/UserController.class
 com/bookingticket/mapper/TicketMapperImpl.class
 com/bookingticket/entity/BusCompany.class
 com/bookingticket/mapper/TicketMapper.class

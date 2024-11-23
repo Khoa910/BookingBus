@@ -69,7 +69,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
                     <div id="register-form-wrapper" class="border padding10 clearfix">
                         <!-- Form giữ nguyên -->
-                        <form th:action="@{/dangky}" method="post">
+                        <form th:action="@{/register}" method="post">
                             <h3 class="text-uppercase">Đăng ký</h3>
                             <p class="text-muted">
                                 <small>Lưu ý: Không hỗ trợ hotmail và outlook email<br>
@@ -103,11 +103,11 @@
                             <div class="form-group clearfix">
                                 <button type="submit" class="btn btn-primary pull-right">Đăng ký</button>
                             </div>
-                            <p class="clearfix">
-                                <small class="pull-right">* Mục bắt buộc </small>
-                            </p>
-                            <p class="text-center">Nếu bạn đã có FUTA ID. Click <a th:href="@{/login}">đây</a> để đăng nhập</p>
                         </form>
+                        <p class="clearfix">
+                            <small class="pull-right">* Mục bắt buộc </small>
+                        </p>
+                        <p class="text-center">Nếu bạn đã có FUTA ID. Click <a th:href="@{/login}">đây</a> để đăng nhập</p>
                     </div>
                 </div>
             </div>
