@@ -20,7 +20,7 @@ public class ForgotPasswordController {
     @GetMapping("/reset-password")
     public String showForgotPasswordPage(Model model) {
         // Có thể thêm các dữ liệu cần thiết vào model nếu cần
-        return "quenmatkhau"; // Tên file HTML trong thư mục templates
+        return "forgot-password"; // Tên file HTML trong thư mục templates
     }
 
     /**
@@ -39,6 +39,6 @@ public class ForgotPasswordController {
             model.addAttribute("errorMessage", e.getMessage());
         }
 
-        return "quenmatkhau"; // Quay lại trang quên mật khẩu
+        return "login"; // Quay lại trang quên mật khẩu
     }
 }

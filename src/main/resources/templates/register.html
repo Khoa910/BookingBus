@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTA</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" media="all"/>
+    <link rel="stylesheet" th:href="@{/plugins/flexslider/flexslider.css}" type="text/css" media="all"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/theme.js}"></script>
+</head>
+<body>
+<div id="page">
+    <header>
+        <div id="top">
+            <div class="container">
+                <div class="support">
+                    <i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span>
+                </div>
+                <ul>
+                    <li><a th:href="@{/login}">Đăng nhập</a></li>
+                    <li><a th:href="@{/register}">Đăng ký</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="header-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                        <h1 id="logo">
+                            <a th:href="@{/}">
+                                <img th:src="@{/img/logo.png}" alt="Logo"/>
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a th:href="@{/}" class="navbar-brand">Trang chủ</a>
+                        </div>
+                        <nav id="main-nav" class="collapse navbar-collapse clearfix">
+                            <ul>
+                                <li><a th:href="@{/promotions}">Khuyến mãi</a></li>
+                                <li><a th:href="@{/schedules}">Lịch trình</a></li>
+                                <li><a th:href="@{/contact}">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="body-content">
+        <div class="container" id="register-page">
+            <div id="body-register" class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                    <img th:src="@{/res/banner-dangky.jpg}" alt="Banner đăng ký">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                    <div id="register-form-wrapper" class="border padding10 clearfix">
+                        <!-- Form giữ nguyên -->
+                        <form th:action="@{/dangky}" method="post">
+                            <h3 class="text-uppercase">Đăng ký</h3>
+                            <p class="text-muted">
+                                <small>Lưu ý: Không hỗ trợ hotmail và outlook email<br>
+                                    Chỉ với 1 tài khoản Futabus ID, tham gia được tất cả các chương trình Futabus Lines
+                                </small>
+                            </p>
+                            <div class="form-group">
+                                <label for="username">Tên đăng nhập:</label>
+                                <input type="text" id="username" name="username" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mật khẩu:</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="full_name">Họ và tên:</label>
+                                <input type="text" id="full_name" name="full_name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Số điện thoại:</label>
+                                <input type="text" id="phone_number" name="phone_number" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Địa chỉ:</label>
+                                <input type="text" id="address" name="address" class="form-control">
+                            </div>
+                            <div class="form-group clearfix">
+                                <button type="submit" class="btn btn-primary pull-right">Đăng ký</button>
+                            </div>
+                            <p class="clearfix">
+                                <small class="pull-right">* Mục bắt buộc </small>
+                            </p>
+                            <p class="text-center">Nếu bạn đã có FUTA ID. Click <a th:href="@{/login}">đây</a> để đăng nhập</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Footer giữ nguyên -->
+    </footer>
+</div>
+</body>
+</html>

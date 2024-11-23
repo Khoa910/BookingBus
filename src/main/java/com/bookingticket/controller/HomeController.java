@@ -11,17 +11,17 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/dangky")
+    @RequestMapping("/register")
     public String dangky() {
-        return "dangky"; // Trả về tên file HTML 'dangky.html'
+        return "register"; // Trả về tên file HTML 'register.html'
     }
-    @RequestMapping("/dangnhap")
+    @RequestMapping("/login")
     public String login() {
-        return "dangnhap";
+        return "login";
     }
-    @RequestMapping("/quenmatkhau")
+    @RequestMapping("/forgot-password")
     public String quenmatkhau() {
-        return "quenmatkhau";
+        return "forgot-password";
     }
 
 }

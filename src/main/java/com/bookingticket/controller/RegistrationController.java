@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/dangky")
+@RequestMapping("/register")
 public class RegistrationController {
 
     @Autowired

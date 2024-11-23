@@ -134,8 +134,8 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Email không tồn tại: " + loginRequest.getEmail()));
 
         // Kiểm tra mật khẩu (giả lập hoặc sử dụng mã hóa BCrypt để so sánh)
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
-            throw new RuntimeException("Mật khẩu không chính xác");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Email hoặc mật khẩu không chính xác");
         }
 
         // Trả về phản hồi người dùng
