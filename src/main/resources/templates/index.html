@@ -2,73 +2,89 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>FUTA</title>
-    <link rel="profile" href="http://gmpg.org/xfn/11">
-    <link rel="pingback" href="http://vinpearlsafari.com/xmlrpc.php">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title th:text="${pageTitle}">FUTA</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel='stylesheet' id='theme-style-css'  href='/css/style.css' type='text/css' media='all' />
-    <link rel='stylesheet' id=''  href='/plugins/flexslider/flexslider.css' type='text/css' media='all' />
-    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/plugins/flexslider/jquery.flexslider-min.js"></script>
-    <script type="text/javascript" src="/plugins/sliderTabs/jquery.sliderTabs.js"></script>
-    <link rel="stylesheet" href="/plugins/sliderTabs/styles/jquery.sliderTabs.css">
-
-    <script type="text/javascript" src="/js/theme.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" media="all" />
+    <link rel="stylesheet" th:href="@{/plugins/flexslider/flexslider.css}" type="text/css" media="all" />
+    <script th:src="@{/js/jquery-1.11.3.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/flexslider/jquery.flexslider-min.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/sliderTabs/jquery.sliderTabs.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{/plugins/sliderTabs/styles/jquery.sliderTabs.css}" />
+    <script th:src="@{/js/theme.js}" type="text/javascript"></script>
 </head>
 <body>
 <header>
     <div id="top">
         <div class="container">
-
-            <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span></div>
+            <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span th:text="${supportHotline}">0902 1818 52</span></div>
             <ul>
-                <li><a href="#">EN</a></li>
-                <li><a href="#">Đăng nhập</a></li>
-                <li><a href="#">Đăng ký</a></li>
-
+                <li><a href="#" th:href="@{/en}">EN</a></li>
+                <li><a href="#" th:href="@{/login}">Đăng nhập</a></li>
+                <li><a href="#" th:href="@{/register}">Đăng ký</a></li>
             </ul>
         </div>
     </div>
-    <div>
-        <h1>
-            <a href="/" th:href="@{/}">
-                Logo
-            </a>
-        </h1>
-        <nav>
-            <ul>
-                <li><a href="#" th:href="@{/khuyenmai}">Khuyến mãi</a></li>
-                <li><a href="#" th:href="@{/lichtrinh}">Lịch trình</a></li>
-                <li><a href="#" th:href="@{/lienhe}">Liên hệ</a></li>
-            </ul>
-        </nav>
+    <div id="header-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                    <h1 id="logo">
+                        <a th:href="@{/}">
+                            <img th:src="@{/img/logo.png}" alt="FUTA Logo" />
+                        </a>
+                    </h1>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="/" class="navbar-brand" th:href="@{/}">Trang chủ</a>
+                    </div>
+                    <nav id="main-nav" class="collapse navbar-collapse clearfix">
+                        <ul>
+                            <li><a href="#" th:href="@{/promotions}">Khuyến mãi</a></li>
+                            <li><a href="#" th:href="@{/schedules}">Lịch trình</a></li>
+                            <li><a href="#" th:href="@{/contact}">Liên hệ</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
-
-<main>
-    <h1>List Pages</h1>
-    <ul>
-        <li><a th:href="@{/home}">Trang chủ</a></li>
-        <li><a th:href="@{/step2}">Bước 2</a></li>
-        <li><a th:href="@{/step3}">Bước 3</a></li>
-        <li><a th:href="@{/step4}">Bước 4</a></li>
-        <li><a th:href="@{/dangky}">Đăng ký</a></li>
-        <li><a th:href="@{/danhgia}">Đánh giá</a></li>
-        <li><a th:href="@{/datve}">Đặt vé</a></li>
-        <li><a th:href="@{/khuyenmai}">Khuyến mãi</a></li>
-        <li><a th:href="@{/lichsumuave}">Lịch sử mua vé</a></li>
-        <li><a th:href="@{/lichsunaptien}">Lịch sử nạp tiền</a></li>
-        <li><a th:href="@{/lichtrinh}">Lịch trình</a></li>
-        <li><a th:href="@{/lienhe}">Liên hệ</a></li>
-        <li><a th:href="@{/dangnhap}">Đăng nhập</a></li>
-        <li><a th:href="@{/quenmatkhau}">Quên mật khẩu</a></li>
-        <li><a th:href="@{/thanhtoanthanhcong}">Thanh toán thành công</a></li>
-        <li><a th:href="@{/thongtincanhan}">Thông tin cá nhân</a></li>
-        <li><a th:href="@{/tintuc}">Tin tức</a></li>
-        <li><a th:href="@{/tuyendung}">Tuyển dụng</a></li>
-        <li><a th:href="@{/vechungtoi}">Về chúng tôi</a></li>
-    </ul>
-</main>
+<div class="container">
+    <h1 class="text-center">List Pages</h1>
+    <div class="col-lg-4 col-lg-offset-4">
+        <ul>
+            <li><a th:href="@{/home}">Trang chủ</a></li>
+            <li><a th:href="@{/step2}">Bước 2</a></li>
+            <li><a th:href="@{/step3}">Bước 3</a></li>
+            <li><a th:href="@{/step4}">Bước 4</a></li>
+            <li><a th:href="@{/register}">Đăng ký</a></li>
+            <li><a th:href="@{/review}">Đánh giá</a></li>
+            <li><a th:href="@{/book-ticket}">Đặt vé</a></li>
+            <li><a th:href="@{/promotions}">Khuyến mãi</a></li>
+            <li><a th:href="@{/purchase-history}">Lịch sử mua vé</a></li>
+            <li><a th:href="@{/topup-history}">Lịch sử nạp tiền</a></li>
+            <li><a th:href="@{/schedules}">Lịch trình</a></li>
+            <li><a th:href="@{/contact}">Liên hệ</a></li>
+            <li><a th:href="@{/resigter}">Đăng ký</a></li>
+            <li><a th:href="@{/login}">Đăng nhập</a></li>
+            <li><a th:href="@{/forgot-password}">Quên mật khẩu</a></li>
+            <li><a th:href="@{/payment-success}">Thanh toán thành công</a></li>
+            <li><a th:href="@{/profile}">Thông tin cá nhân</a></li>
+            <li><a th:href="@{/news}">Tin tức</a></li>
+            <li><a th:href="@{/careers}">Tuyển dụng</a></li>
+            <li><a th:href="@{/about-us}">Về chúng tôi</a></li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>
