@@ -19,5 +19,9 @@ public class HomeController {
     public String login() {
         return "dangnhap";
     }
+    @RequestMapping("/quenmatkhau")
+    public String quenmatkhau() {
+        return "quenmatkhau";
+    }
 
 }

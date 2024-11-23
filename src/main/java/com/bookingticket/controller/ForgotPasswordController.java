@@ -17,7 +17,7 @@ public class ForgotPasswordController {
     /**
      * Hiển thị trang quên mật khẩu
      */
-    @GetMapping("/forgot-password")
+    @GetMapping("/reset-password")
     public String showForgotPasswordPage(Model model) {
         // Có thể thêm các dữ liệu cần thiết vào model nếu cần
         return "quenmatkhau"; // Tên file HTML trong thư mục templates
@@ -26,7 +26,7 @@ public class ForgotPasswordController {
     /**
      * Xử lý logic khi người dùng gửi yêu cầu quên mật khẩu
      */
-    @PostMapping("/forgot-password")
+    @PostMapping("/reset-password")
     public String processForgotPassword(@RequestParam("email") String email, Model model) {
         try {
             // Gọi service xử lý quên mật khẩu
