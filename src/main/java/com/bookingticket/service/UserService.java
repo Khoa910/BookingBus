@@ -8,7 +8,9 @@ import com.bookingticket.entity.User;
 import com.bookingticket.mapper.UserMapper;
 import com.bookingticket.repository.RoleRepository;
 import com.bookingticket.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,11 @@ public class UserService {
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
     }
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<UserRespond> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -105,6 +112,17 @@ public class UserService {
 
         // Lưu người dùng vào cơ sở dữ liệu
         User savedUser = userRepository.save(user);
+        try {
+            emailService.sendWelcomeEmail(
+                    savedUser.getEmail(),          // Địa chỉ email
+                    savedUser.getFull_name(),       // Tên người dùng
+                    savedUser.getUsername()        // Tên đăng nhập
+            );
+        } catch (MessagingException e) {
+            // Xử lý lỗi khi gửi email, nếu cần
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Lỗi khi gửi email chào mừng: " + e.getMessage());
+        }
 
         // Trả về phản hồi dưới dạng DTO
         return userMapper.toRespond(savedUser);
