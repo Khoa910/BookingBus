@@ -99,7 +99,7 @@ public class UserService {
         User user = userMapper.toEntity(userRequest);
 
         // Mã hóa mật khẩu trước khi lưu (cần tích hợp công cụ mã hóa, ví dụ BCrypt)
-        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user.setRole(role);
 

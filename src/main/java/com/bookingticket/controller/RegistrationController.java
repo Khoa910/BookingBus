@@ -25,8 +25,8 @@ public class RegistrationController {
             BindingResult bindingResult,                          // Để xử lý lỗi nếu có
             Model model) {
         if (bindingResult.hasErrors()) {
-            // Nếu có lỗi, trả lại trang đăng ký cùng thông báo lỗi
-            return "register";
+            System.out.println("Looxibingling");
+            return "error";
         }
 
         try {
@@ -37,9 +37,9 @@ public class RegistrationController {
             model.addAttribute("message", "Đăng ký thành công! Người dùng: " + userRespond.getUsername());
             return "success"; // Tên file HTML cho trang thành công (success.html)
         } catch (RuntimeException ex) {
-            // Xử lý lỗi từ service
+            System.out.println(ex.getMessage());
             model.addAttribute("error", ex.getMessage());
-            return "register"; // Tên file HTML cho trang đăng ký (register.html)
+            return "error"; // Tên file HTML cho trang đăng ký (register.html)
         }
     }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome Email</title>
+</head>
+<body>
+<h1>Xin chào, <span th:text="${name}">Người dùng</span>!</h1>
+<p>Chào mừng bạn đến với hệ thống của chúng tôi.</p>
+<p>Dưới đây là thông tin tài khoản của bạn:</p>
+<ul>
+    <li>Tên đăng nhập: <span th:text="${username}"></span></li>
+    <li>Email: <span th:text="${email}"></span></li>
+</ul>
+<p>Chúng tôi rất vui được phục vụ bạn!</p>
+</body>
+</html>
