@@ -20,29 +20,48 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .requestMatchers(
-                        "/",
-                        "/login",
-                        "/register",
-                        "/user/step2",
-                        "/css/**",
-                        "/js/**",
-                        "/plugins/**",
-                        "/error",
-                        "/img/**",
-                        "/book",
-                        "/api/**" // Cho phép truy cập các API
-                ).permitAll() // Không yêu cầu xác thực với các URL này
-                .anyRequest().authenticated() // Các URL khác yêu cầu đăng nhập
-                .and()
-                .oauth2Login() // Kích hoạt OAuth2 Login
-                .loginPage("/login") // URL của trang login tùy chỉnh
-                .defaultSuccessUrl("/home", true) // Redirect sau khi login thành công
-                .failureUrl("/login?error=true") // Redirect nếu login thất bại
-                .and()
-                .csrf().disable(); // Tắt CSRF (chỉ nên làm với API RESTful)
+                .authorizeRequests(auth -> auth
+                        // Các URL không yêu cầu xác thực
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/register",
+                                "/css/**",
+                                "/js/**",
+                                "/plugins/**",
+                                "/forgot-password",
+                                "/reset-password",
+                                "/user/step2",
+                                "/oauth2/**",
+                                "/error",
+                                "/index",
+                                "/img/**",
+                                "/login/**",
+                                "/webjars/**",
+                                "/favicon.ico",
+                                "/book",
+                                "/api/**" // Cho phép truy cập các API
+                        ).permitAll()
+                        // Các URL khác yêu cầu xác thực
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        // Cấu hình trang đăng nhập
+                        .loginPage("/")
+                        // Điều hướng khi đăng nhập thành công
+                        .defaultSuccessUrl("/oauth2/callback/google", true)
+                        // Điều hướng khi đăng nhập thất bại
+                        .failureUrl("/login?error=true")
+                        .failureHandler((request, response, exception) -> {
+                            System.out.println("Lỗi xác thực OAuth2: " + exception.getMessage());
+                            exception.printStackTrace();
+                            response.sendRedirect("/login?error=true");
+                        })
+                )
+                // Tắt CSRF để sử dụng API RESTful, cần cẩn thận khi áp dụng vào sản phẩm thực tế
+                .csrf().disable();
 
         return http.build();
     }
+
 }

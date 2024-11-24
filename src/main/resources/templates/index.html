@@ -26,11 +26,22 @@
                 <div class="support">
                     <i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span th:text="${supportHotline}">0902 1818 52</span>
                 </div>
-                <ul>
-                    <li><a th:href="@{/en}">EN</a></li>
-                    <li><a th:href="@{/login}">Đăng nhập</a></li>
-                    <li><a th:href="@{/register}">Đăng ký</a></li>
+                <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; align-items: center;">
+                    <!-- Hiển thị khi người dùng đã đăng nhập -->
+                    <li th:if="${session.username != null}" style="display: flex; gap: 10px;">
+                        <a href="#" style="text-decoration: none; pointer-events: none; cursor: default;">
+                            Xin chào, <span th:text="${session.username}">Tên người dùng</span>
+                        </a>
+                        <a th:href="@{/logout}" style="text-decoration: none;">Đăng xuất</a>
+                    </li>
+                    <!-- Hiển thị khi người dùng chưa đăng nhập -->
+                    <li th:if="${session.username == null}" style="display: flex; gap: 10px;">
+                        <a th:href="@{/login}" style="text-decoration: none;">Đăng nhập</a>
+                        <a th:href="@{/register}" style="text-decoration: none;">Đăng ký</a>
+                    </li>
                 </ul>
+
+
             </div>
         </div>
         <div id="header-body">
