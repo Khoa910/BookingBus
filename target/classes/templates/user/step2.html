@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTA</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/plugins/flexslider/flexslider.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
+    <script th:src="@{/js/theme.js}"></script>
+</head>
+<body>
+<div id="page">
+    <!-- Header -->
+    <header>
+        <div id="top">
+            <div class="container">
+                <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span></div>
+                <ul>
+                    <li><a href="#">EN</a></li>
+                    <li><a href="#">Đăng nhập</a></li>
+                    <li><a href="#">Đăng ký</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="header-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1 id="logo">
+                            <a href=""><img th:src="@{/img/logo.png}" alt="Logo"/></a>
+                        </h1>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="/" class="navbar-brand">Trang chủ</a>
+                        </div>
+                        <nav id="main-nav" class="collapse navbar-collapse clearfix">
+                            <ul>
+                                <li><a href="#">Khuyến mãi</a></li>
+                                <li><a href="#">Lịch trình</a></li>
+                                <li><a href="#">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Body Content -->
+    <section id="body-content">
+        <div id="steps" class="container">
+            <ul class="list-step clearfix">
+                <li>Chọn tuyến <span></span></li>
+                <li class="active">Chọn ghế <span></span></li>
+                <li>Thông tin khách hàng <span></span></li>
+                <li>Thanh toán <span></span></li>
+            </ul>
+        </div>
+        <div id="content-steps" class="container">
+            <div class="row">
+                <!-- Panel Content -->
+                <div class="col-lg-4">
+                    <div class="panel">
+                        <p class="text-center text-primary" th:text="'Từ TPHCM - Đà Lạt ngày ' + ${travelDate}"></p>
+                        <form id="form-steps" th:action="@{/submit}" method="post">
+                            <fieldset>
+                                <div class="form-section">
+                                    <p><i class="fa fa-bus text-primary"></i> <strong>Chọn tuyến xe</strong></p>
+                                    <div class="form-group">
+                                        <p class="clearfix">
+                                            <span class="f-left">Lê Hồng Phong - Đà Lạt</span>
+                                            <span class="f-right">200.000 VNĐ <input type="radio" name="route" value="1" class="form-control"/></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-section">
+                                    <p><i class="fa fa-clock-o text-primary"></i> <strong>Chọn thời gian khởi hành</strong></p>
+                                    <div class="form-group">
+                                        <select name="departureTime" class="form-control">
+                                            <option th:each="time : ${departureTimes}" th:value="${time}" th:text="${time}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-section">
+                                    <button type="submit" class="btn btn-primary btn-block">Tiếp tục</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <!-- Add more sections here -->
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12">
+                    <div class="panel">
+                        <p class="text-center text-uppercase text-primary">Thông tin chọn ghế</p>
+                        <form id="frm-book-slot" th:action="@{/bookSeats}" method="post">
+                            <fieldset>
+                                <!-- Tabs chọn tầng -->
+                                <ul class="v-tabs clearfix" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tier-up" aria-controls="home" role="tab" data-toggle="tab">Tầng trên</a></li>
+                                    <li role="presentation"><a href="#tier-down" aria-controls="profile" role="tab" data-toggle="tab">Tầng dưới</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <!-- Ghế tầng trên -->
+                                    <div role="tabpanel" class="tab-pane active" id="tier-up">
+                                        <table class="grid-seat table">
+                                            <tr th:each="row : ${upstairsSeats}">
+                                                <td th:each="seat : ${row}">
+                                                    <div th:class="'seat ' + ${seat.status}">
+                                                        <input type="checkbox" name="seatIds" th:value="${seat.id}" th:disabled="${seat.status == 'booked'}">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!-- Ghế tầng dưới -->
+                                    <div role="tabpanel" class="tab-pane" id="tier-down">
+                                        <table class="grid-seat table">
+                                            <tr th:each="row : ${downstairsSeats}">
+                                                <td th:each="seat : ${row}">
+                                                    <div th:class="'seat ' + ${seat.status}">
+                                                        <input type="checkbox" name="seatIds" th:value="${seat.id}" th:disabled="${seat.status == 'booked'}">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Nút xác nhận -->
+                                <button type="submit" class="btn btn-primary btn-block">Xác nhận ghế</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div id="footer-img">
+            <img th:src="@{/img/bg-top-footer.png}" class="center-block">
+        </div>
+        <div id="footer-body">
+            <div class="f-body-wrap container">
+                <nav id="nav-f">
+                    <ul>
+                        <li><a href="#">Lịch trình</a></li>
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Hỗ trợ khách hàng</a></li>
+                        <li><a href="#">Thanh toán an toàn</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
