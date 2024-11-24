@@ -21,13 +21,28 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/img/**").permitAll() // Cho phép truy cập các URL công khai
+                .requestMatchers(
+                        "/",
+                        "/login",
+                        "/register",
+                        "/user/step2",
+                        "/css/**",
+                        "/js/**",
+                        "/plugins/**",
+                        "/error",
+                        "/img/**",
+                        "/book",
+                        "/api/**" // Cho phép truy cập các API
+                ).permitAll() // Không yêu cầu xác thực với các URL này
                 .anyRequest().authenticated() // Các URL khác yêu cầu đăng nhập
                 .and()
                 .oauth2Login() // Kích hoạt OAuth2 Login
                 .loginPage("/login") // URL của trang login tùy chỉnh
                 .defaultSuccessUrl("/home", true) // Redirect sau khi login thành công
-                .failureUrl("/login?error=true"); // Redirect nếu login thất bại
+                .failureUrl("/login?error=true") // Redirect nếu login thất bại
+                .and()
+                .csrf().disable(); // Tắt CSRF (chỉ nên làm với API RESTful)
+
         return http.build();
     }
 }

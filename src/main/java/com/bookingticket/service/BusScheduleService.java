@@ -2,6 +2,7 @@ package com.bookingticket.service;
 
 import com.bookingticket.dto.request.BusScheduleRequest;
 import com.bookingticket.dto.respond.BusScheduleRespond;
+import com.bookingticket.dto.respond.ScheduleInfoRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.BusStation;
@@ -12,8 +13,10 @@ import com.bookingticket.repository.BusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BusScheduleService {
@@ -22,13 +25,15 @@ public class BusScheduleService {
     private final BusRepository busRepository;
     private final BusStationRepository busStationRepository;
     private final BusScheduleMapper busScheduleMapper;
+    private final BusStationService busStationService;
 
     @Autowired
-    public BusScheduleService(BusScheduleRepository busScheduleRepository, BusRepository busRepository, BusStationRepository busStationRepository, BusScheduleMapper busScheduleMapper) {
+    public BusScheduleService(BusScheduleRepository busScheduleRepository, BusRepository busRepository, BusStationRepository busStationRepository, BusScheduleMapper busScheduleMapper, BusStationService busStationService) {
         this.busScheduleRepository = busScheduleRepository;
         this.busRepository = busRepository;
         this.busStationRepository = busStationRepository;
         this.busScheduleMapper = busScheduleMapper;
+        this.busStationService = busStationService;
     }
 
     public List<BusScheduleRespond> getAllBusSchedules() {
@@ -36,6 +41,12 @@ public class BusScheduleService {
         return busSchedules.stream()
                 .map(busScheduleMapper::toRespond)
                 .toList();
+    }
+    public List<BusScheduleRespond> getBusSchedulesByDepartureStationId(Long departureStationId) {
+        List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
+        return busSchedules.stream()
+                .map(busScheduleMapper::toRespond)
+                .collect(Collectors.toList());
     }
 
     public Optional<BusScheduleRespond> getBusScheduleById(Long id) {
@@ -108,5 +119,28 @@ public class BusScheduleService {
             return true;
         }
         return false;
+    }
+
+    public List<ScheduleInfoRespond> getAllSchedulesInfo() {
+        List<BusSchedule> busSchedules = busScheduleRepository.findAll();
+
+        return busSchedules.stream()
+                .map(schedule -> new ScheduleInfoRespond(
+                        schedule.getDepartureStation().getName(),
+                        schedule.getArrivalStation().getName(),
+                        schedule.getDeparture_time()
+                ))
+                .collect(Collectors.toList());
+    }
+    public List<BusSchedule> findMatchingSchedules(String departureStationName, String arrivalStationName, LocalDateTime departureTime) {
+        // Tìm ID của điểm đi
+        Long departureStationId = busStationRepository.findByName(departureStationName).get(0).getId();
+        // Tìm ID của điểm đến
+        Long arrivalStationId = busStationRepository.findByName(arrivalStationName).get(0).getId();
+
+        // Tìm lịch trình phù hợp
+        return busScheduleRepository.findByDepartureStation_IdAndArrivalStation_IdAndDepartureTimeAfter(
+                departureStationId, arrivalStationId, departureTime
+        );
     }
 }
