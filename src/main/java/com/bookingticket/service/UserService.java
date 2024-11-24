@@ -98,6 +98,10 @@ public class UserService {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new RuntimeException("Tên đăng nhập đã tồn tại: " + userRequest.getUsername());
         }
+        if (userRepository.existsByEmail(userRequest.getEmail())) {
+            throw new RuntimeException("Email đăng nhập đã tồn tại: " + userRequest.getUsername());
+        }
+
 
         // Lấy role mặc định (có thể điều chỉnh id nếu cần)
         Role role = roleRepository.findById(1L)
