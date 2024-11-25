@@ -50,10 +50,24 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    public UserRespond createUser(UserRequest userRequest) {
-        User user = userMapper.toEntity(userRequest);
-        User savedUser = userRepository.save(user);
-        return userMapper.toRespond(savedUser);
+//    public UserRespond createUser(UserRequest userRequest) {
+//        User user = userMapper.toEntity(userRequest);
+//        User savedUser = userRepository.save(user);
+//        return userMapper.toRespond(savedUser);
+//    }
+
+    public boolean addAccount(User account) {
+        try {
+            userRepository.save(account); // Lưu tài khoản mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
+    public Optional<User> getAccountById(String accountId) {
+        return userRepository.findById(Long.parseLong(accountId));
     }
 
     public UserRespond updateUser(Long id, UserRequest userRequest) {
@@ -111,7 +125,7 @@ public class UserService {
         User user = userMapper.toEntity(userRequest);
 
         // Mã hóa mật khẩu trước khi lưu (cần tích hợp công cụ mã hóa, ví dụ BCrypt)
-         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user.setRole(role);
 
