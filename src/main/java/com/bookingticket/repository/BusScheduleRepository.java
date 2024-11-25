@@ -21,4 +21,15 @@ public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> 
             @Param("arrivalStationId") Long arrivalStationId,
             @Param("departureTime") LocalDateTime departureTime
     );
+    @Query("SELECT b FROM BusSchedule b " +
+            "WHERE (:departureStationId IS NULL OR b.departureStation.id = :departureStationId) " +
+            "AND (:arrivalStationId IS NULL OR b.arrivalStation.id = :arrivalStationId) " +
+            "AND (:departureTime IS NULL OR b.departure_time >= :departureTime)")
+    List<BusSchedule> findSchedulesWithOptionalParams(Long departureStationId, Long arrivalStationId, LocalDateTime departureTime);
+
+    @Query("SELECT b FROM BusSchedule b " +
+            "WHERE (:departureStationName IS NULL OR b.departureStation.name = :departureStationName) " +
+            "AND (:arrivalStationName IS NULL OR b.arrivalStation.name = :arrivalStationName) " +
+            "AND (:departureTime IS NULL OR b.departure_time >= :departureTime)")
+    List<BusSchedule> findSchedulesWithNames(String departureStationName, String arrivalStationName, LocalDateTime departureTime);
 }

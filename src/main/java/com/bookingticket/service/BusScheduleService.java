@@ -132,6 +132,7 @@ public class BusScheduleService {
                 ))
                 .collect(Collectors.toList());
     }
+
     public List<BusSchedule> findMatchingSchedules(String departureStationName, String arrivalStationName, LocalDateTime departureTime) {
         // Tìm ID của điểm đi
         Long departureStationId = busStationRepository.findByName(departureStationName).get(0).getId();
@@ -143,4 +144,16 @@ public class BusScheduleService {
                 departureStationId, arrivalStationId, departureTime
         );
     }
+
+    public List<BusSchedule> getSchedulesWithOptionalParams(Long departureStationId, Long arrivalStationId, LocalDateTime departureTime) {
+        return busScheduleRepository.findSchedulesWithOptionalParams(departureStationId, arrivalStationId, departureTime);
+    }
+
+    public List<BusSchedule> getSchedulesWithNames(String departureStationName, String arrivalStationName, LocalDateTime departureTime) {
+        return busScheduleRepository.findSchedulesWithNames(departureStationName, arrivalStationName, departureTime);
+    }
+    public BusSchedule getScheduleById(Long id) {
+        return busScheduleRepository.findById(id).get();
+    }
+
 }

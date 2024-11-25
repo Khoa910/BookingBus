@@ -82,11 +82,11 @@
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="booking">
-                                <form th:action="@{/book}" method="post" class="form">
+                                <form th:action="@{/book/submit}" method="post" class="form">
                                     <!-- Dropdown điểm đi -->
                                     <div class="form-group">
                                         <label for="departure">Điểm đi</label>
-                                        <select id="departure" name="departure" class="form-control" required>
+                                        <select id="departure" name="departure" class="form-control">
                                             <option value="">Chọn điểm đi</option>
                                         </select>
                                     </div>
@@ -94,7 +94,7 @@
                                     <!-- Dropdown điểm đến -->
                                     <div class="form-group">
                                         <label for="arrival">Điểm đến</label>
-                                        <select id="arrival" name="arrival" class="form-control" required>
+                                        <select id="arrival" name="arrival" class="form-control">
                                             <option value="">Chọn điểm đến</option>
                                         </select>
                                     </div>
@@ -102,10 +102,11 @@
                                     <!-- Dropdown thời gian khởi hành -->
                                     <div class="form-group">
                                         <label for="departureTime">Thời gian khởi hành</label>
-                                        <select id="departureTime" name="departureTime" class="form-control" required>
+                                        <select id="departureTime" name="departureTime" class="form-control">
                                             <option value="">Chọn thời gian</option>
                                         </select>
                                     </div>
+
 
                                     <!-- Input số lượng vé -->
                                     <div class="form-group">

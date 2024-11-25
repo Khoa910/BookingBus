@@ -28,13 +28,16 @@ public class SecurityConfig {
                                 "/register",
                                 "/css/**",
                                 "/js/**",
+                                "/user/confirmSelection",
                                 "/plugins/**",
                                 "/forgot-password",
                                 "/reset-password",
                                 "/user/step2",
+                                "/user/step2/submit",
                                 "/user/step3",
                                 "/oauth2/**",
                                 "/error",
+                                "/seats/**",
                                 "/index",
                                 "/img/**",
                                 "/login/**",
@@ -43,6 +46,10 @@ public class SecurityConfig {
                                 "/favicon.ico",
                                 "/submit-info",
                                 "/book",
+                                "/user/submit",
+                                "user/display",
+                                "/step2/submit",
+                                "/book/submit",
                                 "/api/**" // Cho phép truy cập các API
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực

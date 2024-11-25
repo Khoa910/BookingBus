@@ -12,6 +12,93 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
+    <style>
+
+
+
+        .btn-primary {
+            background-color: #ff4d4d;
+            border: none;
+            font-size: 14px; /* Giảm kích thước chữ */
+            padding: 8px 16px; /* Giảm padding */
+            border-radius: 4px; /* Bo tròn góc nhẹ */
+            width: auto; /* Kích thước vừa nội dung */
+            display: inline-block; /* Chỉ chiếm không gian vừa đủ */
+        }
+
+        .btn-primary:hover {
+            background-color: #e63e3e; /* Màu hover */
+        }
+
+        .btn-block {
+            width: 100%; /* Đảm bảo nút full-width trong các khối cần thiết */
+            max-width: 200px; /* Đặt giới hạn tối đa nếu cần */
+            margin: 0 auto; /* Canh giữa nếu cần */
+        }
+
+        .f-right {
+            float: right;
+            text-align: right;
+            font-size: 14px;
+            color: #000;
+        }
+        /* Đặt kích thước radio button nhỏ hơn */
+        input[type="radio"] {
+            -webkit-appearance: none; /* Xóa kiểu mặc định */
+            -moz-appearance: none; /* Xóa kiểu mặc định */
+            appearance: none; /* Xóa kiểu mặc định */
+            width: 16px; /* Kích thước nhỏ gọn */
+            height: 16px;
+            border: 2px solid #007bff; /* Viền màu xanh */
+            border-radius: 50%; /* Tạo hình tròn */
+            outline: none; /* Xóa viền khi chọn */
+            cursor: pointer; /* Hiệu ứng con trỏ */
+            position: relative;
+            margin: 0 8px; /* Khoảng cách với văn bản */
+        }
+
+        /* Hiển thị dấu chấm khi được chọn */
+        input[type="radio"]:checked {
+            background-color: #007bff; /* Màu nền khi chọn */
+        }
+
+        /* Loại bỏ các hiệu ứng bên ngoài (nếu có) */
+        input[type="radio"]:focus {
+            box-shadow: none; /* Xóa hiệu ứng viền ngoài */
+        }
+
+        .form-section strong {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .fa-bus {
+            margin-right: 8px;
+            color: #ff5722;
+        }
+
+        button.btn-primary {
+            background-color: #ff4d4d;
+            border: none;
+            font-size: 16px;
+        }
+
+        button.btn-primary:hover {
+            background-color: #e63e3e;
+        }
+
+        input[type="radio"] {
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        span.price {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+
+
 </head>
 <body>
 <div id="page">
@@ -73,80 +160,40 @@
                 <!-- Panel Content -->
                 <div class="col-lg-4">
                     <div class="panel">
-                        <p class="text-center text-primary" th:text="'Từ TPHCM - Đà Lạt ngày ' + ${travelDate}"></p>
-                        <form id="form-steps" th:action="@{/submit}" method="post">
+                        <!-- Thông báo nếu không có lịch trình nào -->
+                        <div th:if="${message}" class="alert alert-warning">
+                            <p th:text="${message}"></p>
+                        </div>
+
+                        <!-- Hiển thị danh sách lịch trình -->
+                        <form id="form-steps" th:action="@{/user/display}" method="post">
                             <fieldset>
-                                <div class="form-section">
-                                    <p><i class="fa fa-bus text-primary"></i> <strong>Chọn tuyến xe</strong></p>
-                                    <div class="form-group">
-                                        <p class="clearfix">
-                                            <span class="f-left">Lê Hồng Phong - Đà Lạt</span>
-                                            <span class="f-right">200.000 VNĐ <input type="radio" name="route" value="1" class="form-control"/></span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="form-section">
-                                    <p><i class="fa fa-clock-o text-primary"></i> <strong>Chọn thời gian khởi hành</strong></p>
-                                    <div class="form-group">
-                                        <select name="departureTime" class="form-control">
-                                            <option th:each="time : ${departureTimes}" th:value="${time}" th:text="${time}"></option>
-                                        </select>
-                                    </div>
+                                <div th:each="schedule : ${schedules}" class="form-section">
+                                    <p>
+                                        <i class="fa fa-bus"></i>
+                                        <strong th:text="${schedule.getDepartureStationName()} + ' - ' + ${schedule.getArrivalStationName()}"></strong>
+                                    </p>
+                                    <p>
+                                        <span class="f-left" th:text="${schedule.getDeparture_time()}"></span>
+                                        <span class="f-right">
+                                            <span class="price" th:text="${schedule.price} + ' VNĐ'"></span>
+                                            <input type="radio" name="route" th:value="${schedule.id}" class="form-control"/>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div class="form-section">
                                     <button type="submit" class="btn btn-primary btn-block">Tiếp tục</button>
                                 </div>
                             </fieldset>
                         </form>
+
                     </div>
                 </div>
-                <!-- Add more sections here -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12">
-                    <div class="panel">
-                        <p class="text-center text-uppercase text-primary">Thông tin chọn ghế</p>
-                        <form id="frm-book-slot" th:action="@{/bookSeats}" method="post">
-                            <fieldset>
-                                <!-- Tabs chọn tầng -->
-                                <ul class="v-tabs clearfix" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tier-up" aria-controls="home" role="tab" data-toggle="tab">Tầng trên</a></li>
-                                    <li role="presentation"><a href="#tier-down" aria-controls="profile" role="tab" data-toggle="tab">Tầng dưới</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <!-- Ghế tầng trên -->
-                                    <div role="tabpanel" class="tab-pane active" id="tier-up">
-                                        <table class="grid-seat table">
-                                            <tr th:each="row : ${upstairsSeats}">
-                                                <td th:each="seat : ${row}">
-                                                    <div th:class="'seat ' + ${seat.status}">
-                                                        <input type="checkbox" name="seatIds" th:value="${seat.id}" th:disabled="${seat.status == 'booked'}">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <!-- Ghế tầng dưới -->
-                                    <div role="tabpanel" class="tab-pane" id="tier-down">
-                                        <table class="grid-seat table">
-                                            <tr th:each="row : ${downstairsSeats}">
-                                                <td th:each="seat : ${row}">
-                                                    <div th:class="'seat ' + ${seat.status}">
-                                                        <input type="checkbox" name="seatIds" th:value="${seat.id}" th:disabled="${seat.status == 'booked'}">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- Nút xác nhận -->
-                                <button type="submit" class="btn btn-primary btn-block">Xác nhận ghế</button>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-
-
             </div>
         </div>
+
+
+
     </section>
 
     <!-- Footer -->
