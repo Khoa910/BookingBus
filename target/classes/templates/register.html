@@ -59,12 +59,35 @@
             </div>
         </div>
     </header>
-
     <section id="body-content">
         <div class="container" id="register-page">
+            <div id="top-login" class="clearfix hidden-sm">
+                <div id="login-top-bar-left" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                    <div class="row">
+                        <div class="text-center col-lg-4 col-md-4 col-sm-4 col-xs-12 col-ms-12">
+                            <div class="text-uppercase"><span class="relative"><span class="sprite safe"></span>An toàn</span></div>
+
+                        </div>
+                        <div class="text-center col-lg-4 col-md-4 col-sm-4 col-xs-12 col-ms-12">
+                            <div class="text-uppercase"><span class="relative"><span class="sprite bus"></span>Luôn có tuyến</span></div>
+
+                        </div>
+                        <div class="text-center col-lg-4 col-md-4 col-sm-4 col-xs-12 col-ms-12">
+                            <div class="text-uppercase"><span class="relative"><span class="sprite faq"></span>Hỏi đáp</span></div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="login-top-bar-right" class="text-center col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                    <p class="text-uppercase">Hãy tải app để chúng tôi phục vụ bạn tốt hơn <span class="sprite ico-app hidden-xs"></span> </p>
+
+                </div>
+            </div>
             <div id="body-register" class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
-                    <img th:src="@{/res/banner-dangky.jpg}" alt="Banner đăng ký">
+                    <img th:src="@{/img/banner-dangky.jpg}" alt="banner image"/>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
                     <div id="register-form-wrapper" class="border padding10 clearfix">
@@ -116,6 +139,48 @@
 
     <footer>
         <!-- Footer giữ nguyên -->
+        <div id="footer-img">
+            <img th:src="@{/img/bg-top-footer.png}" class="center-block">
+        </div>
+        <div id="footer-body">
+            <div class="f-body-wrap container">
+                <div id="f-info" class="row">
+                    <div id="social" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                        <ul>
+                            <li>Kết nối chúng tôi</li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-facebook-square"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-google-plus-square"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-twitter-square"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="info" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                        <div id="info-c">
+                            <p>Công Ty CP Xe khách Phan Trương</p>
+                            <p>Địa chỉ: 273 An Dương Vương, Q5, TP Hồ Chí Minh.</p>
+                            <p>Điện thoại: 0123456789 </p>
+                            <p>Website: <a>info.vn</a> - Email: info@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="f-copy">
+                    <p>Design by <a href="">@@@</a> </p>
+                </div>
+            </div>
+        </div>
     </footer>
 </div>
 </body>
