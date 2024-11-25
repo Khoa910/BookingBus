@@ -42,6 +42,7 @@ public class LoginController {
             // Lưu thông tin vào session
             session.setAttribute("userId", userRespond.getId());
             session.setAttribute("username", userRespond.getFull_name());
+            session.setAttribute("email", userRespond.getEmail());
             session.setAttribute("role", userRespond.getRole());
 
             return "index";

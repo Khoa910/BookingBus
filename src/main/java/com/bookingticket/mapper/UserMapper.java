@@ -1,6 +1,7 @@
 package com.bookingticket.mapper;
 
 import com.bookingticket.dto.request.UserRequest;
+import com.bookingticket.dto.request.UserRequestOAuth;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.User;
 import com.bookingticket.entity.Role;
@@ -17,4 +18,8 @@ public interface UserMapper {
 
     @Mapping(target = "role", source = "role")
     UserRespond toRespond(User user);
+
+    @Mapping(target = "role.id", source = "role")
+    User toEntity(UserRequestOAuth userRequest);
+
 }

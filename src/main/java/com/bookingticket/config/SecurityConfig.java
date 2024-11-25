@@ -32,13 +32,16 @@ public class SecurityConfig {
                                 "/forgot-password",
                                 "/reset-password",
                                 "/user/step2",
+                                "/user/step3",
                                 "/oauth2/**",
                                 "/error",
                                 "/index",
                                 "/img/**",
                                 "/login/**",
                                 "/webjars/**",
+                                "/customer-info",
                                 "/favicon.ico",
+                                "/submit-info",
                                 "/book",
                                 "/api/**" // Cho phép truy cập các API
                         ).permitAll()

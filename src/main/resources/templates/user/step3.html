@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTA</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" media="all" />
+    <link rel="stylesheet" th:href="@{/plugins/flexslider/flexslider.css}" type="text/css" media="all" />
+    <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
+    <script th:src="@{/js/theme.js}"></script>
+</head>
+<body>
+<div id="page">
+    <!-- header -->
+    <header>
+        <div id="top">
+            <div class="container">
+                <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span></div>
+                <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; align-items: center;">
+                    <!-- Hiển thị khi người dùng đã đăng nhập -->
+                    <li th:if="${session.username != null}" style="display: flex; gap: 10px;">
+                        <a href="#" style="text-decoration: none; pointer-events: none; cursor: default;">
+                            Xin chào, <span th:text="${session.username}">Tên người dùng</span>
+                        </a>
+                        <a th:href="@{/logout}" style="text-decoration: none;">Đăng xuất</a>
+                    </li>
+                    <!-- Hiển thị khi người dùng chưa đăng nhập -->
+                    <li th:if="${session.username == null}" style="display: flex; gap: 10px;">
+                        <a th:href="@{/login}" style="text-decoration: none;">Đăng nhập</a>
+                        <a th:href="@{/register}" style="text-decoration: none;">Đăng ký</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="header-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1 id="logo">
+                            <a th:href="@{/}">
+                                <img th:src="@{/img/logo.png}" alt="Logo"/>
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="/" class="navbar-brand">Trang chủ</a>
+                        </div>
+                        <nav id="main-nav" class="collapse navbar-collapse clearfix">
+                            <ul>
+                                <li><a href="#">Khuyến mãi</a></li>
+                                <li><a href="">Lịch trình</a></li>
+                                <li><a href="">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="body-content">
+        <div id="steps" class="container">
+            <ul class="list-step clearfix">
+                <li>Chọn tuyến <span></span></li>
+                <li>Chọn ghế <span></span></li>
+                <li class="active">Thông tin khách hàng <span></span></li>
+                <li>Thanh toán <span></span></li>
+            </ul>
+        </div>
+
+        <div id="content-steps" class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <p class="text-center text-primary text-uppercase">Thông tin khách hàng</p>
+                        <form id="form-cus-info" class="form-horizontal" th:action="@{/submit-info}" method="post">
+                            <fieldset>
+                                <!-- Họ tên -->
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-3 control-label">Họ tên *</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="name" name="name"
+                                               th:value="${session.username != null} ? ${session.username} : ''"
+                                               placeholder="Tên của bạn" required>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-3 control-label">Email *</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               th:value="${session.email != null} ? ${session.email} : ''"
+                                               placeholder="Email" required>
+                                    </div>
+                                </div>
+
+                                <!-- Địa chỉ -->
+                                <div class="form-group">
+                                    <label for="address" class="col-sm-3 control-label">Địa chỉ *</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="address" name="address"
+                                               placeholder="Địa chỉ của bạn" required>
+                                    </div>
+                                </div>
+
+                                <!-- Số điện thoại -->
+                                <div class="form-group">
+                                    <label for="phone" class="col-sm-3 control-label">Số điện thoại *</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="phone" name="phone"
+                                               placeholder="0902 1818 52" required>
+                                    </div>
+                                </div>
+
+                                <!-- Chấp nhận điều khoản -->
+                                <div class="form-group">
+                                    <div class="checkbox col-md-9 col-md-offset-3">
+                                        <label>
+                                            <input type="checkbox" name="terms" required> Chấp nhận điều khoản
+                                            <a href="#">Xem điều khoản</a>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Nút bấm -->
+                                <div class="form-group">
+                                    <div class="col-lg-6">
+                                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                                            <i class="fa fa-arrow-right"></i> Tiếp tục
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button type="button" class="btn btn-success btn-block btn-flat" th:onclick="location.href='@{/}'">
+                                            <i class="fa fa-close"></i> Hủy
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <p class="text-center text-uppercase text-primary"><strong>Điều khoản & Lưu ý</strong></p>
+                        <p>(*) Quý khách vui lòng mang email có chứa mã đặt chỗ để đổi vé lên xe trước giờ xuất bến ít nhất 30 phút.</p>
+                        <p>(*) Thông tin hành khách phải chính xác, nếu không sẽ không thể lên xe hoặc hủy/đổi vé.</p>
+                        <p>(*) Quý khách không được đổi/trả vé vào các ngày lễ tết (ngày thường quý khách được quyền chuyển đổi hoặc hủy vé một lần duy nhất).</p>
+                        <p>(*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ số điện thoại 1900 6067 trước khi đặt vé. Chúng tôi sẽ không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

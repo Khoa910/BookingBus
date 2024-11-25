@@ -1,6 +1,7 @@
 package com.bookingticket.mapper;
 
 import com.bookingticket.dto.request.UserRequest;
+import com.bookingticket.dto.request.UserRequestOAuth;
 import com.bookingticket.dto.respond.RoleRespond;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.Role;
@@ -10,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-24T23:47:51+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.12 (JetBrains s.r.o.)"
+    date = "2024-11-25T13:38:51+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -54,6 +55,25 @@ public class UserMapperImpl implements UserMapper {
         return userRespond;
     }
 
+    @Override
+    public User toEntity(UserRequestOAuth userRequest) {
+        if ( userRequest == null ) {
+            return null;
+        }
+
+        User user = new User();
+
+        user.setRole( userRequestOAuthToRole( userRequest ) );
+        user.setUsername( userRequest.getUsername() );
+        user.setPassword( userRequest.getPassword() );
+        user.setFull_name( userRequest.getFull_name() );
+        user.setPhone_number( userRequest.getPhone_number() );
+        user.setEmail( userRequest.getEmail() );
+        user.setAddress( userRequest.getAddress() );
+
+        return user;
+    }
+
     protected Role userRequestToRole(UserRequest userRequest) {
         if ( userRequest == null ) {
             return null;
@@ -77,5 +97,17 @@ public class UserMapperImpl implements UserMapper {
         roleRespond.setName( role.getName() );
 
         return roleRespond;
+    }
+
+    protected Role userRequestOAuthToRole(UserRequestOAuth userRequestOAuth) {
+        if ( userRequestOAuth == null ) {
+            return null;
+        }
+
+        Role role = new Role();
+
+        role.setId( userRequestOAuth.getRole() );
+
+        return role;
     }
 }
