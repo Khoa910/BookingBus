@@ -2,9 +2,11 @@ package com.bookingticket.service;
 
 import com.bookingticket.dto.request.SeatRequest;
 import com.bookingticket.dto.respond.SeatRespond;
+import com.bookingticket.entity.BusCompany;
 import com.bookingticket.entity.Seat;
 import com.bookingticket.entity.SeatType;
 import com.bookingticket.mapper.SeatMapper;
+import com.bookingticket.repository.BusRepository;
 import com.bookingticket.repository.SeatRepository;
 import com.bookingticket.repository.SeatTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class SeatService {
     private final SeatRepository seatRepository;
     private final SeatMapper seatMapper;
     private final SeatTypeRepository seatTypeRepository;
+    @Autowired
+    BusRepository busRepository;
     @Autowired
     public SeatService(SeatRepository seatRepository, SeatMapper seatMapper, SeatTypeRepository seatTypeRepository) {
         this.seatRepository = seatRepository;
@@ -75,5 +79,29 @@ public class SeatService {
         } else {
             throw new RuntimeException("Seat not found with id: " + id_seat);
         }
+    }
+
+    public boolean bookSeats(List<Long> seatIds) {
+        try {
+            List<Seat> seats = seatRepository.findAllByIdSeat(seatIds);
+            for (Seat seat : seats) {
+                if (!"BOOKED".equals(seat.getStatus())) {
+                    seat.setStatus("BOOKED");
+                }
+            }
+            seatRepository.saveAll(seats);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    // Lấy danh sách ghế tầng trên
+    public List<Seat> getUpstairsSeats(Long busId) {
+        return seatRepository.findUpstairsSeats(busId);
+    }
+
+    // Lấy danh sách ghế tầng dưới
+    public List<Seat> getDownstairsSeats(Long busId) {
+        return seatRepository.findDownstairsSeats(busId);
     }
 }
