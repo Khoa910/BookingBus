@@ -38,6 +38,12 @@ public class RoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found with id: " + id));
     }
 
+    public Role getRoleByName(String roleName) {
+        return roleRepository.findByName(roleName)
+                .orElseThrow(() -> new IllegalArgumentException("Role không tồn tại với tên: " + roleName));
+    }
+
+
 
     public RoleRespond createRole(RoleRequest request) {
         Role role = roleMapper.toEntity(request);
