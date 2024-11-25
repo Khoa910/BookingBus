@@ -20,7 +20,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
                         // Các URL không yêu cầu xác thực
                         .requestMatchers(
                                 "/",
@@ -50,11 +50,55 @@ public class SecurityConfig {
                                 "user/display",
                                 "/step2/submit",
                                 "/book/submit",
-                                "/api/**" // Cho phép truy cập các API
+                                "/api/**", // Cho phép truy cập các API
+                                "/admin",
+                                "/admin/**",
+                                "/user",
+                                "/admin/user-list"
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
+//                http
+//                .authorizeHttpRequests(auth -> auth
+//                // Các URL yêu cầu quyền ADMIN
+//                .requestMatchers("/admin/**").hasRole("ADMIN")
+//
+//                // Các URL được phép truy cập mà không cần xác thực
+//                .requestMatchers(
+//                        "/",
+//                        "/login",
+//                        "/register",
+//                        "/css/**",
+//                        "/js/**",
+//                        "/user/confirmSelection",
+//                        "/plugins/**",
+//                        "/forgot-password",
+//                        "/reset-password",
+//                        "/user/step2",
+//                        "/user/step2/submit",
+//                        "/user/step3",
+//                        "/oauth2/**",
+//                        "/error",
+//                        "/seats/**",
+//                        "/index",
+//                        "/img/**",
+//                        "/login/**",
+//                        "/webjars/**",
+//                        "/customer-info",
+//                        "/favicon.ico",
+//                        "/submit-info",
+//                        "/book",
+//                        "/user/submit",
+//                        "/user/display",
+//                        "/step2/submit",
+//                        "/book/submit",
+//                        "/api/**"
+//                ).permitAll()
+//
+//                // Các URL khác yêu cầu xác thực
+//                .anyRequest().authenticated()
+//        )
                 .oauth2Login(oauth2 -> oauth2
                         // Cấu hình trang đăng nhập
                         .loginPage("/")

@@ -45,10 +45,9 @@ public class AdminController {
     public String showUsers(Model model) {
         List<UserRespond> users = userService.getAllUsers();
         model.addAttribute("users", users); // Đẩy danh sách user vào model
-
         List<RoleRespond> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
-        return "admin/user-list"; // Trả về tên file HTML trong thư mục templates
+        return "/admin/user-list"; // Trả về tên file HTML trong thư mục templates
     }
 
 //    @PostMapping("/user/add")
@@ -122,8 +121,8 @@ public class AdminController {
 
     @GetMapping("/user/{id}")
     @ResponseBody
-    public ResponseEntity<Optional<User>> getAccountById(@PathVariable String id) {
-        Optional<User> account = userService.getAccountById(id);
+    public ResponseEntity<User> getAccountById(@PathVariable("id") long id) {
+        User account = userService.getAccountById(id);
         if (account == null) {
             logger.warn("Account with ID {} not found.", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Trả về 404
@@ -136,23 +135,14 @@ public class AdminController {
 //        return "admin/user-edit";
 //    }
 
-    @PostMapping("user/update/{id}")
-    public String updateUser(@PathVariable long id, @Valid @ModelAttribute("userRequest") UserRequest dto, BindingResult bindingResult, HttpSession session, Model model) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("Looxibingling");
-            return "error";
+    @PutMapping("/user/update/{id}")
+    @ResponseBody
+    public ResponseEntity<String> updateUser(@PathVariable("id") int id, @RequestBody User user) {
+        boolean updated = userService.updateUser(user);
+        if (updated) {
+            return ResponseEntity.ok("Cập nhật khách hàng thành công.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy khách hàng.");
         }
-        try {
-            // Gọi service để sửa tài khoản
-            UserRespond userRespond = userService.updateUser(id,dto);
-            // Sửa thành công
-            model.addAttribute("message", "Sửa thành công!");
-            return "success"; // Tên file HTML cho trang thành công (success.html)
-        } catch (RuntimeException ex) {
-            System.out.println(ex.getMessage());
-            model.addAttribute("error", ex.getMessage());
-            return "error"; // Tên file HTML cho trang đăng ký (register.html)
-        }
-
     }
 }
