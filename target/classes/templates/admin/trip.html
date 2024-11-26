@@ -42,9 +42,9 @@
     />
 
     <!-- Custom CSS -->
-    <link type="text/css" href="/css/navBar.css" rel="stylesheet" />
-    <link type="text/css" href="/admin/css/tour.css" rel="stylesheet" />
-    <link type="text/css" href="/admin/css/tourTime.css" rel="stylesheet" />
+    <link type="text/css" href="/css/navBar.css" rel="stylesheet"/>
+    <link type="text/css" href="/admin/css/tour.css" rel="stylesheet"/>
+    <link type="text/css" href="/admin/css/tourTime.css" rel="stylesheet"/>
 
 
     <!-- jQuery -->
@@ -56,13 +56,13 @@
     <!-- Custom JS -->
     <script src="/js/narBar.js"></script>
     <script src="/admin/js/tour.js"></script>
-    <script src="/admin/js/imageModal.js"></script>
+    <!--    <script src="/admin/js/imageModal.js"></script>-->
     <script src="/admin/js/tourTime.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div th:replace="/MenuAdmin :: navbar"></div>
+<!--<div th:replace="/MenuAdmin :: navbar"></div>-->
 
 <!-- Thông báo -->
 <div
@@ -70,45 +70,21 @@
         style="position: fixed; top: 20px; right: 20px; z-index: 1000"
 ></div>
 
-<div
-        class="modal fade"
-        id="confirmDeleteModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="confirmDeleteModalLabel"
-        aria-hidden="true"
->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="confirmDeleteModalLabel">
                     Xác Nhận Xóa
                 </h5>
-                <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Bạn có chắc chắn muốn xóa tour này không?
             </div>
             <div class="modal-footer">
-                <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                >
-                    Hủy
-                </button>
-                <button
-                        type="button"
-                        class="btn btn-danger"
-                        id="confirmDeleteButton"
-                >
-                    Xóa
-                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa</button>
             </div>
         </div>
     </div>
@@ -116,64 +92,32 @@
 
 <div class="container">
     <div class="text-center">
-        <h1>Danh Sách Tour</h1>
+        <h1>Danh Sách Chuyến Xe</h1>
     </div>
 
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button
-                    class="nav-link active"
-                    id="quan-ly-tour-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#quan-ly-tour"
-                    type="button"
-                    role="tab"
-                    aria-controls="quan-ly-tour"
-                    aria-selected="true"
-            >
-                Danh sách Tour
+            <button class="nav-link active" id="quan-ly-tour-tab" data-bs-toggle="tab" data-bs-target="#quan-ly-tour" type="button" role="tab" aria-controls="quan-ly-tour" aria-selected="true">
+                Danh sách chuyến xe
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button
-                    class="nav-link"
-                    id="loai-tour-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#loai-tour"
-                    type="button"
-                    role="tab"
-                    aria-controls="loai-tour"
-                    aria-selected="false"
-            >
-                Loại Tour
+            <button class="nav-link" id="loai-tour-tab" data-bs-toggle="tab" data-bs-target="#loai-tour" type="button" role="tab" aria-controls="loai-tour" aria-selected="false">
+                Loại xe
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button
-                    class="nav-link"
-                    id="lich-trinh-tour-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#lich-trinh-tour"
-                    type="button"
-                    role="tab"
-                    aria-controls="lich-trinh-tour"
-                    aria-selected="false"
-            >
-                Lịch trình Tour
+            <button class="nav-link" id="lich-trinh-tour-tab" data-bs-toggle="tab" data-bs-target="#lich-trinh-tour" type="button" role="tab" aria-controls="lich-trinh-tour" aria-selected="false">
+                Lịch trình xe
             </button>
         </li>
     </ul>
-    <!-- -------------------------------------------------------- TOUR------------------------------------------------------------------ -->
+    <!-- -------------------------------------------------------- Chuyến Xe------------------------------------------------------------------ -->
 
     <div class="tab-content" id="myTabContent">
-        <!-- Quản lý Tour Tab -->
-        <div
-                class="tab-pane fade show active"
-                id="quan-ly-tour"
-                role="tabpanel"
-                aria-labelledby="quan-ly-tour-tab"
-        >
+        <!-- Quản lý Chuyến Xe Tab -->
+        <div class="tab-pane fade show active" id="quan-ly-tour" role="tabpanel" aria-labelledby="quan-ly-tour-tab">
             <!-- Thanh Tìm Kiếm và Các Ô Select -->
             <div class="filter-section mb-2">
                 <form id="searchForm" onsubmit="return false;">
@@ -181,19 +125,8 @@
                     <div class="row g-2 mb-2">
                         <div class="col-md-8 pt-1">
                             <div class="input-group">
-                                <input
-                                        type="text"
-                                        id="searchInput"
-                                        class="form-control border border-secondary"
-                                        placeholder="Tìm kiếm theo ID, Tên, Mã Tour"
-                                        aria-label="Search"
-                                        oninput="filterTours()"
-                                />
-                                <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        onclick="filterTours()"
-                                >
+                                <input type="text" id="searchInput" class="form-control border border-secondary" placeholder="Tìm kiếm theo ID, Tên, Mã Tour" aria-label="Search" oninput="filterTours()"/>
+                                <button type="button" class="btn btn-primary" onclick="filterTours()">
                                     Tìm kiếm
                                 </button>
                             </div>
@@ -204,22 +137,14 @@
                     <div class="row g-2 align-items-center">
                         <div class="col-md-5 d-flex">
                             <div class="col-md-4">
-                                <select
-                                        id="statusSelect"
-                                        class="form-select"
-                                        onchange="filterTours()"
-                                >
+                                <select id="statusSelect" class="form-select" onchange="filterTours()">
                                     <option value="">Chọn Trạng Thái</option>
                                     <option value="1">Kích hoạt</option>
                                     <option value="0">Ngưng hoạt động</option>
                                 </select>
                             </div>
                             <div class="col-md-6 ms-2">
-                                <select
-                                        id="categorySelect"
-                                        class="form-select"
-                                        onchange="filterTours()"
-                                >
+                                <select id="categorySelect" class="form-select" onchange="filterTours()">
                                     <option value="">Chọn Loại Tour</option>
                                     <!-- Dữ liệu sẽ được tải động từ API -->
                                 </select>
@@ -227,12 +152,8 @@
                         </div>
                         <div class="col-md-7 text-end">
                             <div class="add-tour-btn text-end">
-                                <button
-                                        class="btn btn-success"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#addTourModal"
-                                >
-                                    Thêm Tour Mới
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTourModal">
+                                    Thêm Chuyến Mới
                                 </button>
                             </div>
                         </div>
@@ -245,14 +166,14 @@
                 <table class="table table-bordered text-center">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tên Tour</th>
-                        <th>Chi Tiết Tour</th>
+                        <th>Mã Chuyến</th>
+                        <th>Biển Số Xe</th>
+                        <th>Điểm Xuất Phát</th>
+                        <th>Điểm Đến</th>
+                        <th>Ngày xuất</th>
+                        <th>Ngày Đến</th>
+                        <th>Giá</th>
                         <th>Trạng Thái</th>
-                        <th>Mã Tour</th>
-                        <th>Thời Gian Lưu Trú</th>
-                        <th>Loại Tour</th>
-                        <th>Thao Tác</th>
                     </tr>
                     </thead>
                     <tbody id="tourTableBody">
@@ -263,22 +184,12 @@
         </div>
 
         <!-- Modal thêm tour mới -->
-        <div
-                class="modal fade"
-                id="addTourModal"
-                tabindex="-1"
-                aria-labelledby="addTourModalLabel"
-                aria-hidden="true"
-        >
+        <div class="modal fade" id="addTourModal" tabindex="-1" aria-labelledby="addTourModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addTourModalLabel">Thêm Tour Mới</h5>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         ></button>
                     </div>
                     <div class="modal-body">
@@ -430,7 +341,7 @@
                             >
                                 Clear
                             </button>
-                            <input type="hidden" id="editTourId" />
+                            <input type="hidden" id="editTourId"/>
                         </form>
                     </div>
                 </div>
@@ -438,8 +349,9 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="tourImageModal" tabindex="-1" aria-labelledby="tourImageModalLabel" aria-hidden="true">
-            <input type="hidden" id="currentTourId" />
+        <div class="modal fade" id="tourImageModal" tabindex="-1" aria-labelledby="tourImageModalLabel"
+             aria-hidden="true">
+            <input type="hidden" id="currentTourId"/>
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -453,7 +365,8 @@
                             <form id="addImageForm">
                                 <div class="mb-3">
                                     <label for="newImage" class="form-label">Chọn ảnh</label>
-                                    <input type="file" class="form-control" id="newImage" name="newImage" accept="image/*" required>
+                                    <input type="file" class="form-control" id="newImage" name="newImage"
+                                           accept="image/*" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="imageStatus" class="form-label">Trạng Thái</label>
@@ -485,7 +398,8 @@
         </div>
 
         <!-- Modal to view the large image -->
-        <div class="modal fade" id="viewImageModal" tabindex="-1" aria-labelledby="viewImageModalLabel" aria-hidden="true">
+        <div class="modal fade" id="viewImageModal" tabindex="-1" aria-labelledby="viewImageModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -493,14 +407,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <img id="largeImage" src="" alt="Large Image" class="img-fluid" />
+                        <img id="largeImage" src="" alt="Large Image" class="img-fluid"/>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal to edit the image -->
-        <div class="modal fade" id="editImageModal" tabindex="-1" aria-labelledby="editImageModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editImageModal" tabindex="-1" aria-labelledby="editImageModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -509,10 +424,10 @@
                     </div>
                     <div class="modal-body">
                         <form id="editImageForm">
-                            <input type="hidden" id="editImageId" />
+                            <input type="hidden" id="editImageId"/>
                             <div class="mb-3">
                                 <label for="editImageUrl" class="form-label">URL Ảnh</label>
-                                <input type="text" id="editImageUrl" class="form-control" />
+                                <input type="text" id="editImageUrl" class="form-control"/>
                             </div>
                             <div class="mb-3">
                                 <label for="editImageStatus" class="form-label">Loại</label>
@@ -523,7 +438,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="editImageFile" class="form-label">Chọn Tệp Ảnh</label>
-                                <input type="file" id="editImageFile" class="form-control" />
+                                <input type="file" id="editImageFile" class="form-control"/>
                             </div>
                             <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
                         </form>
@@ -533,7 +448,8 @@
         </div>
 
         <!-- Modal để hiển thị danh sách TourTime -->
-        <div class="modal fade" id="tourTimeModal" tabindex="-1" aria-labelledby="tourTimeModalLabel" aria-hidden="true">
+        <div class="modal fade" id="tourTimeModal" tabindex="-1" aria-labelledby="tourTimeModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -566,9 +482,6 @@
                 </div>
             </div>
         </div>
-
-
-
 
 
         <!-- -------------------------------------------------------- LOẠI TOUR------------------------------------------------------------------ -->
@@ -686,7 +599,6 @@
         <!-- Hàng 3: Nút Thêm -->
 
 
-
         <!-- Bảng Tour Time -->
         <div class="tbTourTime-container table-container">
             <table class="table tbTourTime table-bordered text-center">
@@ -710,9 +622,9 @@
     </div>
 
 
-
     <!-- Modal Thêm Tour Time -->
-    <div class="modal fade" id="addTourTimeModal" tabindex="-1" aria-labelledby="addTourTimeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addTourTimeModal" tabindex="-1" aria-labelledby="addTourTimeModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -727,7 +639,7 @@
                         <div class="mb-2 row">
                             <div class="col-md-12">
                                 <label for="timeName" class="form-label">Tên Tour Time</label>
-                                <input type="text" class="form-control" id="timeName" required />
+                                <input type="text" class="form-control" id="timeName" required/>
                             </div>
                         </div>
 
@@ -735,11 +647,12 @@
                         <div class="mb-2 row">
                             <div class="col-md-6">
                                 <label for="tourId" class="form-label">Tour ID</label>
-                                <input type="number" class="form-control" id="tourId" oninput="fetchTourName(this.value)" required />
+                                <input type="number" class="form-control" id="tourId"
+                                       oninput="fetchTourName(this.value)" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="tourName" class="form-label">Tên Tour</label>
-                                <input type="text" class="form-control" id="tourName" readonly />
+                                <input type="text" class="form-control" id="tourName" readonly/>
                             </div>
                         </div>
 
@@ -747,11 +660,11 @@
                         <div class="mb-2 row">
                             <div class="col-md-6">
                                 <label for="departureTime" class="form-label">Thời Gian Đi</label>
-                                <input type="datetime-local" class="form-control" id="departureTime" required />
+                                <input type="datetime-local" class="form-control" id="departureTime" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="returnTime" class="form-label">Thời Gian Về</label>
-                                <input type="datetime-local" class="form-control" id="returnTime" required />
+                                <input type="datetime-local" class="form-control" id="returnTime" required/>
                             </div>
                         </div>
 
@@ -759,11 +672,11 @@
                         <div class="mb-2 row">
                             <div class="col-md-6">
                                 <label for="priceAdult" class="form-label">Giá Người Lớn</label>
-                                <input type="number" class="form-control" id="priceAdult" required />
+                                <input type="number" class="form-control" id="priceAdult" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="priceChild" class="form-label">Giá Trẻ Em</label>
-                                <input type="number" class="form-control" id="priceChild" required />
+                                <input type="number" class="form-control" id="priceChild" required/>
                             </div>
                         </div>
 
@@ -771,7 +684,7 @@
                         <div class="mb-2 row">
                             <div class="col-md-6">
                                 <label for="quantity" class="form-label">Số Lượng</label>
-                                <input type="number" class="form-control" id="quantity" required />
+                                <input type="number" class="form-control" id="quantity" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="status" class="form-label">Trạng Thái</label>
@@ -801,7 +714,8 @@
 
 
     <!-- Modal Chỉnh sửa Tour Time -->
-    <div class="modal fade" id="editTourTimeModal" tabindex="-1" aria-labelledby="editTourTimeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editTourTimeModal" tabindex="-1" aria-labelledby="editTourTimeModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -815,7 +729,7 @@
                         <div class="mb-3 row">
                             <div class="col-md-12">
                                 <label for="editTimeName" class="form-label">Tên Tour Time</label>
-                                <input type="text" class="form-control" id="editTimeName" required />
+                                <input type="text" class="form-control" id="editTimeName" required/>
                             </div>
                         </div>
 
@@ -823,11 +737,12 @@
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="editTourId" class="form-label">Tour ID</label>
-                                <input type="number" class="form-control" id="editTourId" oninput="fetchTourName(this.value)" required />
+                                <input type="number" class="form-control" id="editTourId"
+                                       oninput="fetchTourName(this.value)" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="editTourName" class="form-label">Tên Tour</label>
-                                <input type="text" class="form-control" id="editTourName" readonly />
+                                <input type="text" class="form-control" id="editTourName" readonly/>
                             </div>
                         </div>
 
@@ -835,11 +750,11 @@
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="editDepartureTime" class="form-label">Thời Gian Đi</label>
-                                <input type="datetime-local" class="form-control" id="editDepartureTime" required />
+                                <input type="datetime-local" class="form-control" id="editDepartureTime" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="editReturnTime" class="form-label">Thời Gian Về</label>
-                                <input type="datetime-local" class="form-control" id="editReturnTime" required />
+                                <input type="datetime-local" class="form-control" id="editReturnTime" required/>
                             </div>
                         </div>
 
@@ -847,11 +762,11 @@
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="editPriceAdult" class="form-label">Giá Người Lớn</label>
-                                <input type="number" class="form-control" id="editPriceAdult" required />
+                                <input type="number" class="form-control" id="editPriceAdult" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="editPriceChild" class="form-label">Giá Trẻ Em</label>
-                                <input type="number" class="form-control" id="editPriceChild" required />
+                                <input type="number" class="form-control" id="editPriceChild" required/>
                             </div>
                         </div>
 
@@ -859,7 +774,7 @@
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="editQuantity" class="form-label">Số Lượng</label>
-                                <input type="number" class="form-control" id="editQuantity" required />
+                                <input type="number" class="form-control" id="editQuantity" required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="editStatus" class="form-label">Trạng Thái</label>
@@ -886,8 +801,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <script>
@@ -983,6 +896,7 @@
                     console.error('Error fetching tour times:', error);
                 });
         }
+
         function filterTourTimes() {
             const searchInput = document.getElementById("searchInputTourTime").value.toLowerCase(); // Lấy giá trị tìm kiếm
             const tourIdFilter = document.getElementById("tourIdSelect").value; // Lọc theo Tour ID
@@ -1027,8 +941,6 @@
                 }
             });
         }
-
-
 
 
         function checkPriceRange(price, priceFilter) {

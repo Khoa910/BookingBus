@@ -12,6 +12,7 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -37,11 +38,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<UserRespond> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(userMapper::toRespond)
-                .collect(Collectors.toList());
+//    public List<UserRespond> getAllUsers() {
+//        List<User> users = userRepository.findAll();
+//        return users.stream()
+//                .map(userMapper::toRespond)
+//                .collect(Collectors.toList());
+//    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public UserRespond getUserById(Long id) {
@@ -66,6 +71,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User getAccountById(long accountId) {
         return userRepository.findById(accountId).orElse(null);
     }

@@ -160,70 +160,6 @@ function showAddModal() {
 }
 
 function addAccount() {
-    const accountName = document.getElementById('newAccountName').value;
-
-    const email = document.getElementById('newEmail').value;
-    const fullname = document.getElementById('newFullName').value;
-    const customerID = document.getElementById('newCustomerID').value;
-    const customerNameInput = document.getElementById('newCustomerName').value;
-    const password = document.getElementById('newPassword').value; // Lấy giá trị mật khẩu
-
-    // Kiểm tra dữ liệu đầu vào
-    if (!accountName || !email || !customerID || !password) {
-        showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
-        return;
-    }
-    if (!isValidEmail(email)) {
-        showAlert('danger', 'Vui lòng nhập địa chỉ email hợp lệ!');
-        return;
-    }
-    if (customerNameInput === "Khách hàng không tồn tại") {
-        showAlert('danger', 'Chưa có thông tin khách hàng');
-        return;
-    }
-
-    // Hiển thị alert xác nhận
-    const confirmation = confirm("Bạn có chắc chắn muốn thêm tài khoản này không?");
-    if (!confirmation) {
-        // Nếu người dùng không xác nhận, dừng thao tác
-        return;
-    }
-
-    // Thêm tài khoản
-    const accountData = {
-        accountName,
-        email,
-        status,
-        customerID,
-        password // Thêm mật khẩu vào dữ liệu gửi
-    };
-
-    fetch('/admin/user-list/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(accountData)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    showAlert('danger', errorData.message || 'Thêm tài khoản thất bại!');
-                });
-            }
-            showAlert('success', 'Thêm tài khoản thành công!');
-            loadAccounts();
-            clearFormSearch();
-            document.getElementById('addForm').reset();
-            const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
-            addModal.hide();
-        })
-        .catch(error => {
-            console.error('Lỗi khi thêm tài khoản:', error);
-        });
-}
-
-function addAccount() {
     // Lấy dữ liệu từ các trường input
     const username = document.getElementById('newAccountName').value;
     const password = document.getElementById('newPassword').value;
@@ -333,13 +269,6 @@ function editAccount(button) {
     // Lấy accountId từ button
     const accountId = button.getAttribute('data-id');
     console.log(accountId);
-    console.log(document.getElementById('editAccountName').value);
-    console.log(document.getElementById('editPassword').value);
-    console.log(document.getElementById('editFullName').value);
-    console.log(document.getElementById('editPhoneNumber').value);
-    console.log(document.getElementById('editEmail').value);
-    console.log(document.getElementById('editAddress').value);
-    console.log(document.getElementById('editRole').value);
 
     // Fetch thông tin tài khoản từ API
     fetch(`/admin/user/${accountId}`)
@@ -353,14 +282,14 @@ function editAccount(button) {
             // Gán giá trị vào các trường input trong modal
             document.getElementById('AccountId').value = account.id;
             document.getElementById('editAccountName').value = account.username;
-            document.getElementById('editPassword').value = account.password;
+            document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
             document.getElementById('editFullName').value = account.full_name;
             document.getElementById('editPhoneNumber').value = account.phone_number;
             document.getElementById('editEmail').value = account.email;
             document.getElementById('editAddress').value = account.address;
             document.getElementById('editRole').value = account.role;
 
-            // Hiển thị modal
+            // Hiển thị modal chỉnh sửa
             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
             editModal.show();
         })
@@ -372,113 +301,57 @@ function editAccount(button) {
 
 
 
+
 function closeModal() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }
 
 function saveChanges() {
-    // Lấy dữ liệu từ form
     const id = document.getElementById('AccountId').value;
     const username = document.getElementById('editAccountName').value;
     const password = document.getElementById('editPassword').value;
-    const full_name = document.getElementById('editFullName').value;
-    const phone_number = document.getElementById('editPhoneNumber').value;
+    const fullName = document.getElementById('editFullName').value;
+    const phoneNumber = document.getElementById('editPhoneNumber').value;
     const email = document.getElementById('editEmail').value;
     const address = document.getElementById('editAddress').value;
     const role = document.getElementById('editRole').value;
 
-    // Kiểm tra dữ liệu đầu vào
-    if (!username || !email || !id) {
-        showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
-        return;
-    }
-    if (!isValidEmail(email)) {
-        showAlert('danger', 'Vui lòng nhập địa chỉ email hợp lệ!');
-        return;
-    }
-
-    console.log("Data to be sent:", {
+    const updatedData = {
         id,
         username,
-        full_name,
-        phone_number,
+        fullName,
+        phoneNumber,
         email,
         address,
         role
-    });
+    };
+
     fetch(`/admin/user/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            id,
-            username,
-            full_name,
-            phone_number,
-            email,
-            address,
-            role
-        })
+        body: JSON.stringify(updatedData)
     })
         .then(response => {
-            if (response.ok) {
-                showAlert('success', 'Lưu thay đổi thành công!');
-                loadAccounts();
-                const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-                editModal.hide();
-                clearFormSearch();
-            } else {
-                showAlert('danger', 'Lưu thay đổi thất bại!');
+            if (!response.ok) {
+                throw new Error('Cập nhật thất bại!');
             }
+            return response.json();
+        })
+        .then(data => {
+            showAlert('success', 'Lưu thay đổi thành công!');
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal1'));
+            editModal.hide();
+            loadAccounts(); // Cập nhật danh sách tài khoản
         })
         .catch(error => {
             console.error('Error:', error);
             showAlert('danger', 'Có lỗi xảy ra khi lưu thay đổi!');
         });
-    // Hiển thị modal xác nhận
-    // const confirmSaveModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
-    // confirmSaveModal.show();
-    //
-    // // Xử lý sự kiện khi người dùng xác nhận lưu
-    // const confirmSaveButton = document.getElementById('confirmSaveButton');
-    // confirmSaveButton.onclick = function () {
-    //     // Đóng modal xác nhận trước khi gửi request
-    //     confirmSaveModal.hide();
-    //
-    //     // Gửi yêu cầu cập nhật thông tin tài khoản
-    //     fetch(`/admin/user/update/${accountId}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             accountId: accountId,
-    //             accountName: accountName,
-    //             email: email,
-    //             status: status,
-    //             password: password,
-    //         }),
-    //     })
-    //         .then(response => {
-    //             if (response.ok) {
-    //                 showAlert('success', 'Lưu thay đổi thành công!');
-    //                 loadAccounts(); // Tải lại danh sách tài khoản
-    //                 clearFormSearch(); // Xóa dữ liệu form tìm kiếm (nếu có)
-    //                 closeModal(); // Đóng modal chỉnh sửa
-    //             } else {
-    //                 return response.json().then(data => {
-    //                     throw new Error(data.message || 'Lưu thay đổi thất bại!');
-    //                 });
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //             showAlert('danger', error.message || 'Có lỗi xảy ra khi lưu thay đổi!');
-    //         });
-    // };
 }
+
 
 function clearFormSearch() {
     // Xóa nội dung ô input tìm kiếm

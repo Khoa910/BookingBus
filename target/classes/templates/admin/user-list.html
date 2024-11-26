@@ -125,6 +125,7 @@
             </div>
             <div class="modal-body">
                 <form id="editForm1" onsubmit="return false;">
+                    <input type="hidden" id="AccountId" />
                     <div class="mb-3">
                         <label for="editAccountName" class="form-label">Tên Tài Khoản</label>
                         <input type="text" class="form-control" id="editAccountName" required>
@@ -150,18 +151,18 @@
                         <input type="text" class="form-control" id="editAddress" required> <!-- Thêm trường địa chỉ -->
                     </div>
                     <div class="mb-3">
-                        <label for="editRole" class="form-label">Chọn Vai Trò</label>
-                        <select id="editRole" class="form-control" required>
-                            <option value="" disabled selected>Chọn vai trò</option>
-                            <option th:each="role : ${roles}"
-                                    th:text="${role.name}"></option>
-                        </select>
+                        <label for="editRole" class="form-label">Vai Trò</label>
+<!--                        <select id="editRole" class="form-control" required>-->
+<!--                            <option value="" disabled selected>Chọn vai trò</option>-->
+<!--                            <option th:each="role : ${roles}"-->
+<!--                                    th:text="${role.name}"></option>-->
+<!--                        </select>-->
+                        <input type="text" class="form-control" id="editRole" required>
                     </div>
                     <!--                    <div class="modal-footer">-->
                     <!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
                     <!--                        <button type="button" class="btn btn-primary">Lưu thay đổi</button>-->
                     <!--                    </div>-->
-                    <input type="hidden" id="AccountId" />
                 </form>
             </div>
             <div class="modal-footer">

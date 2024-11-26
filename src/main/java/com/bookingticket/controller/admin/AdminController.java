@@ -41,13 +41,35 @@ public class AdminController {
         return "/admin/index";
     }
 
+//    @GetMapping("/user")
+//    public String showUsers(Model model) {
+//        List<UserRespond> users = userService.getAllUsers();
+//        model.addAttribute("users", users); // Đẩy danh sách user vào model
+//        List<RoleRespond> roles = roleService.getAllRoles();
+//        model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
+//        return "/admin/user-list"; // Trả về tên file HTML trong thư mục templates
+//    }
+
     @GetMapping("/user")
-    public String showUsers(Model model) {
-        List<UserRespond> users = userService.getAllUsers();
-        model.addAttribute("users", users); // Đẩy danh sách user vào model
-        List<RoleRespond> roles = roleService.getAllRoles();
-        model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
-        return "/admin/user-list"; // Trả về tên file HTML trong thư mục templates
+    public String getAllUser(Model model) {
+        List<User> users = userService.getAllUsers();
+        logger.info("Total customers: {}", users.size());
+        model.addAttribute("users", users);
+        List<Role> roles = roleService.getAllRoles();
+        logger.info("Total customers: {}", roles.size());
+        model.addAttribute("roles", roles);
+        return "admin/user-list"; // Trang hiển thị danh sách khách hàng
+    }
+
+    @GetMapping("/trip")
+    public String getAllTrip(Model model) {
+//        List<User> users = userService.getAllUsers();
+//        logger.info("Total customers: {}", users.size());
+//        model.addAttribute("users", users);
+//        List<Role> roles = roleService.getAllRoles();
+//        logger.info("Total customers: {}", roles.size());
+//        model.addAttribute("roles", roles);
+        return "admin/trip"; // Trang hiển thị danh sách khách hàng
     }
 
 //    @PostMapping("/user/add")
@@ -125,9 +147,9 @@ public class AdminController {
         User account = userService.getAccountById(id);
         if (account == null) {
             logger.warn("Account with ID {} not found.", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Trả về 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(account); // Trả về 200 với tài khoản
+        return ResponseEntity.ok(account);
     }
 
 //    @GetMapping("/user-edit")

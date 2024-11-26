@@ -1,0 +1,138 @@
+
+body {
+    background-color: #f8f9fa; /* Nền sáng nhẹ nhàng */
+    font-family: 'Roboto', sans-serif; /* Font hiện đại */
+}
+
+h3 {
+    color: #343a40;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.filterTourTime-section{
+    padding: 5px;
+    background-color: #ffffff; /* Nền trắng */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.filter-section input,
+.filter-section select {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 8px;
+}
+
+.filter-section .btn-primary {
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.table-container {
+    max-height: 390px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Cuộn dọc khi nội dung vượt */
+    border: 1px solid #dee2e6;
+    border-radius: 8px; /* Bo góc nhẹ */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #007bff; /* Màu nền tiêu đề bảng */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa; /* Màu khi hover */
+}
+
+td, th {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-content {
+    border-radius: 8px;
+    /*padding: 20px;*/
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.action-buttons button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* Chỉ định độ rộng cho các cột */
+.tbTourTime th:nth-child(1) {
+    width: 5%; /* Cột ID Tour nhỏ lại */
+}
+
+.tbTourTime th:nth-child(2) {
+    width: 12%; /* Cột Tên Tour */
+}
+
+.tbTourTime th:nth-child(3) {
+    width: 10%; /* Cột Chi Tiết Tour to ra */
+}
+
+.tbTourTime th:nth-child(4),
+th:nth-child(5),
+th:nth-child(6){
+    width: 12%; /* Các cột còn lại có kích thước bằng nhau */
+}
+.tbTourTime th:nth-child(7){
+    width: 12%;
+}
+.tbTourTime th:nth-child(8){
+    width: 12%;
+}
+.tbTourTime-container{
+    height: 350px;
+}
