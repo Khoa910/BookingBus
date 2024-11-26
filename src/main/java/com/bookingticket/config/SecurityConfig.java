@@ -47,7 +47,6 @@ public class SecurityConfig {
                                 "/book",
                                 "/user/submit",
                                 "user/display",
-                                "/submit-info",
                                 "/step2/submit",
                                 "/book/submit",
                                 "/api/**", // Cho phép truy cập các API

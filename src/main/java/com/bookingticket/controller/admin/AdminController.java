@@ -61,16 +61,16 @@ public class AdminController {
         return "admin/user-list"; // Trang hiển thị danh sách khách hàng
     }
 
-    @GetMapping("/trip")
-    public String getAllTrip(Model model) {
-//        List<User> users = userService.getAllUsers();
-//        logger.info("Total customers: {}", users.size());
-//        model.addAttribute("users", users);
-//        List<Role> roles = roleService.getAllRoles();
-//        logger.info("Total customers: {}", roles.size());
-//        model.addAttribute("roles", roles);
-        return "admin/trip"; // Trang hiển thị danh sách khách hàng
-    }
+//    @GetMapping("/trip")
+//    public String getAllTrip(Model model) {
+////        List<User> users = userService.getAllUsers();
+////        logger.info("Total customers: {}", users.size());
+////        model.addAttribute("users", users);
+////        List<Role> roles = roleService.getAllRoles();
+////        logger.info("Total customers: {}", roles.size());
+////        model.addAttribute("roles", roles);
+//        return "admin/trip"; // Trang hiển thị danh sách khách hàng
+//    }
 
 //    @PostMapping("/user/add")
 //    public String addUser(@Valid @ModelAttribute("accountData") UserRequest dto, BindingResult bindingResult, HttpSession session, Model model) {

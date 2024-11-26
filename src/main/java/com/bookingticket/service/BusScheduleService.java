@@ -1,6 +1,7 @@
 package com.bookingticket.service;
 
 import com.bookingticket.dto.request.BusScheduleRequest;
+import com.bookingticket.dto.respond.BusScheduleDisplayRespond;
 import com.bookingticket.dto.respond.BusScheduleRespond;
 import com.bookingticket.dto.respond.ScheduleInfoRespond;
 import com.bookingticket.entity.BusSchedule;
@@ -46,6 +47,20 @@ public class BusScheduleService {
         List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
         return busSchedules.stream()
                 .map(busScheduleMapper::toRespond)
+                .collect(Collectors.toList());
+    }
+
+    public List<BusScheduleDisplayRespond> getAllDisplaySchedules() {
+        List<BusSchedule> busSchedules = busScheduleRepository.findAll();
+        return busSchedules.stream()
+                .map(busScheduleMapper::toDisplayRespond)
+                .collect(Collectors.toList());
+    }
+
+    public List<BusScheduleDisplayRespond> getDisplaySchedulesByDepartureStationId(Long departureStationId) {
+        List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
+        return busSchedules.stream()
+                .map(busScheduleMapper::toDisplayRespond)
                 .collect(Collectors.toList());
     }
 
