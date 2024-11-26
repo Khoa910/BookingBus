@@ -1,6 +1,8 @@
 package com.bookingticket.repository;
 
+import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.Seat;
+import com.bookingticket.enumtype.SeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +23,6 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
     @Query("SELECT s FROM Seat s WHERE s.id_seat IN :seatIds")
     List<Seat> findAllByIdSeat(@Param("seatIds") List<Long> seatIds);
 
+    @Query("SELECT s FROM Seat s WHERE s.status = :status AND s.bus = :bus ORDER BY s.id_seat ASC")
+    List<Seat> findAllByStatusAndBus(@Param("status") String status, @Param("bus") Bus bus);
 }

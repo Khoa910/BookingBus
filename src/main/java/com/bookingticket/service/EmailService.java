@@ -55,4 +55,27 @@ public class EmailService {
 
         mailSender.send(message);
     }
+    public void sendBookingConfirmationEmail(String toEmail, String name, Long scheduleID, String seatIds, Double price, String departureTime, String address, String phone) throws MessagingException {
+        // Tạo context để truyền dữ liệu vào template
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("scheduleID", scheduleID);
+        context.setVariable("seatIds", seatIds);
+        context.setVariable("price", price);
+        context.setVariable("departureTime", departureTime);
+        context.setVariable("address", address);
+        context.setVariable("phone", phone);
+
+        // Render template email
+        String emailContent = templateEngine.process("booking-confirmation-email", context);
+
+        // Tạo email và gửi
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(toEmail);
+        helper.setSubject("Thông tin đặt vé xe của bạn");
+        helper.setText(emailContent, true);
+
+        mailSender.send(message);
+    }
 }

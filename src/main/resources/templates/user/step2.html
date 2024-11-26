@@ -165,7 +165,6 @@
                             <p th:text="${message}"></p>
                         </div>
 
-                        <!-- Hiển thị danh sách lịch trình -->
                         <form id="form-steps" th:action="@{/user/display}" method="post">
                             <fieldset>
                                 <div th:each="schedule : ${schedules}" class="form-section">
@@ -176,9 +175,10 @@
                                     <p>
                                         <span class="f-left" th:text="${schedule.getDeparture_time()}"></span>
                                         <span class="f-right">
-                                            <span class="price" th:text="${schedule.price} + ' VNĐ'"></span>
-                                            <input type="radio" name="route" th:value="${schedule.id}" class="form-control"/>
-                                        </span>
+                                        <span class="price" th:text="${schedule.price} + ' VNĐ'"></span>
+                                        <input type="radio" name="route" th:value="${schedule.id}" class="form-control"/>
+                                        <input type="hidden" name="price" th:value="${schedule.price.doubleValue()}"/> <!-- Thêm trường ẩn cho giá -->
+                                    </span>
                                     </p>
                                 </div>
                                 <div class="form-section">
@@ -186,6 +186,7 @@
                                 </div>
                             </fieldset>
                         </form>
+
 
                     </div>
                 </div>

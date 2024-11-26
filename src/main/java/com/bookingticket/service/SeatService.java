@@ -50,27 +50,27 @@ public class SeatService {
         return seatMapper.toRespond(savedSeat);
     }
 
-    public SeatRespond updateSeat(String id_seat, SeatRequest seatRequest) {
-        Optional<Seat> seatOptional = seatRepository.findById(id_seat);
-        if (seatOptional.isPresent()) {
-            Seat seat = seatOptional.get();
-
-            seat.setSeat_name(seatRequest.getSeat_name());
-            seat.setStatus(seatRequest.getStatus().name());
-
-            Optional<SeatType> seatTypeOptional = seatTypeRepository.findById(seatRequest.getSeat_type_id());
-            if (seatTypeOptional.isPresent()) {
-                seat.setSeatType(seatTypeOptional.get());
-            } else {
-                throw new RuntimeException("SeatType not found with id: " + seatRequest.getSeat_type_id());
-            }
-
-            Seat updatedSeat = seatRepository.save(seat);
-            return seatMapper.toRespond(updatedSeat);
-        } else {
-            throw new RuntimeException("Seat not found with id: " + id_seat);
-        }
-    }
+//    public SeatRespond updateSeat(String id_seat, SeatRequest seatRequest) {
+//        Optional<Seat> seatOptional = seatRepository.findById(id_seat);
+//        if (seatOptional.isPresent()) {
+//            Seat seat = seatOptional.get();
+//
+//            seat.setSeat_name(seatRequest.getSeat_name());
+//            seat.setStatus(seatRequest.getStatus());
+//
+//            Optional<SeatType> seatTypeOptional = seatTypeRepository.findById(seatRequest.getSeat_type_id());
+//            if (seatTypeOptional.isPresent()) {
+//                seat.setSeatType(seatTypeOptional.get());
+//            } else {
+//                throw new RuntimeException("SeatType not found with id: " + seatRequest.getSeat_type_id());
+//            }
+//
+//            Seat updatedSeat = seatRepository.save(seat);
+//            return seatMapper.toRespond(updatedSeat);
+//        } else {
+//            throw new RuntimeException("Seat not found with id: " + id_seat);
+//        }
+//    }
 
     public void deleteSeat(String id_seat) {
         Optional<Seat> seatOptional = seatRepository.findById(id_seat);
@@ -81,20 +81,6 @@ public class SeatService {
         }
     }
 
-    public boolean bookSeats(List<Long> seatIds) {
-        try {
-            List<Seat> seats = seatRepository.findAllByIdSeat(seatIds);
-            for (Seat seat : seats) {
-                if (!"BOOKED".equals(seat.getStatus())) {
-                    seat.setStatus("BOOKED");
-                }
-            }
-            seatRepository.saveAll(seats);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
     // Lấy danh sách ghế tầng trên
     public List<Seat> getUpstairsSeats(Long busId) {
         return seatRepository.findUpstairsSeats(busId);

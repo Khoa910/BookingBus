@@ -68,6 +68,7 @@
             <p class="text-center text-uppercase text-primary">Thông tin chọn ghế</p>
             <form id="frm-book-slot" th:action="@{/user/confirmSelection}" method="post">
                 <input type="hidden" name="busScheduleId" th:value="${selectedRoute.bus_id}" />
+                <input type="hidden" name="price" th:value="${selectedRoute.price}" />
                 <fieldset>
                     <!-- Tabs -->
                     <ul class="v-tabs clearfix" role="tablist">

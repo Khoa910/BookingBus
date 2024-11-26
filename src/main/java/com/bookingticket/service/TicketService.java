@@ -1,11 +1,20 @@
 package com.bookingticket.service;
 
+import com.bookingticket.dto.request.SeatRequest;
 import com.bookingticket.dto.request.TicketRequest;
 import com.bookingticket.dto.respond.TicketRespond;
+import com.bookingticket.entity.BusSchedule;
+import com.bookingticket.entity.Seat;
 import com.bookingticket.entity.Ticket;
+import com.bookingticket.entity.User;
+import com.bookingticket.enumtype.SeatStatus;
 import com.bookingticket.enumtype.TicketStatus;
 import com.bookingticket.mapper.TicketMapper;
+import com.bookingticket.repository.BusScheduleRepository;
+import com.bookingticket.repository.SeatRepository;
 import com.bookingticket.repository.TicketRepository;
+import com.bookingticket.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +25,17 @@ import java.util.stream.Collectors;
 @Service
 public class TicketService {
 
+    private final SeatRepository seatRepository;
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
+    private final ValidationService validationService;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketMapper ticketMapper) {
+    public TicketService(TicketRepository ticketRepository, TicketMapper ticketMapper, SeatRepository seatRepository, ValidationService validationService) {
         this.ticketRepository = ticketRepository;
         this.ticketMapper = ticketMapper;
+        this.seatRepository = seatRepository;
+        this.validationService = validationService;
     }
 
     public List<TicketRespond> getAllTickets() {
@@ -77,5 +90,62 @@ public class TicketService {
         } else {
             throw new RuntimeException("Ticket not found with id: " + id);
         }
+    }
+
+    public TicketRespond bookTicket(TicketRequest request) {
+        // 1. Xác thực dữ liệu
+        User user = validationService.validateUser(request.getUser_id());
+        BusSchedule schedule = validationService.validateSchedule(request.getBus_id());
+
+        Seat seat = null;
+        SeatRequest seatRequest = new SeatRequest();
+
+        // Kiểm tra xem người dùng có yêu cầu ghế hay không
+        if (seatRequest.getId_seat() != null) {
+            // Kiểm tra ghế có tồn tại và có sẵn không
+            seat = seatRepository.findById(seatRequest.getId_seat())
+                    .orElseThrow(() -> new RuntimeException("Ghế không tồn tại"));
+
+            // Kiểm tra trạng thái ghế (chỉ có thể đặt ghế nếu trạng thái là AVAILABLE)
+            if (!seat.getStatus().equals(SeatStatus.AVAILABLE)) {
+                throw new RuntimeException("Ghế đã được đặt");
+            }
+        } else {
+            // Nếu không có yêu cầu ghế, lấy tất cả ghế trống của chuyến xe
+            List<Seat> availableSeats = seatRepository.findAllByStatusAndBus("AVAILABLE", schedule.getBus());
+            if (availableSeats.isEmpty()) {
+                throw new RuntimeException("Không còn ghế trống");
+            }
+
+            // Chọn ghế trống đầu tiên
+            seat = availableSeats.get(0);
+        }
+
+        // 2. Đặt ghế và cập nhật trạng thái ghế
+        seat.setStatus("RESERVED");
+        seatRepository.save(seat);
+
+        // 3. Đặt vé
+        Ticket ticket = new Ticket();
+        ticket.setUser(user);
+        ticket.setBus(schedule.getBus());
+        ticket.setSeat_number(seat.getId_seat());
+        ticket.setDeparture_time(schedule.getDeparture_time());
+        ticket.setPrice(schedule.getPrice());
+        ticket.setStatus(TicketStatus.SOLD.name());
+
+        // Lưu vé vào cơ sở dữ liệu
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        // 4. Trả về thông tin vé đã đặt
+        return new TicketRespond(
+                savedTicket.getId(),
+                schedule.getBus().getId(),
+                user.getId(),
+                seat.getSeat_name(),
+                schedule.getDeparture_time(),
+                savedTicket.getPrice(),
+                savedTicket.getStatus()
+        );
     }
 }

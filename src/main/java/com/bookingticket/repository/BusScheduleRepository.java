@@ -1,6 +1,7 @@
 package com.bookingticket.repository;
 
 import com.bookingticket.entity.BusSchedule;
+import com.bookingticket.service.BusScheduleService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +33,8 @@ public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> 
             "AND (:arrivalStationName IS NULL OR b.arrivalStation.name = :arrivalStationName) " +
             "AND (:departureTime IS NULL OR b.departure_time >= :departureTime)")
     List<BusSchedule> findSchedulesWithNames(String departureStationName, String arrivalStationName, LocalDateTime departureTime);
+
+    @Query("SELECT b FROM BusSchedule b " +
+    "WHERE b.id=:id")
+    BusSchedule findByIdQuery(Long id);
 }

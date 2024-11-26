@@ -48,6 +48,7 @@ public class BookingController {
         } else {
             model.addAttribute("schedules", busScheduleDisplayResponds);
         }
+        System.out.println("Thông tin lịch trình gửi qua step 2"+ schedules.get(0).getPrice());
     return "user/step2";
 }
 }

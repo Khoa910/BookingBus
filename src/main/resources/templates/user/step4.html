@@ -12,6 +12,30 @@
     <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
     <script type="text/javascript" th:src="@{/js/theme.js}"></script>
+    <style>
+        .payment-icon {
+            width: 50px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .payment-icon.selected {
+            border: 2px solid #28a745; /* Viền xanh khi được chọn */
+            transform: scale(1.1); /* Phóng to một chút */
+        }
+        .payment-option {
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .payment-option.selected {
+            border: 2px solid #28a745; /* Viền xanh khi được chọn */
+            transform: scale(1.1); /* Phóng to một chút */
+            box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* Hiệu ứng bóng đổ */
+        }
+    </style>
 </head>
 <body>
 <div id="page">
@@ -78,25 +102,71 @@
                             <fieldset>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <!-- Hiển thị số tiền cần thanh toán -->
                                         <p>Số tiền cần thanh toán: <strong class="text-primary" th:text="${totalAmount} + ' VNĐ'">290.000 VNĐ</strong></p>
+
+                                        <!-- Thanh toán thẻ nội địa -->
                                         <p><i class="fa fa-credit-card text-primary"></i> Thanh toán trực tuyến bằng thẻ nội địa</p>
                                         <ul class="bank">
                                             <li th:each="bank : ${banks}" th:classappend="${bank.selected} ? 'selected' : ''">
-                                                <img th:src="@{/img/bank/{bankName}(bankName=${bank.name})}" alt="" />
+                                                <a href="#" class="payment-option" data-method="bank" data-bank="${bank.name}">
+                                                    <img th:src="@{/img/bank/{bankName}(bankName=${bank.name})}" alt="" />
+                                                </a>
                                             </li>
                                         </ul>
+
+                                        <!-- Thanh toán thẻ quốc tế -->
                                         <p><i class="fa fa-credit-card text-primary"></i> Thanh toán trực tuyến bằng thẻ quốc tế</p>
                                         <ul class="bank">
-                                            <li><img th:src="@{/img/bank/visa.jpg}" alt=""></li>
-                                            <li><img th:src="@{/img/bank/master.jpg}" alt=""></li>
-                                            <li><img th:src="@{/img/bank/jcb.jpg}" alt=""></li>
+                                            <li><a href="#" class="payment-option" data-method="international" data-bank="visa">
+                                                <img th:src="@{/img/bank/visa.jpg}" alt="Visa" />
+                                            </a></li>
+                                            <li><a href="#" class="payment-option" data-method="international" data-bank="master">
+                                                <img th:src="@{/img/bank/master.jpg}" alt="Master" />
+                                            </a></li>
+                                            <li><a href="#" class="payment-option" data-method="international" data-bank="jcb">
+                                                <img th:src="@{/img/bank/jcb.jpg}" alt="JCB" />
+                                            </a></li>
                                         </ul>
+
+                                        <!-- Thanh toán MoMo và VNPAY -->
+                                        <p><i class="fa fa-credit-card text-primary"></i> Thanh toán qua MoMo và VNPAY</p>
+                                        <ul class="bank">
+                                            <li><a href="#" class="payment-option" data-method="mobile" data-bank="momo">
+                                                <img th:src="@{/img/bank/momo.jpg}" alt="MoMo" />
+                                            </a></li>
+                                            <li><a href="#" class="payment-option" data-method="mobile" data-bank="vnpay">
+                                                <img th:src="@{/img/bank/vnpay.jpg}" alt="VNPAY" />
+                                            </a></li>
+                                        </ul>
+                                        <p><i class="fa fa-money text-primary"></i> Thanh toán bằng tiền mặt khi đến trạm</p>
+                                        <ul class="bank">
+                                            <li>
+                                                <a href="#" class="payment-option" data-method="cash" data-bank="cash">
+                                                    <img th:src="@{/img/bank/cash.jpg}" alt="Tiền mặt" />
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <input type="hidden" id="paymentMethod" name="paymentMethod" />
+                                        <input type="hidden" name="scheduleID" th:value="${scheduleID}" />
+                                        <input type="hidden" name="seatIds" th:value="${seatIds}" />
+                                        <input type="hidden" name="name" placeholder="Họ tên" th:value="${name}" required />
+                                        <input type="hidden" name="email" placeholder="Email" th:value="${email}" required />
+                                        <input type="hidden" name="address" placeholder="Địa chỉ" th:value="${address}" required />
+                                        <input type="hidden" name="phone" placeholder="Số điện thoại" th:value="${phone}" required />
+                                        <input type="hidden" name="price" th:value="${price}" />
+                                        <input type="hidden" name="terms" th:value="${terms}" />
+                                        <input type="hidden" name="totalAmount" th:value="${totalAmount}" />
+                                        <input type="hidden" name="departureDate" th:value="${departureDate}" />
+                                        <input type="hidden" name="departureTime" th:value="${departureTime}" />
+
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="col-lg-12">
                                         <button type="submit" class="btn btn-primary btn-block btn-flat">
-                                            <i class="fa fa-credit-card icon-flat bg-btn-actived"></i> Thực hiện thanh toán Online
+                                            <i class="fa fa-credit-card icon-flat bg-btn-actived"></i> Thực hiện thanh toán
                                         </button>
                                     </div>
                                 </div>
@@ -111,16 +181,23 @@
                             <tr><td>Chuyến</td><td th:text="${trip}">TP HCM - Đà Lạt</td></tr>
                             <tr><td>Ngày đi</td><td th:text="${departureDate}">10/10/2013</td></tr>
                             <tr><td>Thời gian</td><td th:text="${departureTime}">07:00</td></tr>
-                            <tr><td>Số ghế</td><td th:text="${seatNumber}">08</td></tr>
+                            <tr><td>Số ghế</td>
+                                <td>
+                                    <ul>
+                                        <li th:each="seat : ${seatIds}" th:text="${seat}">Seat ID</li>
+                                    </ul>
+                                </td>
+                            </tr>
                             <tr><td>Địa điểm lên xe</td><td th:text="${boardingPoint}">123 Lê Tăm, Đề Thám TP HCM</td></tr>
-                            <tr><td>Họ tên</td><td th:text="${customerName}">Nguyễn Văn ABC</td></tr>
+                            <tr><td>Họ tên</td><td th:text="${name}">Nguyễn Văn ABC</td></tr>
                             <tr><td>Email</td><td th:text="${email}">abc@gmail.com</td></tr>
-                            <tr><td>CMND/PASSPORT</td><td th:text="${passport}">0903843732948</td></tr>
-                            <tr><td>Số điện thoại</td><td th:text="${phoneNumber}">0902 292929</td></tr>
+                            <tr><td>Số điện thoại</td><td th:text="${phone}">0902 292929</td></tr>
+                            <tr><td>Tổng số tiền</td><td th:text="${totalAmount}">290.000 VNĐ</td></tr>
                         </table>
+
                         <div class="form-group">
                             <div class="col-lg-12">
-                                <button type="button" class="btn btn-success btn-block btn-flat" th:onclick="location.href='@{/previous}'">
+                                <button type="button" class="btn btn-success btn-block btn-flat">
                                     <i class="fa fa-arrow-left icon-flat bg-success"></i> Quay lại
                                 </button>
                             </div>
@@ -172,5 +249,23 @@
         </div>
     </footer>
 </div>
+<script>
+    // Cập nhật phương thức thanh toán khi người dùng chọn
+    document.querySelectorAll('.payment-option').forEach(function(option) {
+        option.addEventListener('click', function() {
+            // Xóa lớp 'selected' khỏi tất cả các tùy chọn
+            document.querySelectorAll('.payment-option').forEach(function(opt) {
+                opt.classList.remove('selected');
+            });
+
+            // Thêm lớp 'selected' cho lựa chọn hiện tại
+            option.classList.add('selected');
+
+            // Cập nhật phương thức thanh toán vào input ẩn
+            const paymentMethod = option.getAttribute('data-method') + '-' + option.getAttribute('data-bank');
+            document.getElementById('paymentMethod').value = paymentMethod;
+        });
+    });
+</script>
 </body>
 </html>

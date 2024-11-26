@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -74,26 +75,32 @@ public class Step2Controller {
 
     // Xử lý chọn tuyến và tìm busId từ route
     @PostMapping("/display")
-    public String selectRoute(@RequestParam(value = "route", required = false) Long routeId, Model model) {
-        System.out.println("có làm hàm này submit");
+    public String selectRoute(
+            @RequestParam(value = "route", required = false) Long routeId,
+            @RequestParam(value = "price", required = false) Double price,
+            Model model) {
+        // Kiểm tra xem người dùng có chọn tuyến không
         if (routeId == null) {
             model.addAttribute("message", "Bạn chưa chọn tuyến nào!");
-            return "user/step2"; // Hiển thị lại giao diện hiện tại
+            return "user/step2"; // Trở lại giao diện hiện tại nếu không có tuyến nào được chọn
         }
 
+        // Xử lý lịch trình và thông tin giá
         BusScheduleDisplayRespond schedule = busScheduleMapper.toDisplayRespond(busScheduleService.getScheduleById(routeId));
         if (schedule == null) {
             model.addAttribute("message", "Không tìm thấy tuyến!");
             return "user/step2b";
         }
 
-        // Lấy busId từ đối tượng và thêm vào model
-        Long busId = schedule.getBus_id();
-        model.addAttribute("selectedRoute", schedule); // Thêm thông tin lịch trình được chọn
-        addSeatsToModel(busId, model); // Hàm thêm thông tin ghế
+        model.addAttribute("selectedRoute", schedule);  // Thêm thông tin tuyến vào model
+        model.addAttribute("selectedPrice", price);    // Thêm giá vào model
+        model.addAttribute("price", price);
+        // Tiếp tục xử lý với ghế hoặc các thông tin khác
+        addSeatsToModel(schedule.getBus_id(), model);
 
-        return "user/step2b";
+        return "user/step2b"; // Chuyển đến bước tiếp theo
     }
+
 
     private void addSeatsToModel(Long busId, Model model) {
         List<SeatRespond> upstairsSeatsdto = seatService.getUpstairsSeats(busId).stream()
@@ -121,16 +128,21 @@ public class Step2Controller {
     public String confirmSelection(
             @RequestParam Long busScheduleId,
             @RequestParam List<String> seatIds,
+            @RequestParam Double price, // Nhận price dưới dạng Double
             Model model) {
+
         // In ra log để kiểm tra dữ liệu nhận được
         System.out.println("Bus Schedule ID: " + busScheduleId);
         System.out.println("Selected Seat IDs: " + seatIds);
+        System.out.println("Price: " + price); // In giá trị price
 
         // Xử lý dữ liệu - Lưu thông tin hoặc truyền đến giao diện tiếp theo
         model.addAttribute("busScheduleId", busScheduleId);
         model.addAttribute("selectedSeatIds", seatIds);
+        model.addAttribute("price", price); // Thêm giá trị price vào model để sử dụng trong view tiếp theo
 
         // Chuyển sang bước tiếp theo, ví dụ: xác nhận thông tin
         return "user/step3"; // Tên file HTML tiếp theo
     }
+
 }

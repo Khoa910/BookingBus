@@ -54,7 +54,9 @@ public class BusScheduleService {
         return busSchedule.map(busScheduleMapper::toRespond);
     }
 
-
+    public BusSchedule findById(Long id) {
+        return busScheduleRepository.findByIdQuery(id);
+    }
     public BusScheduleRespond addBusSchedule(BusScheduleRequest busScheduleRequest) {
 
         Optional<Bus> bus = busRepository.findById(busScheduleRequest.getBus_id());

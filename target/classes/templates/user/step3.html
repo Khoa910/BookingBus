@@ -86,6 +86,7 @@
                         <p class="text-center text-primary text-uppercase">Thông tin khách hàng</p>
                         <form id="form-cus-info" class="form-horizontal" th:action="@{/submit-info}" method="post">
                             <fieldset>
+                                <!-- Các trường thông tin khách hàng -->
                                 <!-- Họ tên -->
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">Họ tên *</label>
@@ -133,6 +134,11 @@
                                         </label>
                                     </div>
                                 </div>
+
+                                <!-- Các trường ẩn cho scheduleID và seatIds -->
+                                <input type="hidden" name="scheduleID" th:value="${busScheduleId}">
+                                <input type="hidden" name="seatIds" th:value="${selectedSeatIds}">
+                                <input type="hidden" name="price" th:value="${price}"></input>
 
                                 <!-- Nút bấm -->
                                 <div class="form-group">
