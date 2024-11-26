@@ -55,11 +55,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-//    public UserRespond createUser(UserRequest userRequest) {
-//        User user = userMapper.toEntity(userRequest);
-//        User savedUser = userRepository.save(user);
-//        return userMapper.toRespond(savedUser);
-//    }
+    public UserRespond createUser(UserRequest userRequest) {
+        User user = userMapper.toEntity(userRequest);
+        User savedUser = userRepository.save(user);
+        return userMapper.toRespond(savedUser);
+    }
 
     public boolean addAccount(User account) {
         try {

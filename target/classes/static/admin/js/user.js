@@ -43,36 +43,7 @@ function loadAccounts() {
             console.error('Lỗi khi tải dữ liệu:', error);
         });
 }
-/*
-    function filterAccounts() {
-        const searchInput = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value;
-        const tableRows = document.querySelectorAll('#table-content tr');
 
-        tableRows.forEach(row => {
-            const accountID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
-            const accountName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
-            const customerID = row.cells[4].innerText.toLowerCase();  // Cột Mã Khách Hàng
-            const status = row.cells[5].innerText.toLowerCase().trim(); // Cột Trạng Thái
-
-            // Kiểm tra nếu searchInput có trong accountID, accountName hoặc customerID
-            const matchesSearch =
-                accountID.includes(searchInput) ||
-                accountName.includes(searchInput) ||
-                customerID.includes(searchInput);
-
-            const matchesStatus = statusFilter === '' ||
-                (statusFilter === '1' && status === 'Hoạt động') ||
-                (statusFilter === '0' && status === 'Ngưng hoạt động');
-
-            if (matchesSearch && matchesStatus) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-*/
 function filterAccounts() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     const statusFilter = document.getElementById('statusFilter').value;

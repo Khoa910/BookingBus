@@ -1,0 +1,56 @@
+<!-- Modal for Edit Account -->
+<div class="modal fade" id="editModal1" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh Sửa Tài Khoản</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm1" onsubmit="return false;">
+                    <div class="mb-3">
+                        <label for="editAccountName" class="form-label">Tên Tài Khoản</label>
+                        <input type="text" class="form-control" id="editAccountName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPassword" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" id="editPassword" required> <!-- Thêm trường mật khẩu -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="editFullName" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="editFullName" required> <!-- Thêm trường họ tên -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPhoneNumber" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="editPhoneNumber" required> <!-- Thêm trường sdt -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAddress" class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" id="editAddress" required> <!-- Thêm trường địa chỉ -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRole" class="form-label">Chọn Vai Trò</label>
+                        <select id="editRole" class="form-control" required>
+                            <option value="" disabled selected>Chọn vai trò</option>
+                            <option th:each="role : ${roles}"
+                                    th:text="${role.name}"></option>
+                        </select>
+                    </div>
+                    <!--                    <div class="modal-footer">-->
+                    <!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
+                    <!--                        <button type="button" class="btn btn-primary">Lưu thay đổi</button>-->
+                    <!--                    </div>-->
+                    <input type="hidden" id="AccountId" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+</div>

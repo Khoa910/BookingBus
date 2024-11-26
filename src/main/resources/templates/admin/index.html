@@ -18,7 +18,7 @@
 
             </li>
             <li class="has-subnav">
-<!--                <a th:href="@{/admin/trip}" id="manage-trip-link">-->
+                <a th:href="@{/admin/trip}" id="manage-trip-link">
                     <i class="fa fa-globe fa-2x"></i>
                     <span class="nav-text">
                                 Quản lý chuyến xe
@@ -112,15 +112,15 @@
             })
             .catch(error => console.error('Error loading user form:', error));
     });
-    // document.getElementById('manage-trip-link').addEventListener('click', function (event) {
-    //     event.preventDefault(); // Prevent page reload
-    //     fetch('/admin/trip')  // Assuming '/admin/trip' is the URL for your trip form
-    //         .then(response => response.text())
-    //         .then(html => {
-    //             document.getElementById('dashboard-content').innerHTML = html;
-    //         })
-    //         .catch(error => console.error('Error loading trip form:', error));
-    // });
+    document.getElementById('manage-trip-link').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent page reload
+        fetch('/admin/trip')  // Assuming '/admin/trip' is the URL for your trip form
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('dashboard-content').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading trip form:', error));
+    });
 </script>
 </body>
 </html>

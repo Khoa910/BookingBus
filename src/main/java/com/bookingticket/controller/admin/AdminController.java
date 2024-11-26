@@ -1,7 +1,7 @@
 package com.bookingticket.controller.admin;
 
-import com.bookingticket.dto.respond.*;
-
+import com.bookingticket.dto.request.UserRequest;
+import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.entity.Role;
 import com.bookingticket.entity.User;
@@ -9,20 +9,19 @@ import com.bookingticket.service.BusScheduleService;
 import com.bookingticket.service.BusService;
 import com.bookingticket.service.RoleService;
 import com.bookingticket.service.UserService;
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping( "/admin")
@@ -59,10 +58,7 @@ public class AdminController {
         List<User> users = userService.getAllUsers();
         logger.info("Total customers: {}", users.size());
         model.addAttribute("users", users);
-        List<Role> roles = roleService.getAllRoles();
-        logger.info("Total customers: {}", roles.size());
-        model.addAttribute("roles", roles);
-        return "/admin/user-list"; // Trang hiển thị danh sách khách hàng
+        return "/admin/users/user-list"; // Trang hiển thị danh sách khách hàng
     }
 
 //    @GetMapping("/trip")
@@ -96,53 +92,77 @@ public class AdminController {
 //
 //    }
 
-    @PostMapping("/user/add")
-    public ResponseEntity<Map<String, String>> addAccount(@RequestBody Map<String, Object> accountData) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            // Lấy các thông tin từ accountData
-            String username = (String) accountData.get("username");
-            String password = (String) accountData.get("password");
-            String fullName = (String) accountData.get("full_name");
-            String phoneNumber = (String) accountData.get("phone_number");
-            String email = (String) accountData.get("email");
-            String address = (String) accountData.get("address");
-            String roleName = (String) accountData.get("role");
-
-            // Lấy đối tượng Role từ service dựa trên roleName
-            Role role = roleService.getRoleByName(roleName);
-
-            // Tạo đối tượng User mới
-            User newAccount = new User();
-            newAccount.setUsername(username);
-            newAccount.setPassword(password); // Cần mã hóa mật khẩu trước khi lưu
-            newAccount.setFull_name(fullName);
-            newAccount.setPhone_number(phoneNumber);
-            newAccount.setEmail(email);
-            newAccount.setAddress(address);
-            newAccount.setRole(role);
-
-            // Gọi service để thêm tài khoản
-            boolean added = userService.addAccount(newAccount);
-            if (added) {
-                logger.info("Account with name {} added successfully.", username);
-                response.put("message", "Tài khoản đã được thêm thành công!");
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Thêm tài khoản thất bại!"));
-            }
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
-        }
-    }
+//    @PostMapping("/user/add")
+//    public ResponseEntity<Map<String, String>> addAccount(@RequestBody Map<String, Object> accountData) {
+//        Map<String, String> response = new HashMap<>();
+//        try {
+//            // Lấy các thông tin từ accountData
+//            String username = (String) accountData.get("username");
+//            String password = (String) accountData.get("password");
+//            String fullName = (String) accountData.get("full_name");
+//            String phoneNumber = (String) accountData.get("phone_number");
+//            String email = (String) accountData.get("email");
+//            String address = (String) accountData.get("address");
+//            String roleName = (String) accountData.get("role");
+//
+//            // Lấy đối tượng Role từ service dựa trên roleName
+//            Role role = roleService.getRoleByName(roleName);
+//
+//            // Tạo đối tượng User mới
+//            User newAccount = new User();
+//            newAccount.setUsername(username);
+//            newAccount.setPassword(password); // Cần mã hóa mật khẩu trước khi lưu
+//            newAccount.setFull_name(fullName);
+//            newAccount.setPhone_number(phoneNumber);
+//            newAccount.setEmail(email);
+//            newAccount.setAddress(address);
+//            newAccount.setRole(role);
+//
+//            // Gọi service để thêm tài khoản
+//            boolean added = userService.addAccount(newAccount);
+//            if (added) {
+//                logger.info("Account with name {} added successfully.", username);
+//                response.put("message", "Tài khoản đã được thêm thành công!");
+//                return ResponseEntity.ok(response);
+//            } else {
+//                return ResponseEntity.badRequest().body(Map.of("message", "Thêm tài khoản thất bại!"));
+//            }
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(Map.of("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
+//        }
+//    }
 
     // Phương thức kiểm tra tính hợp lệ của email
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         return email.matches(emailRegex);
+    }
+
+    @PostMapping("/add")
+    public String registerUser(
+            @Valid @ModelAttribute("userRequest") UserRequest dto, // Thêm @Valid để kích hoạt kiểm tra
+            BindingResult bindingResult,                          // Để xử lý lỗi nếu có
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Looxibingling");
+            return "error";
+        }
+
+        try {
+            // Gọi service để đăng ký người dùng
+            UserRespond userRespond = userService.createUser(dto);
+
+            // Đăng ký thành công, chuyển đến trang thành công
+            model.addAttribute("message", "Đăng ký thành công! Người dùng: " + userRespond.getUsername());
+            return "success"; // Tên file HTML cho trang thành công (success.html)
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+            model.addAttribute("error", ex.getMessage());
+            return "error"; // Tên file HTML cho trang đăng ký (register.html)
+        }
     }
 
     @GetMapping("/user/{id}")
@@ -156,10 +176,13 @@ public class AdminController {
         return ResponseEntity.ok(account);
     }
 
-//    @GetMapping("/user-edit")
-//    public String getAccountEditPage() {
-//        return "admin/user-edit";
-//    }
+    @GetMapping("/user-add")
+    public String getAccountAddForm(Model model) {
+        List<Role> roles = roleService.getAllRoles();
+        logger.info("Total customers: {}", roles.size());
+        model.addAttribute("roles", roles);
+        return "/admin/users/user-add";
+    }
 
     @PutMapping("/user/update/{id}")
     @ResponseBody

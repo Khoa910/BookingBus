@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Links</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Chiều cao toàn màn hình */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 10px 20px; /* Khoảng cách giữa các link */
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .links a:hover {
+            background-color: #0056b3; /* Màu khi hover */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p th:text="'Hello, ' + ${session.fullname} + '!'"></p>
+    <div class="links">
+        <a th:href="@{/admin}">Go to Admin</a>
+        <a th:href="@{/index}">Go to User</a>
+    </div>
+</div>
+</body>
+</html>
