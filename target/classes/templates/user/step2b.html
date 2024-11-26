@@ -83,6 +83,7 @@
                     <!-- Nội dung tab -->
                     <div class="tab-content">
                         <!-- Tầng trên -->
+                        <!-- Tầng trên -->
                         <div role="tabpanel" class="tab-pane active" id="tier-up">
                             <table class="grid-seat table">
                                 <thead>
@@ -91,7 +92,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!-- Dãy đầu tiên -->
                                 <tr>
                                     <td th:each="seat : ${upstairsRow1}">
                                         <div th:class="'seat ' + ${seat.getStatus()}">
@@ -131,7 +131,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!-- Dãy đầu tiên -->
                                 <tr>
                                     <td th:each="seat : ${downstairsRow1}">
                                         <div th:class="'seat ' + ${seat.getStatus()}">

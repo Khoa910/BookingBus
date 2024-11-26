@@ -92,8 +92,9 @@ public class TicketService {
         }
     }
 
-    public TicketRespond bookTicket(TicketRequest request) {
+    public String bookTicket(TicketRequest request) {
         // 1. Xác thực dữ liệu
+        System.out.println(" hàm đặt vé");
         User user = validationService.validateUser(request.getUser_id());
         BusSchedule schedule = validationService.validateSchedule(request.getBus_id());
 
@@ -122,7 +123,7 @@ public class TicketService {
         }
 
         // 2. Đặt ghế và cập nhật trạng thái ghế
-        seat.setStatus("RESERVED");
+        seat.setStatus("BOOKED");
         seatRepository.save(seat);
 
         // 3. Đặt vé
@@ -133,19 +134,11 @@ public class TicketService {
         ticket.setDeparture_time(schedule.getDeparture_time());
         ticket.setPrice(schedule.getPrice());
         ticket.setStatus(TicketStatus.SOLD.name());
-
+        System.out.println(ticket.toString());
         // Lưu vé vào cơ sở dữ liệu
         Ticket savedTicket = ticketRepository.save(ticket);
 
         // 4. Trả về thông tin vé đã đặt
-        return new TicketRespond(
-                savedTicket.getId(),
-                schedule.getBus().getId(),
-                user.getId(),
-                seat.getSeat_name(),
-                schedule.getDeparture_time(),
-                savedTicket.getPrice(),
-                savedTicket.getStatus()
-        );
+        return "Book thành công";
     }
 }
