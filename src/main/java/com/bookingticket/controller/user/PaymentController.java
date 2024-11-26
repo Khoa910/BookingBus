@@ -17,7 +17,7 @@ import org.springframework.ui.Model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+
 
 @Controller
 public class PaymentController {
@@ -66,7 +66,7 @@ public class PaymentController {
                 System.out.println("User Not Logged In");
             emailService.sendBookingConfirmationEmail(email,name,scheduleID,seatIds,price,departureTime,address,phone);
             for ( String seat : seats) {
-                ticketRequest.setUser_id(5L);
+                ticketRequest.setUser_id(4L);
                 ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
                 ticketRequest.setSeat_number(seat);
                 ticketRequest.setPrice(BigDecimal.valueOf(price));
@@ -74,8 +74,14 @@ public class PaymentController {
                 System.out.println(ticketService.bookTicket(ticketRequest));
             }
             }
+            else{
+               String username = (String) session.getAttribute("username");
+               String email1 = (String) session.getAttribute("email");
+               System.out.println("User Logged In");
+               emailService.sendBookingConfirmationEmail(email1,username,scheduleID,seatIds,price,departureTime,address,phone);
             }
-            return "error"; // Trang thông báo thất bại
+            }
+            return "success-booking"; // Trang thông báo thất bại
         }
     public static ArrayList<String> splitString(String input) {
         // Loại bỏ dấu ngoặc vuông [] trước khi xử lý

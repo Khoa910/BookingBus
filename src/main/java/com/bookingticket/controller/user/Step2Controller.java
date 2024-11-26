@@ -53,6 +53,7 @@ public class Step2Controller {
             System.out.println(seatRespond.getSeat_name());
         }
 
+        // Gán đúng ghế tầng trên và tầng dưới vào model
         model.addAttribute("upstairsSeats", upstairsSeatsdto);
         model.addAttribute("downstairsSeats", downstairsSeatsdto);
 
@@ -63,6 +64,8 @@ public class Step2Controller {
         model.addAttribute("downstairsRow1", downstairsSeatsdto.subList(0, 6));
         model.addAttribute("downstairsRow2", downstairsSeatsdto.subList(6, 11));
         model.addAttribute("downstairsRow3", downstairsSeatsdto.subList(11, 17));
+
+
         // Trả về giao diện
         return "user/step2"; // Tên file HTML hiển thị ghế
     }

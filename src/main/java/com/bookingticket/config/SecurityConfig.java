@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/seats/**",
                                 "/index",
                                 "/img/**",
+                                "/img/bank/**",
                                 "/login/**",
                                 "/webjars/**",
                                 "/customer-info",
@@ -55,6 +56,7 @@ public class SecurityConfig {
                                 "/admin/**",
                                 "/payment",
                                 "/user",
+                                "/success-booking",
                                 "/admin/user-list"
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
