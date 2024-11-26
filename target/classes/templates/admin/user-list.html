@@ -88,7 +88,6 @@
             <thead>
             <tr>
                 <th>Tên Tài Khoản</th>
-                <th>Mật khẩu</th>
                 <th>Họ và tên</th>
                 <th>Số điện thoại</th>
                 <th>Email</th>
@@ -99,7 +98,6 @@
             <tbody id="table-content">
             <tr th:each="user : ${users}">
                 <td th:text="${user.username}">Username</td>
-                <td th:text="${user.password}">Password</td>
                 <td th:text="${user.full_name}">Full Name</td> <!-- Sửa thành full_name -->
                 <td th:text="${user.phone_number}">Phone Number</td> <!-- Sửa thành phone_number -->
                 <td th:text="${user.email}">Email</td>

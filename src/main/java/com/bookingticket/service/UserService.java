@@ -66,36 +66,51 @@ public class UserService {
         }
     }
 
-    public Optional<User> getAccountById(String accountId) {
-        return userRepository.findById(Long.parseLong(accountId));
+    public User getAccountById(long accountId) {
+        return userRepository.findById(accountId).orElse(null);
     }
 
-    public UserRespond updateUser(Long id, UserRequest userRequest) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setUsername(userRequest.getUsername());
-            user.setFull_name(userRequest.getFull_name());
-            user.setPhone_number(userRequest.getPhone_number());
-            user.setEmail(userRequest.getEmail());
-            user.setAddress(userRequest.getAddress());
+//    public UserRespond updateUser(Long id, UserRequest userRequest) {
+//        Optional<User> userOptional = userRepository.findById(id);
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//            user.setUsername(userRequest.getUsername());
+//            user.setFull_name(userRequest.getFull_name());
+//            user.setPhone_number(userRequest.getPhone_number());
+//            user.setEmail(userRequest.getEmail());
+//            user.setAddress(userRequest.getAddress());
+//
+//            if (userRequest.getRole() != null) {
+//                Optional<Role> roleOptional = roleRepository.findById(userRequest.getRole());
+//                if (roleOptional.isPresent()) {
+//                    user.setRole(roleOptional.get());
+//                } else {
+//                    throw new RuntimeException("Role not found with id: " + userRequest.getRole());
+//                }
+//            } else {
+//                user.setRole(null);
+//            }
+//
+//            User updatedUser = userRepository.save(user);
+//            return userMapper.toRespond(updatedUser);
+//        } else {
+//            throw new RuntimeException("User not found with id: " + id);
+//        }
+//    }
 
-            if (userRequest.getRole() != null) {
-                Optional<Role> roleOptional = roleRepository.findById(userRequest.getRole());
-                if (roleOptional.isPresent()) {
-                    user.setRole(roleOptional.get());
-                } else {
-                    throw new RuntimeException("Role not found with id: " + userRequest.getRole());
-                }
-            } else {
-                user.setRole(null);
-            }
-
-            User updatedUser = userRepository.save(user);
-            return userMapper.toRespond(updatedUser);
-        } else {
-            throw new RuntimeException("User not found with id: " + id);
+    public boolean updateUser(User userDetails) {
+        User user = userRepository.findById(userDetails.getId()).orElse(null);
+        if (user != null) {
+            user.setUsername(userDetails.getUsername());
+            user.setFull_name(userDetails.getFull_name());
+            user.setPhone_number(userDetails.getPhone_number());
+            user.setEmail(userDetails.getEmail());
+            user.setAddress(userDetails.getAddress());
+            user.setRole(userDetails.getRole());
+            userRepository.save(user);
+            return true;
         }
+        return false;
     }
 
     // Xóa một người dùng
