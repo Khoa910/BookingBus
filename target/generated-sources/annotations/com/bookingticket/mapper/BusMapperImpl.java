@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-26T15:42:31+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 23.0.1 (Homebrew)"
+    date = "2024-11-26T18:37:28+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.12 (JetBrains s.r.o.)"
 )
 @Component
 public class BusMapperImpl implements BusMapper {

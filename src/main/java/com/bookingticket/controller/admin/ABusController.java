@@ -24,6 +24,6 @@ public class ABusController {
         model.addAttribute("buses", buses); // Đẩy danh sách user vào model
 //        List<RoleRespond> roles = roleService.getAllRoles();
 //        model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
-        return "/admin/trip"; // Trả về tên file HTML trong thư mục templates
+        return "trip-list"; // Trả về tên file HTML trong thư mục templates
     }
 }

@@ -57,6 +57,10 @@ public class BusScheduleService {
                 .collect(Collectors.toList());
     }
 
+        public List<BusSchedule> getAllDisplaySchedules2() {
+            return busScheduleRepository.findAll();
+        }
+
     public List<BusScheduleDisplayRespond> getDisplaySchedulesByDepartureStationId(Long departureStationId) {
         List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
         return busSchedules.stream()

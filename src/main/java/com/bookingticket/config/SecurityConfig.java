@@ -57,7 +57,9 @@ public class SecurityConfig {
                                 "/payment",
                                 "/user",
                                 "/success-booking",
-                                "/admin/user-list"
+                                "/admin/user-list",
+                                "/trip",
+                                "/admin/trip-list"
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()

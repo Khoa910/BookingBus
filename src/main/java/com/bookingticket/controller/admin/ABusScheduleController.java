@@ -52,21 +52,21 @@ public class ABusScheduleController {
 //        model.addAttribute("schedules", schedules);
 //        return "/admin/trip";
 //    }
-    @GetMapping
-    public String showAllBusSchedules(Model model) {
-        List<BusScheduleDisplayRespond> schedules = AbusScheduleService.getAllDisplaySchedules();
-        model.addAttribute("schedules", schedules); // Đưa danh sách lịch trình vào model
-        return "/admin/trip"; // Trả về trang HTML để hiển thị
-    }
-
-    // Hiển thị lịch trình theo ID điểm đi
-    @GetMapping("/trip/{departureStationId}")
-    public String showBusSchedulesByDepartureStation(
-            @PathVariable Long departureStationId,
-            Model model) {
-        List<BusScheduleDisplayRespond> schedules = AbusScheduleService.getDisplaySchedulesByDepartureStationId(departureStationId);
-        model.addAttribute("schedules", schedules);
-        return "/admin/trip";
-    }
+//    @GetMapping
+//    public String showAllBusSchedules(Model model) {
+//        List<BusScheduleDisplayRespond> schedules = AbusScheduleService.getAllDisplaySchedules();
+//        model.addAttribute("schedules", schedules); // Đưa danh sách lịch trình vào model
+//        return "/admin/trip"; // Trả về trang HTML để hiển thị
+//    }
+//
+//    // Hiển thị lịch trình theo ID điểm đi
+//    @GetMapping("/trip/{departureStationId}")
+//    public String showBusSchedulesByDepartureStation(
+//            @PathVariable Long departureStationId,
+//            Model model) {
+//        List<BusScheduleDisplayRespond> schedules = AbusScheduleService.getDisplaySchedulesByDepartureStationId(departureStationId);
+//        model.addAttribute("schedules", schedules);
+//        return "/admin/trip";
+//    }
 
 }

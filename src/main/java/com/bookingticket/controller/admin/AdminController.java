@@ -1,39 +1,43 @@
 package com.bookingticket.controller.admin;
 
-import com.bookingticket.dto.request.UserRequest;
-import com.bookingticket.dto.respond.RoleRespond;
-import com.bookingticket.dto.respond.UserRespond;
+import com.bookingticket.dto.respond.*;
 
+import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.entity.Role;
 import com.bookingticket.entity.User;
+import com.bookingticket.service.BusScheduleService;
+import com.bookingticket.service.BusService;
 import com.bookingticket.service.RoleService;
 import com.bookingticket.service.UserService;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping( "/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
+    private final BusScheduleService AbusScheduleService;
+    private final BusService AbusService;
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, BusScheduleService AbusScheduleService, BusService AbusService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.AbusScheduleService = AbusScheduleService;
+        this.AbusService = AbusService;
     }
 
     @GetMapping("")
@@ -58,7 +62,7 @@ public class AdminController {
         List<Role> roles = roleService.getAllRoles();
         logger.info("Total customers: {}", roles.size());
         model.addAttribute("roles", roles);
-        return "admin/user-list"; // Trang hiển thị danh sách khách hàng
+        return "/admin/user-list"; // Trang hiển thị danh sách khách hàng
     }
 
 //    @GetMapping("/trip")
@@ -167,4 +171,69 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy khách hàng.");
         }
     }
+    
+    // TRIP
+//    @GetMapping("/trip")
+//    public String showBusSchedules(Model model) {
+//        List<BusScheduleRespond> busSchedules = AbusScheduleService.getAllBusSchedules();
+//        model.addAttribute("busSchedules", busSchedules); // Đẩy danh sách user vào model
+//        return "/admin/trip"; // Trả về tên file HTML trong thư mục templates
+//    }
+
+    @GetMapping("/trip")
+    public String showBuses(Model model) {
+        List<BusSchedule> schedules = AbusScheduleService.getAllDisplaySchedules2();
+        if (schedules == null) {
+            model.addAttribute("error", "No bus schedules found.");
+        } else {
+            model.addAttribute("schedules", schedules);
+        }
+        return "/admin/trip-list"; // Trả về tên file HTML trong thư mục templates
+    }
+
+//    @GetMapping("/trip")
+//    public String showSchedules(
+//            @RequestParam(required = false) String departureStationName,
+//            @RequestParam(required = false) String arrivalStationName,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime,
+//            Model model) {
+//
+//        List<BusScheduleDisplayRespond> schedules;
+//
+//        if (departureStationName != null && arrivalStationName != null && departureTime != null) {
+//            // Tìm các lịch trình phù hợp
+//            List<BusSchedule> matchingSchedules = AbusScheduleService.findMatchingSchedules(departureStationName, arrivalStationName, departureTime);
+//
+//            // Chuyển đổi `BusSchedule` thành `BusScheduleDisplayRespond`
+//            schedules = matchingSchedules.stream()
+//                    .map(schedule -> new BusScheduleDisplayRespond(
+//                            schedule.getId(),
+//                            schedule.getBus().getId(),
+//                            schedule.getDepartureStation().getId(),
+//                            schedule.getArrivalStation().getId(),
+//                            schedule.getDepartureStation().getName(),
+//                            schedule.getArrivalStation().getName(),
+//                            schedule.getDeparture_time(),
+//                            schedule.getArrival_time(),
+//                            schedule.getPrice()))
+//                    .collect(Collectors.toList());
+//        } else {
+//            // Hiển thị tất cả lịch trình nếu không có tham số tìm kiếm
+//            schedules = AbusScheduleService.getAllDisplaySchedules().stream()
+//                    .map(schedule -> new BusScheduleDisplayRespond(
+//                            schedule.getId(),
+//                            schedule.getBus_id(),
+//                            schedule.getDepartureStation_id(),
+//                            schedule.getArrivalStation_id(),
+//                            schedule.getDepartureStationName(),
+//                            schedule.getArrivalStationName(),
+//                            schedule.getDeparture_time(),
+//                            schedule.getArrival_time(),
+//                            schedule.getPrice()))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        model.addAttribute("schedules", schedules);
+//        return "/admin/trip-list";
+//    }
 }
