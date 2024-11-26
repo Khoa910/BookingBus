@@ -57,7 +57,7 @@ public class SecurityConfig {
                                 "/payment",
                                 "/user",
                                 "/success-booking",
-                                "/admin/users/user-list",
+                                "/admin/user-list",
                                 "/admin/users/user-add",
                                 "/trip",
                                 "/admin/trip-list"

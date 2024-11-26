@@ -35,7 +35,6 @@ function loadAccounts() {
                             <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${user.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                         </td>
                     `;
-
                 tableContent.appendChild(row);
             });
         })
@@ -116,10 +115,6 @@ function fetchCustomerName(customerID, isEdit = false) {
         customerNameInput.value = '';
     }
 }
-
-
-
-
 
 function showAddModal() {
     // Làm sạch các trường trong form
@@ -208,7 +203,6 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-
 function deleteAccount(button) {
     const accountId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
@@ -270,9 +264,6 @@ function editAccount(button) {
         });
 }
 
-
-
-
 function closeModal() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
@@ -322,7 +313,6 @@ function saveChanges() {
             showAlert('danger', 'Có lỗi xảy ra khi lưu thay đổi!');
         });
 }
-
 
 function clearFormSearch() {
     // Xóa nội dung ô input tìm kiếm
