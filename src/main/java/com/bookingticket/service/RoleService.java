@@ -25,11 +25,15 @@ public class RoleService {
         this.roleMapper = roleMapper;
     }
 
-    public List<RoleRespond> getAllRoles() {
-        List<Role> roles = roleRepository.findAll();
-        return roles.stream()
-                .map(roleMapper::toRespond)
-                .collect(Collectors.toList());
+//    public List<RoleRespond> getAllRoles() {
+//        List<Role> roles = roleRepository.findAll();
+//        return roles.stream()
+//                .map(roleMapper::toRespond)
+//                .collect(Collectors.toList());
+//    }
+
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
     public RoleRespond getRoleById(Long id) {

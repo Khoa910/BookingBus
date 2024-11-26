@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -59,46 +58,6 @@ public class SecurityConfig {
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
-//                http
-//                .authorizeHttpRequests(auth -> auth
-//                // Các URL yêu cầu quyền ADMIN
-//                .requestMatchers("/admin/**").hasRole("ADMIN")
-//
-//                // Các URL được phép truy cập mà không cần xác thực
-//                .requestMatchers(
-//                        "/",
-//                        "/login",
-//                        "/register",
-//                        "/css/**",
-//                        "/js/**",
-//                        "/user/confirmSelection",
-//                        "/plugins/**",
-//                        "/forgot-password",
-//                        "/reset-password",
-//                        "/user/step2",
-//                        "/user/step2/submit",
-//                        "/user/step3",
-//                        "/oauth2/**",
-//                        "/error",
-//                        "/seats/**",
-//                        "/index",
-//                        "/img/**",
-//                        "/login/**",
-//                        "/webjars/**",
-//                        "/customer-info",
-//                        "/favicon.ico",
-//                        "/submit-info",
-//                        "/book",
-//                        "/user/submit",
-//                        "/user/display",
-//                        "/step2/submit",
-//                        "/book/submit",
-//                        "/api/**"
-//                ).permitAll()
-//
-//                // Các URL khác yêu cầu xác thực
-//                .anyRequest().authenticated()
-//        )
                 .oauth2Login(oauth2 -> oauth2
                         // Cấu hình trang đăng nhập
                         .loginPage("/")
