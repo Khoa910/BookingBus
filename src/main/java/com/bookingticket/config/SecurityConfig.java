@@ -65,8 +65,14 @@ public class SecurityConfig {
                                 "/admin-station/station",
                                 "/admin/busstation",
                                 "/admin-schebus",
+                                "/mobile-vnpay",
+                                "/submitOrder",
                                 "/admin-schebus/trip",
-                                "../js/user.js"
+                                "../js/user.js",
+                                "/mobile-vnpay",
+                                "/submitOrder",
+                                "/vnpay-payment-return"
+
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()
