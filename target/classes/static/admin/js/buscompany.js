@@ -14,24 +14,21 @@ function showAlert(type, message) {
     }, 3000);
 }
 
-function loadAccounts() {
-    fetch('/admin/user/listUser')
+function loadCompany() {
+    fetch('/admin-company/company')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
-            data.forEach(account => {
+            data.forEach(company => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${account.username}">Username</td>
-                        <td th:text="${account.full_name}">Full Name</td> <!-- Sửa thành full_name -->
-                        <td th:text="${account.phone_number}">Phone Number</td> <!-- Sửa thành phone_number -->
-                        <td th:text="${account.email}">Email</td>
-                        <td th:text="${account.address}">Address</td>
-                        <td th:text="${account.role.name}">Role</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
+                        <td th:text="${company.id}">ID</td>
+                        <td th:text="${company.name}">Name</td>
+                        <td th:text="${company.phone_number}">PhoneNumber</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${account.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${company.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -42,27 +39,20 @@ function loadAccounts() {
         });
 }
 
-function filterAccounts() {
+function filterCompany() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('statusFilter').value;
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const accountID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
-        const accountName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
-        const customerID = row.cells[4].innerText.toLowerCase();  // Cột Mã Khách Hàng
-        const status = row.cells[5].innerText.toLowerCase().trim(); // Cột Trạng Thái
+        const companyID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
+        const companyName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
+        const companyPhone = row.cells[2].innerText.toLowerCase();  // Cột Mã Khách Hàng
 
         // Kiểm tra nếu searchInput có trong accountID, accountName hoặc customerID
         const matchesSearch =
-            accountID.includes(searchInput) ||
-            accountName.includes(searchInput) ||
-            customerID.includes(searchInput);
-
-        const matchesStatus =
-            statusFilter === '' || // Nếu trạng thái là Tất cả
-            (statusFilter === '1' && status === 'hoạt động') ||
-            (statusFilter === '0' && status === 'ngưng hoạt động');
+            companyID.includes(searchInput) ||
+            companyName.includes(searchInput) ||
+            companyPhone.includes(searchInput);
 
         // Nếu ô tìm kiếm không trống và không khớp với trạng thái
         if (searchInput && matchesSearch) {
@@ -76,7 +66,7 @@ function filterAccounts() {
     });
 }
 
-function showAddModal() {
+function showAddModalCompany() {
     // Làm sạch các trường trong form
     document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
 
@@ -85,24 +75,14 @@ function showAddModal() {
     addModal.show();
 }
 
-function addAccount() {
+function addCompany() {
     // Lấy dữ liệu từ các trường input
-    const username = document.getElementById('newAccountName').value;
-    const password = document.getElementById('newPassword').value;
-    const full_name = document.getElementById('newFullName').value;
-    const phone_number = document.getElementById('newPhoneNumber').value;
-    const email = document.getElementById('newEmail').value;
-    const address = document.getElementById('newAddress').value;
-    const role = document.getElementById('newRole').value;
+    const companyName = document.getElementById('addCompanyName').value;
+    const companyPhone = document.getElementById('addPhoneNumber').value;
 
     // Kiểm tra dữ liệu đầu vào
-    if (!username || !password || !full_name || !phone_number || !email || !address || !role) {
+    if (!companyName || !companyPhone) {
         showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
-        return;
-    }
-
-    if (!isValidEmail(email)) {
-        showAlert('danger', 'Vui lòng nhập địa chỉ email hợp lệ!');
         return;
     }
 
@@ -113,17 +93,12 @@ function addAccount() {
     }
 
     // Tạo đối tượng dữ liệu tài khoản
-    const accountData = {
-        username,
-        password,
-        full_name,
-        phone_number,
-        email,
-        address,
-        role
+    const companyData = {
+        companyName,
+        companyPhone
     };
 
-    console.log('Dữ liệu gửi:', accountData);
+    console.log('Dữ liệu gửi:', companyData);
 
     // // Lấy CSRF token và header từ thẻ meta
     // const csrfToken = document.querySelector('meta[name="_csrf"]').content;
@@ -131,40 +106,33 @@ function addAccount() {
     // // console.log('CSRF Header:', csrfHeader);
 
     // Gửi yêu cầu POST tới server
-    fetch('/admin/user/add', {
+    fetch('/admin-company/company/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             // [csrfHeader]: csrfToken // Thêm CSRF token vào header
         },
-        body: JSON.stringify(accountData)
+        body: JSON.stringify(companyData)
     })
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    showAlert('danger', errorData.message || 'Thêm tài khoản thất bại!');
+                    showAlert('danger', errorData.message || 'Thêm công ty thất bại!');
                 });
             }
-            showAlert('success', 'Thêm tài khoản thành công!');
-            // loadAccounts(); // Tải lại danh sách tài khoản
-            window.location.reload();
+            showAlert('success', 'Thêm công ty thành công!');
+            loadCompany(); // Tải lại danh sách công ty
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công
         })
         .catch(error => {
             console.error('Lỗi khi thêm tài khoản:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi thêm tài khoản!');
+            showAlert('danger', 'Có lỗi xảy ra khi thêm công ty!');
         });
 }
 
-// Hàm kiểm tra định dạng email
-function isValidEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Định dạng email cơ bản
-    return regex.test(email);
-}
-
-function deleteAccount(button) {
+function deleteCompany(button) {
     const accountId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
@@ -191,10 +159,10 @@ function deleteAccount(button) {
     confirmDeleteModal.show();
 }
 
-function editAccount(button) {
+function editCompany(button) {
     // Lấy accountId từ button
-    const accountId = event.target.getAttribute('data-id');
-    console.log(accountId);
+    const companyId = event.target.getAttribute('data-id');
+    console.log(companyId);
 
     // Fetch thông tin tài khoản từ API
     fetch(`/admin/user/${accountId}`)
@@ -221,7 +189,7 @@ function editAccount(button) {
         });
 }
 
-function closeModal() {
+function closeModalCompany() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }

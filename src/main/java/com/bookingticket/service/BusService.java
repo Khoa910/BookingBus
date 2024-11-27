@@ -36,6 +36,9 @@ public class BusService {
         return buses.stream().map(busMapper::toRespond).toList();
     }
 
+    public List<Bus> getAllBuses2(){
+        return busRepository.findAll();
+    }
 
     public Optional<BusRespond> getBusById(Long id) {
         Optional<Bus> bus = busRepository.findById(id);

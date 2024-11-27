@@ -30,9 +30,7 @@ public class ABusStationController {
     public String showBusStation(Model model) {
         List<BusStationRespond> stations = AbusStationService.getAllBusStations();
         model.addAttribute("stations", stations); // Đẩy danh sách user vào model
-//        List<RoleRespond> roles = roleService.getAllRoles();
-//        model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
-        return "admin/busstation"; // Trả về tên file HTML trong thư mục templates
+        return "admin/station-list"; // Trả về tên file HTML trong thư mục templates
     }
 
     @PostMapping("/station/add")
