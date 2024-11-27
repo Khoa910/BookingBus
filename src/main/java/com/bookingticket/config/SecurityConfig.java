@@ -71,7 +71,8 @@ public class SecurityConfig {
                                 "../js/user.js",
                                 "/mobile-vnpay",
                                 "/submitOrder",
-                                "/vnpay-payment-return"
+                                "/vnpay-payment-return",
+                                "/login/profle"
 
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực

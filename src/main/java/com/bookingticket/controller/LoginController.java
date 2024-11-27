@@ -4,8 +4,11 @@ import com.bookingticket.controller.admin.AdminController;
 import com.bookingticket.dto.request.LoginRequest;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.Role;
+import com.bookingticket.entity.Ticket;
 import com.bookingticket.repository.RoleRepository;
 import com.bookingticket.service.UserService;
+import com.bookingticket.service.TicketService;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -30,6 +34,9 @@ public class LoginController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private TicketService ticketService;
 
     @PostMapping
     public String loginUser(
@@ -53,6 +60,9 @@ public class LoginController {
             session.setAttribute("role", userRespond.getRole());
             session.setAttribute("fullname", userRespond.getFull_name()); // Lưu fullname vào session
 
+            session.setAttribute("username1", userRespond.getUsername());
+            session.setAttribute("address", userRespond.getAddress());
+
             // Log thông tin người dùng
             logger.info("Logged in user: " + userRespond.getFull_name());
             logger.info("User role: " + userRespond.getRole().getName());
@@ -71,6 +81,28 @@ public class LoginController {
             model.addAttribute("error", ex.getMessage());
             return "Đăng nhập thất bại: " + ex.getMessage();
         }
+    }
+
+    @GetMapping("/profile")
+    public String getProfile(
+            HttpSession session,
+            Model model) {
+
+        Long userId = (Long) session.getAttribute("userId");
+        String username = (String) session.getAttribute("username1");
+        String fullName = (String) session.getAttribute("username");
+        String email = (String) session.getAttribute("email");
+        String address = (String) session.getAttribute("address");
+
+        List<Ticket> tickets = ticketService.getTicketsByUserId(userId);
+
+        model.addAttribute("tickets", tickets);
+
+        model.addAttribute("username1", username);
+        model.addAttribute("username", fullName);
+        model.addAttribute("email", email);
+        model.addAttribute("address", address);
+        return "/user/profile";
     }
 
 }
