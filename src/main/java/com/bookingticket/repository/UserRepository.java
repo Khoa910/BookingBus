@@ -3,7 +3,9 @@ package com.bookingticket.repository;
 import com.bookingticket.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -19,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(@Email(message = "Email không hợp lệ") String email);
 
     User findUserByUsername(String username);
+
+    @Query("SELECT u FROM user u WHERE u.id = :userId")
+    Optional<User> findById(@Param("userId") long userId);
 }

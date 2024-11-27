@@ -61,9 +61,12 @@ public class SecurityConfig {
                                 "/admin/users/user-add",
                                 "/trip",
                                 "/admin/trip-list",
-                                "/admin-station/",
+                                "/admin-station",
                                 "/admin-station/station",
-                                "/admin/busstation"
+                                "/admin/busstation",
+                                "/admin-schebus",
+                                "/admin-schebus/trip",
+                                "../js/user.js"
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()

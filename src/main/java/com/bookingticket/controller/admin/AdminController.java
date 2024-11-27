@@ -1,6 +1,7 @@
 package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.request.UserRequest;
+import com.bookingticket.dto.respond.BusScheduleRespond;
 import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.entity.Role;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping( "/admin")
@@ -144,39 +146,29 @@ public class AdminController {
         return email.matches(emailRegex);
     }
 
-//    @PostMapping("/add")
-//    public String registerUser(
-//            @Valid @ModelAttribute("userRequest") UserRequest dto, // Thêm @Valid để kích hoạt kiểm tra
-//            BindingResult bindingResult,                          // Để xử lý lỗi nếu có
-//            Model model) {
-//        if (bindingResult.hasErrors()) {
-//            System.out.println("Looxibingling");
-//            return "error";
-//        }
-//
-//        try {
-//            // Gọi service để đăng ký người dùng
-//            UserRespond userRespond = userService.createUser(dto);
-//
-//            // Đăng ký thành công, chuyển đến trang thành công
-//            model.addAttribute("message", "Đăng ký thành công! Người dùng: " + userRespond.getUsername());
-//            return "success"; // Tên file HTML cho trang thành công (success.html)
-//        } catch (RuntimeException ex) {
-//            System.out.println(ex.getMessage());
-//            model.addAttribute("error", ex.getMessage());
-//            return "error"; // Tên file HTML cho trang đăng ký (register.html)
-//        }
-//    }
-
     @GetMapping("/user/{id}")
+//    @ResponseBody
+//    public ResponseEntity<User> getAccountById(@PathVariable String id) {
+//        Optional<User> account = userService.getAccountById(id);
+//        if (account == null) {
+//            logger.warn("Account with ID {} not found.", id);
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//        logger.info("Account found: {}", account.get());
+//        return ResponseEntity.ok(account.get());
+//    }
     @ResponseBody
-    public ResponseEntity<User> getAccountById(@PathVariable("id") long id) {
-        User account = userService.getAccountById(id);
-        if (account == null) {
-            logger.warn("Account with ID {} not found.", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    public ResponseEntity<Map<String, Object>> getAccountById(@PathVariable String Id) {
+        Optional<User> booking = userService.getAccountById(Id);
+
+        Map<String, Object> response = new HashMap<>();
+        if (booking.isPresent()) {
+            response.put("booking", booking.get());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("message", "Booking not found.");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(account);
     }
 
 //    @GetMapping("/user-add")
@@ -206,16 +198,16 @@ public class AdminController {
 //        return "/admin/trip"; // Trả về tên file HTML trong thư mục templates
 //    }
 
-    @GetMapping("/trip")
-    public String showBuses(Model model) {
-        List<BusSchedule> schedules = AbusScheduleService.getAllDisplaySchedules2();
-        if (schedules == null) {
-            model.addAttribute("error", "No bus schedules found.");
-        } else {
-            model.addAttribute("schedules", schedules);
-        }
-        return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
-    }
+//    @GetMapping("/trip")
+//    public String showBuses(Model model) {
+//        List<BusScheduleRespond> schedules = AbusScheduleService.getAllBusSchedules();
+//        if (schedules == null) {
+//            model.addAttribute("error", "No bus schedules found.");
+//        } else {
+//            model.addAttribute("schedules", schedules);
+//        }
+//        return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
+//    }
 
 //    @GetMapping("/trip")
 //    public String showSchedules(
