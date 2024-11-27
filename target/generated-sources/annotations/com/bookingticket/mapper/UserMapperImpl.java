@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-28T00:19:38+0700",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
+    date = "2024-11-28T01:34:51+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -26,12 +26,12 @@ public class UserMapperImpl implements UserMapper {
         User user = new User();
 
         user.setRole( userRequestToRole( userRequest ) );
-        user.setAddress( userRequest.getAddress() );
-        user.setEmail( userRequest.getEmail() );
-        user.setFull_name( userRequest.getFull_name() );
-        user.setPassword( userRequest.getPassword() );
-        user.setPhone_number( userRequest.getPhone_number() );
         user.setUsername( userRequest.getUsername() );
+        user.setPassword( userRequest.getPassword() );
+        user.setFull_name( userRequest.getFull_name() );
+        user.setPhone_number( userRequest.getPhone_number() );
+        user.setEmail( userRequest.getEmail() );
+        user.setAddress( userRequest.getAddress() );
 
         return user;
     }
@@ -45,12 +45,12 @@ public class UserMapperImpl implements UserMapper {
         UserRespond userRespond = new UserRespond();
 
         userRespond.setRole( roleToRoleRespond( user.getRole() ) );
-        userRespond.setAddress( user.getAddress() );
-        userRespond.setEmail( user.getEmail() );
-        userRespond.setFull_name( user.getFull_name() );
         userRespond.setId( user.getId() );
-        userRespond.setPhone_number( user.getPhone_number() );
         userRespond.setUsername( user.getUsername() );
+        userRespond.setFull_name( user.getFull_name() );
+        userRespond.setPhone_number( user.getPhone_number() );
+        userRespond.setEmail( user.getEmail() );
+        userRespond.setAddress( user.getAddress() );
 
         return userRespond;
     }
@@ -64,12 +64,12 @@ public class UserMapperImpl implements UserMapper {
         User user = new User();
 
         user.setRole( userRequestOAuthToRole( userRequest ) );
-        user.setAddress( userRequest.getAddress() );
-        user.setEmail( userRequest.getEmail() );
-        user.setFull_name( userRequest.getFull_name() );
-        user.setPassword( userRequest.getPassword() );
-        user.setPhone_number( userRequest.getPhone_number() );
         user.setUsername( userRequest.getUsername() );
+        user.setPassword( userRequest.getPassword() );
+        user.setFull_name( userRequest.getFull_name() );
+        user.setPhone_number( userRequest.getPhone_number() );
+        user.setEmail( userRequest.getEmail() );
+        user.setAddress( userRequest.getAddress() );
 
         return user;
     }
