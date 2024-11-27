@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Danh Sách Chuyến Xe</title>
+    <title>Danh Sách Trạm Xe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link type="text/css" th:href="@{/css/navBar.css}" rel="stylesheet" />
     <link type="text/css" th:href="@{/admin/css/user.css}" rel="stylesheet" />
-    <meta name="_csrf" content="trip">
-    <meta name="_csrf_header" content="X-CSRF-TOKEN">
+    <script type="text/javascript" th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/theme.js}"></script>
+<!--    <meta name="_csrf" content="trip">-->
+<!--    <meta name="_csrf_header" content="X-CSRF-TOKEN">-->
 </head>
 <body>
 <!--<div th:replace="MenuAdmin :: navbar"></div>-->
@@ -52,7 +56,7 @@
 
 <div class="container">
     <div class="text-center">
-        <h1>Danh Sách Chuyến Xe</h1>
+        <h1>Danh Sách Trạm Xe</h1>
     </div>
 
     <div class="filter-section mb-3">
@@ -69,11 +73,11 @@
     <div class="filter-section mb-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-8">
-                <select id="statusSelect" class="form-select" onchange="filterTours()">
-                    <option value="">Chọn Loại Xe</option>
-                    <option th:each="bus : ${buses}"
-                            th:text="${bus.bus_type}"></option>
-                </select>
+<!--                <select id="statusSelect" class="form-select" onchange="filterTours()">-->
+<!--                    <option value="">Chọn Loại Xe</option>-->
+<!--                    <option th:each="bus : ${buses}"-->
+<!--                            th:text="${bus.bus_type}"></option>-->
+<!--                </select>-->
             </div>
             <div class="col-md-4 text-end">
                 <button type="button" class="btn btn-success" onclick="showAddModal()">Thêm</button> <!-- Nút Thêm -->
@@ -87,27 +91,19 @@
         <table class="table table-bordered table-hover text-center">
             <thead>
             <tr>
-                <th>Mã Chuyến</th>
-                <th>Mã Xe</th>
-                <th>Điểm Xuất Phát</th>
-                <th>Điểm Đến</th>
-                <th>Ngày xuất</th>
-                <th>Ngày Đến</th>
-                <th>Giá</th>
+                <th>Mã Trạm Xe</th>
+                <th>Tên Trạm</th>
+                <th>Địa chỉ</th>
             </tr>
             </thead>
-            <!--            <tbody id="table-content">-->
-            <tbody>
-            <tr th:each="busSchedule : ${busSchedules}">
-                <td th:text="${busSchedule.id}">ID</td>
-                <td th:text="${busSchedule.bus_id}">Plate</td>
-                <!--                <td th:text="${busSchedule.getDepartureStation()}">Departure</td>-->
-                <!--                <td th:text="${busSchedule.getArrivalStation()}">Arrival</td>-->
-                <!--                <td th:text="${#dates.format(busSchedule.departure_time, 'yyyy-MM-dd HH:mm')}">Time Start</td>-->
-                <!--                <td th:text="${#dates.format(busSchedule.arrival_time, 'yyyy-MM-dd HH:mm')}">Time End</td>-->
-                <td th:text="${busSchedule.price}">Price</td>
+                        <tbody id="table-content">
+<!--            <tbody>-->
+            <tr th:each="station : ${stations}">
+                <td th:text="${station.id}">ID</td>
+                <td th:text="${station.name}">Plate</td>
+                <td th:text="${station.address}">Price</td>
                 <td class="d-flex justify-content-evenly">
-                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${user.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${station.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                     <!--                    <button type="button" class="btn btn-danger btn-sm"-->
                     <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
                     <!--                            onclick="deleteAccount(this)">Xóa</button>-->
@@ -188,37 +184,37 @@
             <div class="modal-body">
                 <form method="post" id="addForm" onsubmit="return false;">
                     <div class="mb-3">
-                        <label for="newAccountName" class="form-label">Tên Tài Khoản</label>
-                        <input type="text" class="form-control" id="newAccountName" required>
+                        <label for="newStationName" class="form-label">Tên Trạm Xe</label>
+                        <input type="text" class="form-control" id="newStationName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="newPassword" class="form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" id="newPassword" required> <!-- Thêm trường mật khẩu -->
+                        <label for="newAddress" class="form-label">Địa Chỉ</label>
+                        <input type="text" class="form-control" id="newAddress" required> <!-- Thêm trường mật khẩu -->
                     </div>
-                    <div class="mb-3">
-                        <label for="newFullName" class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" id="newFullName" required> <!-- Thêm trường họ tên -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPhoneNumber" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="newPhoneNumber" required> <!-- Thêm trường sdt -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="newEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="newEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newAddress" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="newAddress" required> <!-- Thêm trường địa chỉ -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="newRole" class="form-label">Chọn Vai Trò</label>
-                        <select id="newRole" class="form-control" required>
-                            <option value="" disabled selected>Chọn vai trò</option>
-                            <option th:each="role : ${roles}"
-                                    th:text="${role.name}"></option>
-                        </select>
-                    </div>
+<!--                    <div class="mb-3">-->
+<!--                        <label for="newFullName" class="form-label">Họ và tên</label>-->
+<!--                        <input type="text" class="form-control" id="newFullName" required> &lt;!&ndash; Thêm trường họ tên &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="newPhoneNumber" class="form-label">Số điện thoại</label>-->
+<!--                        <input type="text" class="form-control" id="newPhoneNumber" required> &lt;!&ndash; Thêm trường sdt &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="newEmail" class="form-label">Email</label>-->
+<!--                        <input type="email" class="form-control" id="newEmail" required>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="newAddress" class="form-label">Địa chỉ</label>-->
+<!--                        <input type="text" class="form-control" id="newAddress" required> &lt;!&ndash; Thêm trường địa chỉ &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="newRole" class="form-label">Chọn Vai Trò</label>-->
+<!--                        <select id="newRole" class="form-control" required>-->
+<!--                            <option value="" disabled selected>Chọn vai trò</option>-->
+<!--                            <option th:each="role : ${roles}"-->
+<!--                                    th:text="${role.name}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
                     <!--                    <div class="modal-footer">-->
                     <!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
                     <!--                        <button type="button" class="btn btn-primary" >Thêm tài khoản</button>-->
@@ -227,15 +223,25 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="addAccount()">Thêm tài khoản</button>
+                <button type="button" class="btn btn-primary" onclick="addStation()">Thêm trạm xe</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Thêm jQuery từ CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script th:src="@{/admin/js/busstation.js}"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--&lt;!&ndash; Thêm jQuery từ CDN &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script th:src="@{/admin/js/busstation.js}"></script>-->
+<script>
+    function showAddModal() {
+        // Làm sạch các trường trong form
+        document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
+
+        // Hiện modal
+        const addModal = new bootstrap.Modal(document.getElementById('addModal'));
+        addModal.show();
+    }
+</script>
 </body>
 </html>

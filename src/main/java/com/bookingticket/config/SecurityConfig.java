@@ -60,7 +60,10 @@ public class SecurityConfig {
                                 "/admin/user-list",
                                 "/admin/users/user-add",
                                 "/trip",
-                                "/admin/trip-list"
+                                "/admin/trip-list",
+                                "/admin-station/",
+                                "/admin-station/station",
+                                "/admin/busstation"
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()

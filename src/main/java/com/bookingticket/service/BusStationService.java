@@ -3,6 +3,7 @@ package com.bookingticket.service;
 import com.bookingticket.dto.request.BusStationRequest;
 import com.bookingticket.dto.respond.BusStationRespond;
 import com.bookingticket.entity.BusStation;
+import com.bookingticket.entity.User;
 import com.bookingticket.mapper.BusStationMapper;
 import com.bookingticket.repository.BusStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,16 @@ public class BusStationService {
         BusStation busStation = busStationMapper.toEntity(request);
         BusStation savedBusStation = busStationRepository.save(busStation);
         return busStationMapper.toRespond(savedBusStation);
+    }
+
+    public boolean addStation(BusStation station) {
+        try {
+            busStationRepository.save(station); // Lưu tài khoản mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
     }
 
     public BusStationRespond updateBusStation(Long id, BusStationRequest request) {

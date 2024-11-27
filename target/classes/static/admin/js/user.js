@@ -32,7 +32,7 @@ function loadAccounts() {
                         <td th:text="${account.address}">Address</td>
                         <td th:text="${account.role.name}">Role</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${user.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${account.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);

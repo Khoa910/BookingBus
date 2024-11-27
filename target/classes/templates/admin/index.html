@@ -9,7 +9,7 @@
     <nav class="main-menu">
         <ul>
             <li>
-                <a th:href="@{/admin/trip}" id="manage-user-link">
+                <a href="#" id="manage-user-link">
                     <i class="fa fa-home fa-2x"></i>
                     <span class="nav-text">
                                Quản lý tài khoản
@@ -18,7 +18,7 @@
 
             </li>
             <li class="has-subnav">
-                <a th:href="@{/admin/trip}" id="manage-trip-link">
+                <a href="#" id="manage-trip-link">
                     <i class="fa fa-globe fa-2x"></i>
                     <span class="nav-text">
                                 Quản lý chuyến xe
@@ -36,7 +36,7 @@
 
             </li>
             <li class="has-subnav">
-                <a href="#">
+                <a href="#" id="manage-station-link">
                     <i class="fa fa-camera-retro fa-2x"></i>
                     <span class="nav-text">
                                 Trạm xe
@@ -115,6 +115,15 @@
     document.getElementById('manage-trip-link').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent page reload
         fetch('/admin/trip')  // Assuming '/admin/trip' is the URL for your trip form
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('dashboard-content').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading trip form:', error));
+    });
+    document.getElementById('manage-station-link').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent page reload
+        fetch('/admin-station/station')  // Assuming '/admin/trip' is the URL for your trip form
             .then(response => response.text())
             .then(html => {
                 document.getElementById('dashboard-content').innerHTML = html;
