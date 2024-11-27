@@ -52,9 +52,20 @@ public class PaymentController {
             Model model) throws MessagingException {
             ArrayList<String> seats = new ArrayList<>();
             seats =  splitString(seatIds);
-            if (paymentMethod.equals("mobile-vnpay")) {
-                session.setAttribute("name", name);
-                session.setAttribute("total", (int) Math.round(totalAmount));
+            session.setAttribute("paymentMethod", paymentMethod);
+            session.setAttribute("scheduleID", scheduleID);
+            session.setAttribute("seatIds", seatIds);
+            session.setAttribute("name", name);
+            session.setAttribute("email", email);
+            session.setAttribute("address", address);
+            session.setAttribute("phone", phone);
+            session.setAttribute("price", price);
+            session.setAttribute("terms", terms);
+            session.setAttribute("totalAmount", (int) Math.round(totalAmount));
+            session.setAttribute("departureDate", departureDate);
+            session.setAttribute("departureTime", departureTime);
+
+        if (paymentMethod.equals("mobile-vnpay")) {
                 return "redirect:/mobile-vnpay";
             }
             if (paymentMethod.equals("cash-cash")) {
