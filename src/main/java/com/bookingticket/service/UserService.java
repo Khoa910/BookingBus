@@ -71,8 +71,8 @@ public class UserService {
         }
     }
 
-    public Optional<User> getAccountById(String accountId) {
-        return userRepository.findById(Long.parseLong(accountId));
+    public Optional<User> getAccountById(long accountId) {
+        return userRepository.findById(accountId);
     }
 
 //    public UserRespond updateUser(Long id, UserRequest userRequest) {

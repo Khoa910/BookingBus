@@ -66,6 +66,20 @@ public class AdminController {
         return "admin/user-list"; // Trang hiển thị danh sách khách hàng
     }
 
+    @GetMapping("/user/listUser")
+    @ResponseBody
+    public ResponseEntity<List<User>> getAllUserJson() {
+        List<User> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            logger.warn("No accounts found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản
+        } else {
+            logger.info("Total accounts: {}", users.size());
+            users.forEach(user -> logger.info("User: {}", user)); // Ghi từng tài khoản
+            return ResponseEntity.ok(users); // Trả về danh sách tài khoản với mã 200
+        }
+    }
+
 //    @GetMapping("/trip")
 //    public String getAllTrip(Model model) {
 ////        List<User> users = userService.getAllUsers();
@@ -147,29 +161,31 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-//    @ResponseBody
-//    public ResponseEntity<User> getAccountById(@PathVariable String id) {
-//        Optional<User> account = userService.getAccountById(id);
-//        if (account == null) {
-//            logger.warn("Account with ID {} not found.", id);
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-//        logger.info("Account found: {}", account.get());
-//        return ResponseEntity.ok(account.get());
-//    }
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> getAccountById(@PathVariable String Id) {
-        Optional<User> booking = userService.getAccountById(Id);
-
-        Map<String, Object> response = new HashMap<>();
-        if (booking.isPresent()) {
-            response.put("booking", booking.get());
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            response.put("message", "Booking not found.");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    public ResponseEntity<User> getAccountById(@PathVariable long id) {
+        Optional<User> account = userService.getAccountById(id);
+        if (account == null) {
+            logger.warn("Account with ID {} not found.", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        logger.info("Account found: {}", account.get());
+        return ResponseEntity.ok(account.get());
     }
+
+//    @GetMapping("/user/{id}")
+//    @ResponseBody
+//    public ResponseEntity<Map<String, Object>> getAccountById(@PathVariable long Id) {
+//        Optional<User> booking = userService.getAccountById(Id);
+//
+//        Map<String, Object> response = new HashMap<>();
+//        if (booking.isPresent()) {
+//            response.put("booking", booking.get());
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        } else {
+//            response.put("message", "Booking not found.");
+//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 //    @GetMapping("/user-add")
 //    public String getAccountAddForm(Model model) {

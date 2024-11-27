@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-27T09:35:26+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.12 (JetBrains s.r.o.)"
+    date = "2024-11-28T00:19:38+0700",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
 public class SeatMapperImpl implements SeatMapper {
@@ -27,10 +27,10 @@ public class SeatMapperImpl implements SeatMapper {
         seat.setBus( seatRequestToBus( seatRequest ) );
         seat.setSeatType( seatRequestToSeatType( seatRequest ) );
         seat.setId_seat( seatRequest.getId_seat() );
+        seat.setSeat_name( seatRequest.getSeat_name() );
         if ( seatRequest.getStatus() != null ) {
             seat.setStatus( seatRequest.getStatus().name() );
         }
-        seat.setSeat_name( seatRequest.getSeat_name() );
 
         return seat;
     }
@@ -46,8 +46,8 @@ public class SeatMapperImpl implements SeatMapper {
         seatRespond.setBus_id( seatBusId( seat ) );
         seatRespond.setSeat_type_id( seatSeatTypeId( seat ) );
         seatRespond.setId_seat( seat.getId_seat() );
-        seatRespond.setStatus( seat.getStatus() );
         seatRespond.setSeat_name( seat.getSeat_name() );
+        seatRespond.setStatus( seat.getStatus() );
 
         return seatRespond;
     }

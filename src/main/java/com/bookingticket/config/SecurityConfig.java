@@ -52,21 +52,45 @@ public class SecurityConfig {
                                 "/step2/submit",
                                 "/book/submit",
                                 "/api/**", // Cho phép truy cập các API
-                                "/admin",
                                 "/admin/**",
                                 "/payment",
                                 "/user",
                                 "/success-booking",
+
                                 "/admin/user-list",
-                                "/admin/users/user-add",
-                                "/trip",
+                                "/admin",
+                                "/admin/user",
+                                "/admin/user/**",
+                                "/admin/user/add",
+                                "/admin/user/listUser",
+
                                 "/admin/trip-list",
+                                "/admin-schedule/",
+                                "/admin-schedule/trip",
+
+                                "/admin/station-list",
                                 "/admin-station",
                                 "/admin-station/station",
+
+                                "/admin-bus",
+                                "/admin-bus/bus",
+                                "/admin/bus-list",
+
+                                "/admin/company-list",
+                                "/admin-company",
+                                "/admin-company/company",
+                                "/admin-company/**"
                                 "/admin/busstation",
                                 "/admin-schebus",
+                                "/mobile-vnpay",
+                                "/submitOrder",
                                 "/admin-schebus/trip",
-                                "../js/user.js"
+                                "../js/user.js",
+                                "/mobile-vnpay",
+                                "/submitOrder",
+                                "/vnpay-payment-return",
+                                "/login/profle"
+
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
                         .anyRequest().authenticated()
