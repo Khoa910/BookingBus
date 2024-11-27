@@ -80,6 +80,16 @@ public class SecurityConfig {
                                 "/admin-company",
                                 "/admin-company/company",
                                 "/admin-company/**"
+                                "/admin/busstation",
+                                "/admin-schebus",
+                                "/mobile-vnpay",
+                                "/submitOrder",
+                                "/admin-schebus/trip",
+                                "../js/user.js",
+                                "/mobile-vnpay",
+                                "/submitOrder",
+                                "/vnpay-payment-return",
+                                "/login/profle"
 
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực

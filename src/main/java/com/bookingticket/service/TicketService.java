@@ -51,6 +51,10 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
     }
 
+    public List<Ticket> getTicketsByUserId(Long userId) {
+        return ticketRepository.findByUserId(userId);
+    }
+
     public TicketRespond createTicket(TicketRequest ticketRequest) {
         Ticket ticket = ticketMapper.toEntity(ticketRequest);
         Ticket savedTicket = ticketRepository.save(ticket);
