@@ -92,8 +92,15 @@ public class SecurityConfig {
                                 "/admin-company",
                                 "/admin-company/company",
                                 "/admin-company/**",
-                                "/admin/busstation",
-                                "/admin-schebus",
+
+                                "/admin/seat-list",
+                                "/admin-seat",
+                                "/admin-seat/seat",
+
+                                "/admin/stype-list",
+                                "/admin-type",
+                                "/admin-type/type",
+
                                 "/mobile-vnpay",
                                 "/submitOrder",
                                 "/admin-schebus/trip",
@@ -104,7 +111,11 @@ public class SecurityConfig {
                                 "/login/profle"
 
                         ).permitAll()
-                        // Các URL khác yêu cầu xác thực
+
+                        // Các URL yêu cầu người dùng có quyền ADMIN
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // chỉ cho phép người dùng có vai trò ADMIN truy cập vào /admin/**
+
+                        // Các URL còn lại yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

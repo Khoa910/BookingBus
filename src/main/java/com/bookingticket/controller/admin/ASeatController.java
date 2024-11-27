@@ -1,6 +1,7 @@
 package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.respond.SeatRespond;
+import com.bookingticket.entity.Seat;
 import com.bookingticket.service.SeatService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ public class ASeatController {
 
     @GetMapping("/seat")
     public String showSeats(Model model) {
-        List<SeatRespond> seats = AseatService.getAllSeats();
+        List<Seat> seats = AseatService.getAllSeats2();
         model.addAttribute("seats", seats);
         return "admin/seat-list";
     }

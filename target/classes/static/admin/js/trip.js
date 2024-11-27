@@ -14,21 +14,25 @@ function showAlert(type, message) {
     }, 3000);
 }
 
-function loadCompany() {
-    fetch('/admin-company/company')
+function loadSchedules() {
+    fetch('/admin-schedule/trip/listTrip')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
-            data.forEach(company => {
+            data.forEach(schedule => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${company.id}">ID</td>
-                        <td th:text="${company.name}">Name</td>
-                        <td th:text="${company.phone_number}">PhoneNumber</td>
+                        <td th:text="${schedule.id}">ID</td>
+                        <td th:text="${schedule.bus_id.license_plate}">Plate</td>
+                        <td th:text="${schedule.departureStation}">Departure</td>
+                        <td th:text="${schedule.arrivalStation}">Arrival</td>
+                        <td th:text="${schedule.departureTime}">Time Start</td>
+                        <td th:text="${schedule.arrivalTime}">Time End</td>
+                        <td th:text="${schedule.price}">Price</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${company.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${schedule.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -39,20 +43,22 @@ function loadCompany() {
         });
 }
 
-function filterCompany() {
+function filterSchedule() {
     const searchInput = removeDiacritics(document.getElementById('searchInput').value.toLowerCase().trim());  // Loại bỏ dấu và chuyển thành chữ thường
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const companyID = removeDiacritics(row.cells[0].innerText.toLowerCase());
-        const companyName = removeDiacritics(row.cells[1].innerText.toLowerCase());
-        const companyPhone = removeDiacritics(row.cells[2].innerText.toLowerCase());
+        const plate = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const departure = removeDiacritics(row.cells[2].innerText.toLowerCase());
+        const arrival = removeDiacritics(row.cells[3].innerText.toLowerCase());
+        const price = removeDiacritics(row.cells[6].innerText.toLowerCase());
 
         // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            fuzzySearch(companyID, searchInput) ||
-            fuzzySearch(companyName, searchInput) ||
-            fuzzySearch(companyPhone, searchInput);
+            fuzzySearch(plate, searchInput) ||
+            fuzzySearch(departure, searchInput) ||
+            fuzzySearch(arrival, searchInput)||
+            fuzzySearch(price, searchInput);
 
         // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
         row.style.display = matchesSearch ? '' : 'none';
@@ -91,7 +97,7 @@ function removeDiacritics(str) {
     return str;
 }
 
-function showAddModalCompany() {
+function showAddModalSchedule() {
     // Làm sạch các trường trong form
     document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
 
@@ -100,58 +106,67 @@ function showAddModalCompany() {
     addModal.show();
 }
 
-function addCompany() {
+function addSchedule() {
     // Lấy dữ liệu từ các trường input
-    const companyName = document.getElementById('addCompanyName').value;
-    const companyPhone = document.getElementById('addPhoneNumber').value;
+    const plate = document.getElementById('addPlate').value;
+    const departure = document.getElementById('addDeparture').value;
+    const arrival = document.getElementById('addArrival').value;
+    const start = document.getElementById('addDepartureTime').value;
+    const end = document.getElementById('addArrivalTime').value;
+    const price = document.getElementById('addPrice').value;
 
     // Kiểm tra dữ liệu đầu vào
-    if (!companyName || !companyPhone) {
+    if (plate || !departure || !arrival || !start || !end || !price) {
         showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
         return;
     }
 
     // Hiển thị alert xác nhận
-    const confirmation = confirm("Bạn có chắc chắn muốn thêm tài khoản này không?");
+    const confirmation = confirm("Bạn có chắc chắn muốn thêm chuyến xe này không?");
     if (!confirmation) {
         return; // Nếu người dùng không xác nhận, dừng thao tác
     }
 
     // Tạo đối tượng dữ liệu tài khoản
-    const companyData = {
-        companyName,
-        companyPhone
+    const scheduleData = {
+        plate,
+        departure,
+        arrival,
+        start,
+        end,
+        price
     };
-    console.log('Dữ liệu gửi:', companyData);
+
+    console.log('Dữ liệu gửi:', scheduleData);
 
     // Gửi yêu cầu POST tới server
-    fetch('/admin-company/company/add', {
+    fetch('/admin-schedule/trip/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // [csrfHeader]: csrfToken // Thêm CSRF token vào header
         },
-        body: JSON.stringify(companyData)
+        body: JSON.stringify(scheduleData)
     })
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    showAlert('danger', errorData.message || 'Thêm công ty thất bại!');
+                    showAlert('danger', errorData.message || 'Thêm chuyến xe thất bại!');
                 });
             }
-            showAlert('success', 'Thêm công ty thành công!');
-            loadCompany(); // Tải lại danh sách công ty
+            showAlert('success', 'Thêm chuyến xe thành công!');
+            // loadAccounts(); // Tải lại danh sách chuyến xe
+            loadSchedules();
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công
         })
         .catch(error => {
-            console.error('Lỗi khi thêm tài khoản:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi thêm công ty!');
+            console.error('Lỗi khi thêm chuyến xe:', error);
+            showAlert('danger', 'Có lỗi xảy ra khi thêm tài khoản!');
         });
 }
 
-function deleteCompany(button) {
+function deleteSchedule(button) {
     const accountId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
@@ -178,10 +193,10 @@ function deleteCompany(button) {
     confirmDeleteModal.show();
 }
 
-function editCompany(button) {
+function editSchedule(button) {
     // Lấy accountId từ button
-    const companyId = event.target.getAttribute('data-id');
-    console.log(companyId);
+    const accountId = event.target.getAttribute('data-id');
+    console.log(accountId);
 
     // Fetch thông tin tài khoản từ API
     fetch(`/admin/user/${accountId}`)
@@ -208,12 +223,12 @@ function editCompany(button) {
         });
 }
 
-function closeModalCompany() {
+function closeModalSchedule() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }
 
-function saveChanges() {
+function saveChangesSchedule() {
     const id = document.getElementById('AccountId').value;
     const username = document.getElementById('editAccountName').value;
     const password = document.getElementById('editPassword').value;

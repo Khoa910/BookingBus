@@ -122,13 +122,7 @@ function addCompany() {
         companyName,
         companyPhone
     };
-
     console.log('Dữ liệu gửi:', companyData);
-
-    // // Lấy CSRF token và header từ thẻ meta
-    // const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    // const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    // // console.log('CSRF Header:', csrfHeader);
 
     // Gửi yêu cầu POST tới server
     fetch('/admin-company/company/add', {

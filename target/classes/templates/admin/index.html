@@ -10,7 +10,7 @@
         <ul>
             <li>
                 <a href="#" id="manage-user-link">
-                    <i class="fa fa-home fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                Quản lý tài khoản
                             </span>
@@ -19,7 +19,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-trip-link">
-                    <i class="fa fa-globe fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/17212/17212113.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Quản lý chuyến xe
                             </span>
@@ -28,7 +28,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-bus-link">
-                    <i class="fa fa-comments fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/15553/15553211.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Quản lý xe
                             </span>
@@ -37,7 +37,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-station-link">
-                    <i class="fa fa-camera-retro fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/6395/6395324.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Trạm xe
                             </span>
@@ -46,49 +46,49 @@
             </li>
             <li>
                 <a href="#" id="manage-company-link">
-                    <i class="fa fa-film fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/4300/4300059.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Công ty
                             </span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <i class="fa fa-book fa-2x"></i>
+                <a href="#" id="manage-seat-link">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1683/1683707.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
-                               Quản lý chỗ ngồi
+                               Chỗ ngồi
+                            </span>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="manage-seat-type-link">
+                    <img src="https://cdn-icons-png.flaticon.com/128/17386/17386784.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <span class="nav-text">
+                                Loại chỗ ngồi
                             </span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fa fa-cogs fa-2x"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/128/3355/3355184.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
-                                Quản lý vé
+                                Vé
                             </span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-map-marker fa-2x"></i>
-                    <span class="nav-text">
-                                Member Map
-                            </span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-info fa-2x"></i>
-                    <span class="nav-text">
-                                Documentation
-                            </span>
-                </a>
-            </li>
+<!--            <li>-->
+<!--                <a href="#">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">-->
+<!--                    <span class="nav-text">-->
+<!--                                Documentation-->
+<!--                            </span>-->
+<!--                </a>-->
+<!--            </li>-->
         </ul>
 
         <ul class="logout">
             <li>
-                <a href="#">
+                <a th:href="@{/login}">
                     <i class="fa fa-power-off fa-2x"></i>
                     <span class="nav-text">
                                 Logout
@@ -148,12 +148,35 @@
             })
             .catch(error => console.error('Error loading trip form:', error));
     });
+    document.getElementById('manage-seat-link').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent page reload
+        fetch('/admin-seat/seat')  // Assuming '/admin/trip' is the URL for your trip form
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('dashboard-content').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading trip form:', error));
+    });
+    document.getElementById('manage-seat-type-link').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent page reload
+        fetch('/admin-type/type')  // Assuming '/admin/trip' is the URL for your trip form
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('dashboard-content').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading trip form:', error));
+    });
+
+    //TRIP
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Thêm jQuery từ CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/admin/js/user.js}"></script>
-
+<script th:src="@{/admin/js/trip.js}"></script>
 <script th:src="@{/admin/js/buscompany.js}"></script>
+<script th:src="@{/admin/js/busstation.js}"></script>
+<script th:src="@{/admin/js/seat.js}"></script>
 </body>
 </html>
