@@ -77,45 +77,6 @@ function filterAccounts() {
     });
 }
 
-
-function fetchCustomerName(customerID, isEdit = false) {
-    const customerNameInput = isEdit ? document.getElementById('customerName') : document.getElementById('newCustomerName'); // Ô nhập tên khách hàng
-
-    if (customerID) {
-        // Sử dụng endpoint của CustomerControllerAdmin để lấy thông tin khách hàng
-        fetch(`/admin/customers/${customerID}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else if (response.status === 404) {
-                    // Nếu không tìm thấy khách hàng, hiển thị thông báo
-                    customerNameInput.value = 'Khách hàng không tồn tại';
-                    throw new Error('Khách hàng không tồn tại');
-                } else {
-                    throw new Error('Lỗi mạng: ' + response.status);
-                }
-            })
-            .then(data => {
-                // Kiểm tra xem dữ liệu có tồn tại không và có chứa thuộc tính customerName không
-                if (data && data.customerName) {
-                    // Cập nhật tên khách hàng vào ô tên
-                    customerNameInput.value = data.customerName;
-                } else {
-                    // Nếu không có tên, hiển thị thông báo không tồn tại vào ô nhập
-                    customerNameInput.value = 'Khách hàng không tồn tại';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching customer:', error);
-                // Nếu có lỗi, cũng có thể hiển thị thông báo không tồn tại vào ô nhập
-                customerNameInput.value = 'Lỗi trong việc lấy thông tin khách hàng';
-            });
-    } else {
-        // Nếu không có mã khách hàng, xóa tên
-        customerNameInput.value = '';
-    }
-}
-
 function showAddModal() {
     // Làm sạch các trường trong form
     document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
@@ -232,18 +193,14 @@ function deleteAccount(button) {
 
 function editAccount(button) {
     // Lấy accountId từ button
-    const accountId = button.getAttribute('data-id');
+    const accountId = event.target.getAttribute('data-id');
     console.log(accountId);
 
     // Fetch thông tin tài khoản từ API
     fetch(`/admin/user/${accountId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Không thể lấy thông tin tài khoản!');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(account => {
+            console.log(account);
             // Gán giá trị vào các trường input trong modal
             document.getElementById('AccountId').value = account.id;
             document.getElementById('editAccountName').value = account.username;
@@ -252,7 +209,7 @@ function editAccount(button) {
             document.getElementById('editPhoneNumber').value = account.phone_number;
             document.getElementById('editEmail').value = account.email;
             document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role;
+            document.getElementById('editRole').value = account.role.name;
 
             // Hiển thị modal chỉnh sửa
             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));

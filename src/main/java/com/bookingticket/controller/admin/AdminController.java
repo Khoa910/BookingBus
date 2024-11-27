@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping( "/admin")
@@ -146,14 +147,28 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
+//    @ResponseBody
+//    public ResponseEntity<User> getAccountById(@PathVariable String id) {
+//        Optional<User> account = userService.getAccountById(id);
+//        if (account == null) {
+//            logger.warn("Account with ID {} not found.", id);
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//        logger.info("Account found: {}", account.get());
+//        return ResponseEntity.ok(account.get());
+//    }
     @ResponseBody
-    public ResponseEntity<User> getAccountById(@PathVariable("id") long id) {
-        User account = userService.getAccountById(id);
-        if (account == null) {
-            logger.warn("Account with ID {} not found.", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    public ResponseEntity<Map<String, Object>> getAccountById(@PathVariable String Id) {
+        Optional<User> booking = userService.getAccountById(Id);
+
+        Map<String, Object> response = new HashMap<>();
+        if (booking.isPresent()) {
+            response.put("booking", booking.get());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("message", "Booking not found.");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(account);
     }
 
 //    @GetMapping("/user-add")
