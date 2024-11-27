@@ -119,6 +119,11 @@ public class Step2Controller {
         model.addAttribute("upstairsSeats", upstairsSeatsdto);
         model.addAttribute("downstairsSeats", downstairsSeatsdto);
 
+        System.out.println("Choox ngoi");
+        for (SeatRespond seatRespond : upstairsSeatsdto) {
+            System.out.println(seatRespond.getSeat_name());
+        }
+
         model.addAttribute("upstairsRow1", upstairsSeatsdto.subList(0, 6));
         model.addAttribute("upstairsRow2", upstairsSeatsdto.subList(6, 11));
         model.addAttribute("upstairsRow3", upstairsSeatsdto.subList(11, 17));
