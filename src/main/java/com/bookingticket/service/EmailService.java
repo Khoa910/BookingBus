@@ -31,6 +31,7 @@ public class EmailService {
         // Tạo và gửi email
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("ticketbooking571@gmail.com"); // Đặt địa chỉ gửi email
         helper.setTo(toEmail);
         helper.setSubject("Chào mừng đến với hệ thống của chúng tôi!");
         helper.setText(emailContent, true);
@@ -49,6 +50,7 @@ public class EmailService {
         // Tạo email và gửi
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("ticketbooking571@gmail.com"); // Đặt địa chỉ gửi email
         helper.setTo(toEmail);
         helper.setSubject("Mật khẩu mới của bạn");
         helper.setText(emailContent, true);
@@ -72,6 +74,7 @@ public class EmailService {
         // Tạo email và gửi
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("ticketbooking571@gmail.com"); // Đặt địa chỉ gửi email
         helper.setTo(toEmail);
         helper.setSubject("Thông tin đặt vé xe của bạn");
         helper.setText(emailContent, true);

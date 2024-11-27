@@ -2,6 +2,7 @@ package com.bookingticket.controller.user;
 
 import com.bookingticket.dto.request.TicketRequest;
 import com.bookingticket.repository.BusScheduleRepository;
+import com.bookingticket.repository.UserRepository;
 import com.bookingticket.service.BusScheduleService;
 import com.bookingticket.service.BusService;
 import com.bookingticket.service.EmailService;
@@ -29,6 +30,9 @@ public class PaymentController {
     BusScheduleRepository busScheduleRepository;
     @Autowired
     BusScheduleService busScheduleService;
+    @Autowired
+    private UserRepository userRepository;
+
     // Xử lý thanh toán khi người dùng gửi form
     @PostMapping("/payment")
     public String processPayment(
@@ -62,23 +66,31 @@ public class PaymentController {
             System.out.println("Total Amount: " + totalAmount);
             if (paymentMethod.equals("cash-cash")) {
             TicketRequest ticketRequest = new TicketRequest();
-            if(session.getAttribute("userId") == null) {
-                System.out.println("User Not Logged In");
-            emailService.sendBookingConfirmationEmail(email,name,scheduleID,seatIds,price,departureTime,address,phone);
-            for ( String seat : seats) {
-                ticketRequest.setUser_id(4L);
-                ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
-                ticketRequest.setSeat_number(seat);
-                ticketRequest.setPrice(BigDecimal.valueOf(price));
-                ticketRequest.setDeparture_time(LocalDateTime.now());
-                System.out.println(ticketService.bookTicket(ticketRequest));
-            }
+            if(session.getAttribute("userId") != null) {
+                System.out.println("User Not Logged In: " + session.getAttribute("userId"));
+                emailService.sendBookingConfirmationEmail(email,name,scheduleID,seatIds,price,departureTime,address,phone);
+                for ( String seat : seats) {
+                    ticketRequest.setUser_id(4L);
+                    ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
+                    ticketRequest.setSeat_number(seat);
+                    ticketRequest.setPrice(BigDecimal.valueOf(price));
+                    ticketRequest.setDeparture_time(LocalDateTime.now());
+                    System.out.println(ticketService.bookTicket(ticketRequest));
+                }
             }
             else{
                String username = (String) session.getAttribute("username");
                String email1 = (String) session.getAttribute("email");
                System.out.println("User Logged In");
                emailService.sendBookingConfirmationEmail(email1,username,scheduleID,seatIds,price,departureTime,address,phone);
+                for ( String seat : seats) {
+                    ticketRequest.setUser_id(userRepository.findUserByUsername(username).getId());
+                    ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
+                    ticketRequest.setSeat_number(seat);
+                    ticketRequest.setPrice(BigDecimal.valueOf(price));
+                    ticketRequest.setDeparture_time(LocalDateTime.now());
+                    System.out.println(ticketService.bookTicket(ticketRequest));
+                }
             }
             }
             return "success-booking"; // Trang thông báo thất bại
