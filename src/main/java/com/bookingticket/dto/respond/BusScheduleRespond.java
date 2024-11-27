@@ -24,8 +24,6 @@ public class BusScheduleRespond {
     Long bus_id;
     Long departureStation_id;
     Long arrivalStation_id;
-    BusStation departureStation;
-    BusStation arrivalStation;
     LocalDateTime departure_time;
     LocalDateTime arrival_time;
     BigDecimal price;

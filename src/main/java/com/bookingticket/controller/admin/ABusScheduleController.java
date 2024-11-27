@@ -2,10 +2,13 @@ package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.respond.BusScheduleDisplayRespond;
 import com.bookingticket.dto.respond.BusScheduleRespond;
+import com.bookingticket.dto.respond.ScheduleInfoRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.service.BusScheduleService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,17 +24,26 @@ import java.util.Optional;
 @Controller
 @RequestMapping( "/admin-schedule")
 public class ABusScheduleController {
-    private final BusScheduleService AbusScheduleService;
+    @Autowired
+    private  BusScheduleService AbusScheduleService;
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     public ABusScheduleController(BusScheduleService AbusScheduleService){
         this.AbusScheduleService = AbusScheduleService;
     }
 
+//    @GetMapping("/trip")
+//    public String showBuses(Model model) {
+//        List<BusSchedule> schedules = AbusScheduleService.getAllDisplaySchedules2();
+//            model.addAttribute("schedules", schedules);
+//        return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
+//    }
+
     @GetMapping("/trip")
     public String showBuses(Model model) {
-        List<BusSchedule> schedules = AbusScheduleService.getAllDisplaySchedules2();
-            model.addAttribute("schedules", schedules);
+//        List<BusScheduleRespond> schedules = AbusScheduleService.getAllBusSchedules();
+        List<ScheduleInfoRespond>  schedules = AbusScheduleService.getAllSchedulesInfo();
+        model.addAttribute("schedules", schedules);
         return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
     }
 

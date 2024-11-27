@@ -100,10 +100,10 @@
             <tr th:each="schedule : ${schedules}">
                 <td th:text="${schedule.id}">ID</td>
                 <td th:text="${schedule.bus_id}">Plate</td>
-                <td th:text="${schedule.departureStation.name}">Departure</td>
-                <td th:text="${schedule.arrivalStation.name}">Arrival</td>
-                <td th:text="${schedule.departure_time}">Time Start</td>
-                <td th:text="${schedule.arrival_time}">Time End</td>
+                <td th:text="${schedule.departureStation}">Departure</td>
+                <td th:text="${schedule.arrivalStation}">Arrival</td>
+                <td th:text="${schedule.departureTime}">Time Start</td>
+                <td th:text="${schedule.arrivalTime}">Time End</td>
                 <td th:text="${schedule.price}">Price</td>
                 <td class="d-flex justify-content-evenly">
                     <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${schedule.id}" onclick="editAccount(this)">Chỉnh sửa</button>

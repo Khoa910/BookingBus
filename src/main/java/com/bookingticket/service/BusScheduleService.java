@@ -151,9 +151,13 @@ public class BusScheduleService {
 
         return busSchedules.stream()
                 .map(schedule -> new ScheduleInfoRespond(
+                        schedule.getId(),
+                        schedule.getBus(),
                         schedule.getDepartureStation().getName(),
                         schedule.getArrivalStation().getName(),
-                        schedule.getDeparture_time()
+                        schedule.getDeparture_time(),
+                        schedule.getArrival_time(),
+                        schedule.getPrice()
                 ))
                 .collect(Collectors.toList());
     }

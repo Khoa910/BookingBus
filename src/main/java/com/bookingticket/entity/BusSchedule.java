@@ -1,5 +1,6 @@
 package com.bookingticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,8 +33,10 @@ public class BusSchedule {
     @JoinColumn(name = "arrival_station_id", referencedColumnName = "id", nullable = true)
     private BusStation arrivalStation;
 
+    @JsonFormat(pattern = "HH:mm:ss yyyy-MM-dd")
     private LocalDateTime departure_time;
 
+    @JsonFormat(pattern = "HH:mm:ss yyyy-MM-dd")
     private LocalDateTime arrival_time;
 
     private BigDecimal price;
