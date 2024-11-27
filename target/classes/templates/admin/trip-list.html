@@ -98,21 +98,21 @@
             </thead>
 <!--            <tbody id="table-content">-->
             <tbody>
-<!--            <tr th:each="busSchedule : ${schedules}">-->
-<!--                <td th:text="${busSchedule.id}">ID</td>-->
-<!--                <td th:text="${busSchedule.bus.id}">Plate</td>-->
-<!--                <td th:text="${busSchedule.departureStation}">Departure</td>-->
-<!--                <td th:text="${busSchedule.arrivalStation}">Arrival</td>-->
-<!--                <td th:text="${#dates.format(busSchedule.departure_time, 'yyyy-MM-dd HH:mm')}">Time Start</td>-->
-<!--                <td th:text="${#dates.format(busSchedule.arrival_time, 'yyyy-MM-dd HH:mm')}">Time End</td>-->
-<!--                <td th:text="${busSchedule.price}">Price</td>-->
-<!--                <td class="d-flex justify-content-evenly">-->
-<!--                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${busSchedule.id}" onclick="editAccount(this)">Chỉnh sửa</button>-->
-<!--                    &lt;!&ndash;                    <button type="button" class="btn btn-danger btn-sm"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                            onclick="deleteAccount(this)">Xóa</button>&ndash;&gt;-->
-<!--                </td>-->
-<!--            </tr>-->
+            <tr th:each="busSchedule : ${schedules}">
+                <td th:text="${busSchedule.id}">ID</td>
+                <td th:text="${busSchedule.bus_id}">Plate</td>
+                <td th:text="${busSchedule.departureStation}">Departure</td>
+                <td th:text="${busSchedule.arrivalStation}">Arrival</td>
+                <td th:text="${#dates.format(busSchedule.departure_time, 'yyyy-MM-dd HH:mm')}">Time Start</td>
+                <td th:text="${#dates.format(busSchedule.arrival_time, 'yyyy-MM-dd HH:mm')}">Time End</td>
+                <td th:text="${busSchedule.price}">Price</td>
+                <td class="d-flex justify-content-evenly">
+                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${busSchedule.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
+                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
+                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

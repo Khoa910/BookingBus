@@ -68,6 +68,10 @@ public class BusScheduleService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<BusSchedule> getBusScheduleById(String BusScheduleId) {
+        return busScheduleRepository.findById(Long.parseLong(BusScheduleId));
+    }
+
     public Optional<BusScheduleRespond> getBusScheduleById(Long id) {
         Optional<BusSchedule> busSchedule = busScheduleRepository.findById(id);
         return busSchedule.map(busScheduleMapper::toRespond);
