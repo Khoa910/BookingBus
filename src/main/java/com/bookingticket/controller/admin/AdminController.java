@@ -10,6 +10,7 @@ import com.bookingticket.service.BusScheduleService;
 import com.bookingticket.service.BusService;
 import com.bookingticket.service.RoleService;
 import com.bookingticket.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,11 +43,21 @@ public class AdminController {
         this.AbusService = AbusService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("")
-    public String admin() {
-        return "admin/index";
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("")
+//    public String admin(HttpSession session) {
+//        String role = (String) session.getAttribute("role");
+//
+//        // Kiểm tra nếu role là ADMIN, nếu không chuyển hướng về trang khác
+//        if ("ADMIN".equals(role)) {
+//            return "admin/index"; // Trả về trang admin nếu là ADMIN
+//        } else {
+//            return "redirect:/error403"; // Chuyển hướng đến trang lỗi nếu không phải ADMIN
+//        }
+//    }
+
+    @GetMapping()
+    public String admin() {return "admin/index";}
 
 //    @GetMapping("/user")
 //    public String showUsers(Model model) {
@@ -59,7 +70,7 @@ public class AdminController {
 
     @GetMapping("/user")
     public String getAllUser(Model model) {
-        List<User> users = userService.getAllUsers();
+        List<User> users = userService.getAllUsers2();
         logger.info("Total customers: {}", users.size());
         model.addAttribute("users", users);
         List<Role> roles = roleService.getAllRoles();
@@ -70,8 +81,8 @@ public class AdminController {
 
     @GetMapping("/user/listUser")
     @ResponseBody
-    public ResponseEntity<List<User>> getAllUserJson() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserRespond>> getAllUserJson() {
+        List<UserRespond> users = userService.getAllUsers();
         if (users.isEmpty()) {
             logger.warn("No accounts found.");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản

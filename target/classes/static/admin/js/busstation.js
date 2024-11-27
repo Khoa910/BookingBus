@@ -14,8 +14,8 @@ function showAlert(type, message) {
     }, 3000);
 }
 
-function loadAccounts() {
-    fetch('/admin/user')
+function loadStations() {
+    fetch('/admin-station/station/listStation')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
@@ -40,41 +40,58 @@ function loadAccounts() {
         });
 }
 
-function filterAccounts() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('statusFilter').value;
+function filterStation() {
+    const searchInput = removeDiacritics(document.getElementById('searchInput').value.toLowerCase().trim());  // Loại bỏ dấu và chuyển thành chữ thường
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const accountID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
-        const accountName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
-        const customerID = row.cells[4].innerText.toLowerCase();  // Cột Mã Khách Hàng
-        const status = row.cells[5].innerText.toLowerCase().trim(); // Cột Trạng Thái
+        const companyID = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const companyName = removeDiacritics(row.cells[2].innerText.toLowerCase());
 
-        // Kiểm tra nếu searchInput có trong accountID, accountName hoặc customerID
+        // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            accountID.includes(searchInput) ||
-            accountName.includes(searchInput) ||
-            customerID.includes(searchInput);
+            fuzzySearch(companyID, searchInput) ||
+            fuzzySearch(companyName, searchInput) ||
+            fuzzySearch(companyPhone, searchInput);
 
-        const matchesStatus =
-            statusFilter === '' || // Nếu trạng thái là Tất cả
-            (statusFilter === '1' && status === 'hoạt động') ||
-            (statusFilter === '0' && status === 'ngưng hoạt động');
-
-        // Nếu ô tìm kiếm không trống và không khớp với trạng thái
-        if (searchInput && matchesSearch) {
-            row.style.display = matchesStatus ? '' : 'none'; // Hiển thị hoặc ẩn dựa trên trạng thái
-        } else if (!searchInput) {
-            // Nếu ô tìm kiếm trống, chỉ cần kiểm tra trạng thái
-            row.style.display = matchesStatus ? '' : 'none';
-        } else {
-            row.style.display = 'none'; // Ẩn hàng nếu không khớp với tìm kiếm
-        }
+        // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
+        row.style.display = matchesSearch ? '' : 'none';
     });
 }
 
-function showAddModal() {
+// Hàm tìm kiếm gần đúng (fuzzy search)
+function fuzzySearch(text, searchInput) {
+    // Nếu không có tìm kiếm, hiển thị tất cả
+    if (searchInput === '') return true;
+
+    // Loại bỏ khoảng trắng và chuyển thành chữ thường
+    const normalizedText = text.replace(/\s+/g, '').toLowerCase();
+    const normalizedSearchInput = searchInput.replace(/\s+/g, '').toLowerCase();
+
+    // Kiểm tra nếu chuỗi tìm kiếm là một phần của chuỗi tìm thấy
+    return normalizedText.includes(normalizedSearchInput);
+}
+
+// Hàm loại bỏ dấu tiếng Việt
+function removeDiacritics(str) {
+    const map = {
+        a: 'áàảãạăắằẳẵặâấầẩẫậ',
+        e: 'éèẻẽẹêếềểễệ',
+        i: 'íìỉĩị',
+        o: 'óòỏõọôốồổỗộơớờởỡợ',
+        u: 'úùủũụưứừửữự',
+        y: 'ýỳỷỹỵ',
+        d: 'đ',
+    };
+    str = str.toLowerCase();
+    for (const letter in map) {
+        const regex = new RegExp('[' + map[letter] + ']', 'g');
+        str = str.replace(regex, letter);
+    }
+    return str;
+}
+
+function showAddModalStation() {
     // Làm sạch các trường trong form
     document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
 

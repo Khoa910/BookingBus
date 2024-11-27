@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/user/step3",
                                 "/oauth2/**",
                                 "/error",
+                                "/error403",
                                 "/seats/**",
                                 "/index",
                                 "/img/**",

@@ -1,6 +1,7 @@
 package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.respond.BusStationRespond;
+import com.bookingticket.dto.respond.UserRespond;
 import com.bookingticket.entity.BusStation;
 import com.bookingticket.service.BusStationService;
 import org.slf4j.Logger;
@@ -31,6 +32,20 @@ public class ABusStationController {
         List<BusStationRespond> stations = AbusStationService.getAllBusStations();
         model.addAttribute("stations", stations); // Đẩy danh sách user vào model
         return "admin/station-list"; // Trả về tên file HTML trong thư mục templates
+    }
+
+    @GetMapping("/station/listStation")
+    @ResponseBody
+    public ResponseEntity<List<BusStation>> getAllStationJson() {
+        List<BusStation> stations = AbusStationService.getAllBusStations2();
+        if (stations.isEmpty()) {
+            logger.warn("No accounts found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stations); // Trả về 204 nếu không có tài khoản
+        } else {
+            logger.info("Total accounts: {}", stations.size());
+            stations.forEach(user -> logger.info("User: {}", user)); // Ghi từng tài khoản
+            return ResponseEntity.ok(stations); // Trả về danh sách tài khoản với mã 200
+        }
     }
 
     @PostMapping("/station/add")
