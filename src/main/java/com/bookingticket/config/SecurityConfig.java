@@ -79,7 +79,7 @@ public class SecurityConfig {
                                 "/admin/company-list",
                                 "/admin-company",
                                 "/admin-company/company",
-                                "/admin-company/**"
+                                "/admin-company/**",
                                 "/admin/busstation",
                                 "/admin-schebus",
                                 "/mobile-vnpay",

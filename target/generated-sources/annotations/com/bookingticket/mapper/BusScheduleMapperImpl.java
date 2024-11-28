@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-28T00:19:38+0700",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.40.0.z20241023-1306, environment: Java 17.0.13 (Eclipse Adoptium)"
+    date = "2024-11-28T00:25:39+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class BusScheduleMapperImpl implements BusScheduleMapper {
@@ -28,8 +28,8 @@ public class BusScheduleMapperImpl implements BusScheduleMapper {
         busSchedule.setBus( busScheduleRequestToBus( request ) );
         busSchedule.setDepartureStation( busScheduleRequestToBusStation( request ) );
         busSchedule.setArrivalStation( busScheduleRequestToBusStation1( request ) );
-        busSchedule.setArrival_time( request.getArrival_time() );
         busSchedule.setDeparture_time( request.getDeparture_time() );
+        busSchedule.setArrival_time( request.getArrival_time() );
         busSchedule.setPrice( request.getPrice() );
 
         return busSchedule;
@@ -46,11 +46,11 @@ public class BusScheduleMapperImpl implements BusScheduleMapper {
         busScheduleRespond.setBus_id( busScheduleBusId( busSchedule ) );
         busScheduleRespond.setDepartureStation_id( busScheduleDepartureStationId( busSchedule ) );
         busScheduleRespond.setArrivalStation_id( busScheduleArrivalStationId( busSchedule ) );
-        busScheduleRespond.setArrivalStation( busSchedule.getArrivalStation() );
-        busScheduleRespond.setArrival_time( busSchedule.getArrival_time() );
-        busScheduleRespond.setDepartureStation( busSchedule.getDepartureStation() );
-        busScheduleRespond.setDeparture_time( busSchedule.getDeparture_time() );
         busScheduleRespond.setId( busSchedule.getId() );
+        busScheduleRespond.setDepartureStation( busSchedule.getDepartureStation() );
+        busScheduleRespond.setArrivalStation( busSchedule.getArrivalStation() );
+        busScheduleRespond.setDeparture_time( busSchedule.getDeparture_time() );
+        busScheduleRespond.setArrival_time( busSchedule.getArrival_time() );
         busScheduleRespond.setPrice( busSchedule.getPrice() );
 
         return busScheduleRespond;
@@ -69,9 +69,9 @@ public class BusScheduleMapperImpl implements BusScheduleMapper {
         busScheduleDisplayRespond.setArrivalStation_id( busScheduleArrivalStationId( busSchedule ) );
         busScheduleDisplayRespond.setDepartureStationName( busScheduleDepartureStationName( busSchedule ) );
         busScheduleDisplayRespond.setArrivalStationName( busScheduleArrivalStationName( busSchedule ) );
-        busScheduleDisplayRespond.setArrival_time( busSchedule.getArrival_time() );
-        busScheduleDisplayRespond.setDeparture_time( busSchedule.getDeparture_time() );
         busScheduleDisplayRespond.setId( busSchedule.getId() );
+        busScheduleDisplayRespond.setDeparture_time( busSchedule.getDeparture_time() );
+        busScheduleDisplayRespond.setArrival_time( busSchedule.getArrival_time() );
         busScheduleDisplayRespond.setPrice( busSchedule.getPrice() );
 
         return busScheduleDisplayRespond;
