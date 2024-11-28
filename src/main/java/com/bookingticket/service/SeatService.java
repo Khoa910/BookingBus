@@ -38,6 +38,10 @@ public class SeatService {
                 .collect(Collectors.toList());
     }
 
+    public List<Seat> getAllSeats2() {
+        return seatRepository.findAll();
+    }
+
     public SeatRespond getSeatById(String id_seat) {
         Optional<Seat> seatOptional = seatRepository.findById(id_seat);
         return seatOptional.map(seatMapper::toRespond)

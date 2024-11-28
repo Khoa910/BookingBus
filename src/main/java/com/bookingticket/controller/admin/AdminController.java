@@ -10,9 +10,11 @@ import com.bookingticket.service.BusScheduleService;
 import com.bookingticket.service.BusService;
 import com.bookingticket.service.RoleService;
 import com.bookingticket.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,10 +43,21 @@ public class AdminController {
         this.AbusService = AbusService;
     }
 
-    @GetMapping("")
-    public String admin() {
-        return "admin/index";
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("")
+//    public String admin(HttpSession session) {
+//        String role = (String) session.getAttribute("role");
+//
+//        // Kiểm tra nếu role là ADMIN, nếu không chuyển hướng về trang khác
+//        if ("ADMIN".equals(role)) {
+//            return "admin/index"; // Trả về trang admin nếu là ADMIN
+//        } else {
+//            return "redirect:/error403"; // Chuyển hướng đến trang lỗi nếu không phải ADMIN
+//        }
+//    }
+
+    @GetMapping()
+    public String admin() {return "admin/index";}
 
 //    @GetMapping("/user")
 //    public String showUsers(Model model) {
@@ -57,7 +70,7 @@ public class AdminController {
 
     @GetMapping("/user")
     public String getAllUser(Model model) {
-        List<User> users = userService.getAllUsers();
+        List<User> users = userService.getAllUsers2();
         logger.info("Total customers: {}", users.size());
         model.addAttribute("users", users);
         List<Role> roles = roleService.getAllRoles();
@@ -68,8 +81,8 @@ public class AdminController {
 
     @GetMapping("/user/listUser")
     @ResponseBody
-    public ResponseEntity<List<User>> getAllUserJson() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserRespond>> getAllUserJson() {
+        List<UserRespond> users = userService.getAllUsers();
         if (users.isEmpty()) {
             logger.warn("No accounts found.");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản
@@ -79,37 +92,6 @@ public class AdminController {
             return ResponseEntity.ok(users); // Trả về danh sách tài khoản với mã 200
         }
     }
-
-//    @GetMapping("/trip")
-//    public String getAllTrip(Model model) {
-////        List<User> users = userService.getAllUsers();
-////        logger.info("Total customers: {}", users.size());
-////        model.addAttribute("users", users);
-////        List<Role> roles = roleService.getAllRoles();
-////        logger.info("Total customers: {}", roles.size());
-////        model.addAttribute("roles", roles);
-//        return "admin/trip"; // Trang hiển thị danh sách khách hàng
-//    }
-
-//    @PostMapping("/user/add")
-//    public String addUser(@Valid @ModelAttribute("accountData") UserRequest dto, BindingResult bindingResult, HttpSession session, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            System.out.println("Looxibingling");
-//            return "error";
-//        }
-//        try {
-//            // Gọi service để thêm tài khoản
-//            UserRespond userRespond = userService.registerUser(dto);
-//            // Thêm thành công, chuyển đến trang thành công
-//            model.addAttribute("message", "Thêm thành công! Người dùng: " + userRespond.getUsername());
-//            return "success"; // Tên file HTML cho trang thành công (success.html)
-//        } catch (RuntimeException ex) {
-//            System.out.println(ex.getMessage());
-//            model.addAttribute("error", ex.getMessage());
-//            return "error";
-//        }
-//
-//    }
 
     @PostMapping("/user/add")
     public ResponseEntity<Map<String, String>> addAccount(@RequestBody Map<String, Object> accountData) {
@@ -172,29 +154,6 @@ public class AdminController {
         return ResponseEntity.ok(account.get());
     }
 
-//    @GetMapping("/user/{id}")
-//    @ResponseBody
-//    public ResponseEntity<Map<String, Object>> getAccountById(@PathVariable long Id) {
-//        Optional<User> booking = userService.getAccountById(Id);
-//
-//        Map<String, Object> response = new HashMap<>();
-//        if (booking.isPresent()) {
-//            response.put("booking", booking.get());
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            response.put("message", "Booking not found.");
-//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//        }
-//    }
-
-//    @GetMapping("/user-add")
-//    public String getAccountAddForm(Model model) {
-//        List<Role> roles = roleService.getAllRoles();
-//        logger.info("Total customers: {}", roles.size());
-//        model.addAttribute("roles", roles);
-//        return "/admin/users/user-add";
-//    }
-
     @PutMapping("/user/update/{id}")
     @ResponseBody
     public ResponseEntity<String> updateUser(@PathVariable("id") int id, @RequestBody User user) {
@@ -205,69 +164,5 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy khách hàng.");
         }
     }
-    
-    // TRIP
-//    @GetMapping("/trip")
-//    public String showBusSchedules(Model model) {
-//        List<BusScheduleRespond> busSchedules = AbusScheduleService.getAllBusSchedules();
-//        model.addAttribute("busSchedules", busSchedules); // Đẩy danh sách user vào model
-//        return "/admin/trip"; // Trả về tên file HTML trong thư mục templates
-//    }
 
-//    @GetMapping("/trip")
-//    public String showBuses(Model model) {
-//        List<BusScheduleRespond> schedules = AbusScheduleService.getAllBusSchedules();
-//        if (schedules == null) {
-//            model.addAttribute("error", "No bus schedules found.");
-//        } else {
-//            model.addAttribute("schedules", schedules);
-//        }
-//        return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
-//    }
-
-//    @GetMapping("/trip")
-//    public String showSchedules(
-//            @RequestParam(required = false) String departureStationName,
-//            @RequestParam(required = false) String arrivalStationName,
-//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime,
-//            Model model) {
-//
-//        List<BusScheduleDisplayRespond> schedules;
-//
-//        if (departureStationName != null && arrivalStationName != null && departureTime != null) {
-//            // Tìm các lịch trình phù hợp
-//            List<BusSchedule> matchingSchedules = AbusScheduleService.findMatchingSchedules(departureStationName, arrivalStationName, departureTime);
-//
-//            // Chuyển đổi `BusSchedule` thành `BusScheduleDisplayRespond`
-//            schedules = matchingSchedules.stream()
-//                    .map(schedule -> new BusScheduleDisplayRespond(
-//                            schedule.getId(),
-//                            schedule.getBus().getId(),
-//                            schedule.getDepartureStation().getId(),
-//                            schedule.getArrivalStation().getId(),
-//                            schedule.getDepartureStation().getName(),
-//                            schedule.getArrivalStation().getName(),
-//                            schedule.getDeparture_time(),
-//                            schedule.getArrival_time(),
-//                            schedule.getPrice()))
-//                    .collect(Collectors.toList());
-//        } else {
-//            // Hiển thị tất cả lịch trình nếu không có tham số tìm kiếm
-//            schedules = AbusScheduleService.getAllDisplaySchedules().stream()
-//                    .map(schedule -> new BusScheduleDisplayRespond(
-//                            schedule.getId(),
-//                            schedule.getBus_id(),
-//                            schedule.getDepartureStation_id(),
-//                            schedule.getArrivalStation_id(),
-//                            schedule.getDepartureStationName(),
-//                            schedule.getArrivalStationName(),
-//                            schedule.getDeparture_time(),
-//                            schedule.getArrival_time(),
-//                            schedule.getPrice()))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        model.addAttribute("schedules", schedules);
-//        return "/admin/trip-list";
-//    }
 }

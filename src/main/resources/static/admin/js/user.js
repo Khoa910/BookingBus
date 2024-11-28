@@ -146,8 +146,7 @@ function addAccount() {
                 });
             }
             showAlert('success', 'Thêm tài khoản thành công!');
-            // loadAccounts(); // Tải lại danh sách tài khoản
-            window.location.reload();
+            loadAccounts(); // Tải lại danh sách tài khoản
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công

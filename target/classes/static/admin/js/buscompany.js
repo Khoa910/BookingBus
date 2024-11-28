@@ -40,30 +40,55 @@ function loadCompany() {
 }
 
 function filterCompany() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const searchInput = removeDiacritics(document.getElementById('searchInput').value.toLowerCase().trim());  // Loại bỏ dấu và chuyển thành chữ thường
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const companyID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
-        const companyName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
-        const companyPhone = row.cells[2].innerText.toLowerCase();  // Cột Mã Khách Hàng
+        const companyID = removeDiacritics(row.cells[0].innerText.toLowerCase());
+        const companyName = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const companyPhone = removeDiacritics(row.cells[2].innerText.toLowerCase());
 
-        // Kiểm tra nếu searchInput có trong accountID, accountName hoặc customerID
+        // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            companyID.includes(searchInput) ||
-            companyName.includes(searchInput) ||
-            companyPhone.includes(searchInput);
+            fuzzySearch(companyID, searchInput) ||
+            fuzzySearch(companyName, searchInput) ||
+            fuzzySearch(companyPhone, searchInput);
 
-        // Nếu ô tìm kiếm không trống và không khớp với trạng thái
-        if (searchInput && matchesSearch) {
-            row.style.display = matchesStatus ? '' : 'none'; // Hiển thị hoặc ẩn dựa trên trạng thái
-        } else if (!searchInput) {
-            // Nếu ô tìm kiếm trống, chỉ cần kiểm tra trạng thái
-            row.style.display = matchesStatus ? '' : 'none';
-        } else {
-            row.style.display = 'none'; // Ẩn hàng nếu không khớp với tìm kiếm
-        }
+        // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
+        row.style.display = matchesSearch ? '' : 'none';
     });
+}
+
+// Hàm tìm kiếm gần đúng (fuzzy search)
+function fuzzySearch(text, searchInput) {
+    // Nếu không có tìm kiếm, hiển thị tất cả
+    if (searchInput === '') return true;
+
+    // Loại bỏ khoảng trắng và chuyển thành chữ thường
+    const normalizedText = text.replace(/\s+/g, '').toLowerCase();
+    const normalizedSearchInput = searchInput.replace(/\s+/g, '').toLowerCase();
+
+    // Kiểm tra nếu chuỗi tìm kiếm là một phần của chuỗi tìm thấy
+    return normalizedText.includes(normalizedSearchInput);
+}
+
+// Hàm loại bỏ dấu tiếng Việt
+function removeDiacritics(str) {
+    const map = {
+        a: 'áàảãạăắằẳẵặâấầẩẫậ',
+        e: 'éèẻẽẹêếềểễệ',
+        i: 'íìỉĩị',
+        o: 'óòỏõọôốồổỗộơớờởỡợ',
+        u: 'úùủũụưứừửữự',
+        y: 'ýỳỷỹỵ',
+        d: 'đ',
+    };
+    str = str.toLowerCase();
+    for (const letter in map) {
+        const regex = new RegExp('[' + map[letter] + ']', 'g');
+        str = str.replace(regex, letter);
+    }
+    return str;
 }
 
 function showAddModalCompany() {
@@ -97,13 +122,7 @@ function addCompany() {
         companyName,
         companyPhone
     };
-
     console.log('Dữ liệu gửi:', companyData);
-
-    // // Lấy CSRF token và header từ thẻ meta
-    // const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    // const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    // // console.log('CSRF Header:', csrfHeader);
 
     // Gửi yêu cầu POST tới server
     fetch('/admin-company/company/add', {
