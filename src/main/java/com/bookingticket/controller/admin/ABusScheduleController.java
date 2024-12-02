@@ -2,6 +2,7 @@ package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.respond.BusScheduleDisplayRespond;
 import com.bookingticket.dto.respond.BusScheduleRespond;
+import com.bookingticket.dto.respond.ScheduleInfoRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.service.BusScheduleService;
 import org.slf4j.Logger;
@@ -80,7 +81,8 @@ public class ABusScheduleController {
 
     @GetMapping("/trip")
     public String showBuses(Model model) {
-        List<BusScheduleRespond> schedules = AbusScheduleService.getAllBusSchedules();
+//        List<BusScheduleRespond> schedules = AbusScheduleService.getAllBusSchedules();
+        List<ScheduleInfoRespond>  schedules = AbusScheduleService.getAllSchedulesInfo();
             model.addAttribute("schedules", schedules);
         return "admin/trip-list"; // Trả về tên file HTML trong thư mục templates
     }

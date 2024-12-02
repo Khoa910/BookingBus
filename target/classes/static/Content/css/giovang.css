@@ -1,0 +1,45 @@
+.title-hr h3{
+	float: left;
+	background: #FFF;
+	display: inline-block;
+	padding-right: 5px;
+}
+.title-hr strong{
+	background: #FFF;
+	display: inline-block;
+	padding-left: 5px;
+	margin-top: 12px;
+}
+.title-hr{
+	position: relative;
+	margin-bottom: 20px;
+}
+.title-hr:after{
+	content: '';
+	border-bottom: 1px solid #E4BD82;
+	width: 100%;
+	margin-bottom: 20px;
+	position: absolute;
+	left: 0;
+	bottom: 22px;
+	margin-bottom: 0;
+	z-index: -1;
+}
+
+.table-responsive .table tr td{
+	vertical-align: middle;
+}
+
+.table-responsive .table .icon-flat{
+	border-right: 1px solid;
+}
+
+
+
+.posts-item .post-link{
+	font-style: italic;
+	padding: 3px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+}

@@ -40,8 +40,6 @@
                         <a th:href="@{/register}" style="text-decoration: none;">Đăng ký</a>
                     </li>
                 </ul>
-
-
             </div>
         </div>
         <div id="header-body">
@@ -58,7 +56,7 @@
                         <nav id="main-nav" class="clearfix">
                             <ul>
                                 <li><a th:href="@{/promotions}">Khuyến mãi</a></li>
-                                <li><a th:href="@{/schedule}">Lịch trình</a></li>
+                                <li><a th:href="@{/schedules}">Lịch trình</a></li>
                                 <li><a th:href="@{/contact}">Liên hệ</a></li>
                             </ul>
                         </nav>
@@ -172,115 +170,23 @@
     <section id="body-main" class="container">
         <div class="row">
             <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
-                <div id="list-bus-slidertab" class="">
-
-                    <!-- Nav tabs -->
-                    <ul id="list-bus" class="nav nav-tabs slides" role="tablist">
-
-                        <li class="active"><a href="#saigon">Sài gòn</a></li>
-                        <li class="active"><a href="#hanoi">Hà Nội</a></li>
-                        <li class="active"><a href="#danang">Đà Nẵng</a></li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div id="saigon">
-                        <table class="table">
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img th:src="@{/img/go.jpg}"></td>
-                                <td>An Nhơn</td>
-                                <td>340.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Cà Mau</td>
-                                <td>260.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div id="hanoi">
-                        <table class="table">
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sài gòn</td>
-                                <td><img src="img/go.jpg"></td>
-                                <td>Hà nội</td>
-                                <td>900.000 đ/vé</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Mua vé <i class="fa fa-angle-double-right"></i> </a>
-                                    <a href="" class="btn btn-success">Góp ý <i class="fa fa-commenting"></i> </a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                <h3 class="  text-uppercase">Tuyến đường</h3>
+                <table class="table table-bordered table-hover text-center">
+                    <thead>
+                    <tr class="text-white bg-primary">
+                        <th>Điểm Xuất Phát</th>
+                        <th>Điểm Đến</th>
+                        <th>Thời gian đi</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-content">
+                    <tr th:each="schedule : ${schedules}">
+                        <td th:text="${schedule.departureStation}">Departure</td>
+                        <td th:text="${schedule.arrivalStation}">Arrival</td>
+                        <td th:text="${schedule.departureTime}">Time Start</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                 <h3 class="marker"><i class="fa fa-map-marker"></i> Bản đồ tuyến</h3>
@@ -312,15 +218,6 @@
         <div id="footer-body">
             <div class="f-body-wrap container">
 
-                <nav id="nav-f">
-                    <ul>
-                        <li><a href="#">Lịch trình</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Hỗ trợ khách hàng</a></li>
-                        <li><a href="#">Thanh toán an toàn</a></li>
-                        <li><a href="#">Tuyển dung</a></li>
-                    </ul>
-                </nav>
 
                 <div id="f-info" class="row">
                     <div id="social" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">

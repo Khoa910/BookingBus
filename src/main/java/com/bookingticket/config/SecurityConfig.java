@@ -72,7 +72,10 @@ public class SecurityConfig {
                                 "/mobile-vnpay",
                                 "/submitOrder",
                                 "/vnpay-payment-return",
-                                "/login/profle"
+                                "/login/profle",
+                                "/schedules",
+                                "/contact",
+                                "/promotions"
 
                         ).permitAll()
                         // Các URL khác yêu cầu xác thực
