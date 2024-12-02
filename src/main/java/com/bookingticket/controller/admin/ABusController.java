@@ -1,6 +1,7 @@
 package com.bookingticket.controller.admin;
 
 import com.bookingticket.dto.respond.BusRespond;
+import com.bookingticket.entity.Bus;
 import com.bookingticket.service.BusService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +19,17 @@ public class ABusController {
         this.AbusService = AbusService;
     }
 
-    @GetMapping("/trip")
+//    @GetMapping("/bus")
+//    public String showBuses(Model model) {
+//        List<BusRespond> buses = AbusService.getAllBuses();
+//        model.addAttribute("buses", buses); // Đẩy danh sách user vào model
+//        return "admin/bus-list"; // Trả về tên file HTML trong thư mục templates
+//    }
+
+    @GetMapping("/bus")
     public String showBuses(Model model) {
-        List<BusRespond> buses = AbusService.getAllBuses();
+        List<Bus> buses = AbusService.getAllBuses2();
         model.addAttribute("buses", buses); // Đẩy danh sách user vào model
-//        List<RoleRespond> roles = roleService.getAllRoles();
-//        model.addAttribute("roles", roles); // Đẩy danh sách vai trò vào model
-        return "trip-list"; // Trả về tên file HTML trong thư mục templates
+        return "admin/bus-list"; // Trả về tên file HTML trong thư mục templates
     }
 }

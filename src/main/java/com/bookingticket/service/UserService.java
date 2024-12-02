@@ -38,14 +38,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    public List<UserRespond> getAllUsers() {
-//        List<User> users = userRepository.findAll();
-//        return users.stream()
-//                .map(userMapper::toRespond)
-//                .collect(Collectors.toList());
-//    }
+    public List<UserRespond> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::toRespond)
+                .collect(Collectors.toList());
+    }
 
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers2() {
         return userRepository.findAll();
     }
 
@@ -71,8 +71,8 @@ public class UserService {
         }
     }
 
-    public Optional<User> getAccountById(String accountId) {
-        return userRepository.findById(Long.parseLong(accountId));
+    public Optional<User> getAccountById(long accountId) {
+        return userRepository.findById(accountId);
     }
 
 //    public UserRespond updateUser(Long id, UserRequest userRequest) {

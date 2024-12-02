@@ -8,10 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class VNPAYConfig {
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static String vnp_PayUrl = " https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_Returnurl = "/vnpay-payment-return";
-    public static String vnp_TmnCode =  "105EMHMW";// kiểm tra email sau
-    public static String vnp_HashSecret = "TE7IPWEO112M4G4WMWOI9JSVXTDD76FJ";
+    public static String vnp_TmnCode =  "VDR7MAAY";// kiểm tra email sau
+    public static String vnp_HashSecret = "Z9UWXVGLFI971E1G48K8WQJW1AM3M85R";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
 

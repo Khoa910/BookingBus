@@ -7,6 +7,7 @@ import com.bookingticket.dto.respond.ScheduleInfoRespond;
 import com.bookingticket.entity.BusSchedule;
 import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.BusStation;
+import com.bookingticket.entity.User;
 import com.bookingticket.mapper.BusScheduleMapper;
 import com.bookingticket.repository.BusScheduleRepository;
 import com.bookingticket.repository.BusStationRepository;
@@ -60,6 +61,16 @@ public class BusScheduleService {
         public List<BusSchedule> getAllDisplaySchedules2() {
             return busScheduleRepository.findAll();
         }
+
+    public boolean addSchedule(BusSchedule schedule) {
+        try {
+            busScheduleRepository.save(schedule); // Lưu chuyến xe mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
 
     public List<BusScheduleDisplayRespond> getDisplaySchedulesByDepartureStationId(Long departureStationId) {
         List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
@@ -151,9 +162,13 @@ public class BusScheduleService {
 
         return busSchedules.stream()
                 .map(schedule -> new ScheduleInfoRespond(
+                        schedule.getId(),
+                        schedule.getBus(),
                         schedule.getDepartureStation().getName(),
                         schedule.getArrivalStation().getName(),
-                        schedule.getDeparture_time()
+                        schedule.getDeparture_time(),
+                        schedule.getArrival_time(),
+                        schedule.getPrice()
                 ))
                 .collect(Collectors.toList());
     }

@@ -15,12 +15,11 @@ function showAlert(type, message) {
 }
 
 function loadAccounts() {
-    fetch('/admin/user')
+    fetch('/admin/user/listUser')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
-
             data.forEach(account => {
                 const row = document.createElement('tr');
 
@@ -126,17 +125,17 @@ function addAccount() {
 
     console.log('Dữ liệu gửi:', accountData);
 
-    // Lấy CSRF token và header từ thẻ meta
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    // console.log('CSRF Header:', csrfHeader);
+    // // Lấy CSRF token và header từ thẻ meta
+    // const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    // const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    // // console.log('CSRF Header:', csrfHeader);
 
     // Gửi yêu cầu POST tới server
     fetch('/admin/user/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            [csrfHeader]: csrfToken // Thêm CSRF token vào header
+            // [csrfHeader]: csrfToken // Thêm CSRF token vào header
         },
         body: JSON.stringify(accountData)
     })
@@ -209,7 +208,7 @@ function editAccount(button) {
             document.getElementById('editPhoneNumber').value = account.phone_number;
             document.getElementById('editEmail').value = account.email;
             document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role.name;
+            document.getElementById('editRole').value = account.role;
 
             // Hiển thị modal chỉnh sửa
             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));

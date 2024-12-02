@@ -3,6 +3,7 @@ package com.bookingticket.service;
 import com.bookingticket.dto.request.BusCompanyRequest;
 import com.bookingticket.dto.respond.BusCompanyRespond;
 import com.bookingticket.entity.BusCompany;
+import com.bookingticket.entity.User;
 import com.bookingticket.mapper.BusCompanyMapper;
 import com.bookingticket.repository.BusCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class BusCompanyService {
         return busCompanies.stream().map(busCompanyMapper::toRespond).toList();
     }
 
+    public List<BusCompany> getAllBusCompanies2() {
+        return busCompanyRepository.findAll();
+    }
+
     public Optional<BusCompanyRespond> getBusCompanyById(Long id) {
         Optional<BusCompany> busCompany = busCompanyRepository.findById(id);
         return busCompany.map(busCompanyMapper::toRespond);
@@ -43,6 +48,20 @@ public class BusCompanyService {
         BusCompany busCompany = busCompanyMapper.toEntity(busCompanyRequest);
         BusCompany savedBusCompany = busCompanyRepository.save(busCompany);
         return busCompanyMapper.toRespond(savedBusCompany);
+    }
+
+    public BusCompany addBusCompany2(BusCompany busCompany){
+        return busCompanyRepository.save(busCompany);
+    }
+
+    public boolean addBusCompany3(BusCompany company) {
+        try {
+            busCompanyRepository.save(company); // Lưu tài khoản mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
     }
 
     public Optional<BusCompanyRespond> updateBusCompany(Long id, BusCompanyRequest busCompanyRequest) {

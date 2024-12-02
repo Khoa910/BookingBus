@@ -20,11 +20,19 @@ public class IndexController {
     @GetMapping("/index")
     public String indexPage(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
         if (username == null) {
             // Chuyển hướng về trang login nếu chưa đăng nhập
             return "redirect:/login";
         }
-        return "index"; // Trả về template index.html
+        else{
+            // Kiểm tra nếu role là ADMIN, nếu không chuyển hướng về trang khác
+            if ("ADMIN".equals(role)) {
+                return "admin/index"; // Trả về trang admin nếu là ADMIN
+            } else {
+                return "index"; // Chuyển hướng đến trang index nếu không phải ADMIN
+            }
+        }
     }
 
     @GetMapping()

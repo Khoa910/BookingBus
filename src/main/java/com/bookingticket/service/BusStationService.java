@@ -32,6 +32,10 @@ public class BusStationService {
                 .collect(Collectors.toList());
     }
 
+    public List<BusStation> getAllBusStations2() {
+        return busStationRepository.findAll();
+    }
+
     public BusStationRespond getBusStationById(Long id) {
         Optional<BusStation> busStationOptional = busStationRepository.findById(id);
         return busStationOptional.map(busStationMapper::toRespond)

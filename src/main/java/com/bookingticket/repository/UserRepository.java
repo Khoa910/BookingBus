@@ -21,7 +21,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(@Email(message = "Email không hợp lệ") String email);
 
     User findUserByUsername(String username);
-
-    @Query("SELECT u FROM user u WHERE u.id = :userId")
-    Optional<User> findById(@Param("userId") long userId);
 }
