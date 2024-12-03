@@ -1,12 +1,21 @@
 package com.bookingticket.controller;
 
-import ch.qos.logback.core.model.Model;
+
+import com.bookingticket.dto.respond.ScheduleInfoRespond;
+import com.bookingticket.service.BusScheduleService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    private BusScheduleService busScheduleService;
 
     @GetMapping("/index")
     public String indexPage(HttpSession session, Model model) {
@@ -25,4 +34,12 @@ public class IndexController {
             }
         }
     }
+
+    @GetMapping()
+    public String showSchedules(Model model) {
+        List<ScheduleInfoRespond> schedules = busScheduleService.getAllSchedulesInfo();
+        model.addAttribute("schedules", schedules);
+        return "index"; // Trả về tên file HTML trong thư mục templates
+    }
+
 }

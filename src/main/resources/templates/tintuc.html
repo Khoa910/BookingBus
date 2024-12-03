@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,13 +24,22 @@
             <header>
                 <div id="top">
                     <div class="container">
-                        
-                        <div class="support"><i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span>0902 1818 52</span></div>
-                        <ul>
-                            <li><a href="#">EN</a></li>
-                            <li><a href="#">Đăng nhập</a></li>
-                            <li><a href="#">Đăng ký</a></li>
-                            
+                        <div class="support">
+                            <i class="fa fa-phone"></i> Tổng đài hỗ trợ: <span th:text="${supportHotline}">0902 1818 52</span>
+                        </div>
+                        <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; align-items: center;">
+                            <!-- Hiển thị khi người dùng đã đăng nhập -->
+                            <li th:if="${session.username != null}" style="display: flex; gap: 10px;">
+                                <a th:href="@{/login/profile}" style="text-decoration: none;">
+                                    Xin chào, <span th:text="${session.username}">Tên người dùng</span>
+                                </a>
+                                <a th:href="@{/logout}" style="text-decoration: none;">Đăng xuất</a>
+                            </li>
+                            <!-- Hiển thị khi người dùng chưa đăng nhập -->
+                            <li th:if="${session.username == null}" style="display: flex; gap: 10px;">
+                                <a th:href="@{/login}" style="text-decoration: none;">Đăng nhập</a>
+                                <a th:href="@{/register}" style="text-decoration: none;">Đăng ký</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -39,7 +48,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-ms-12">
                                 <h1 id="logo">
-                                    <a href=""><img src="img/logo.png"/></a>
+                                    <a th:href="@{/}"><img th:src="@{/img/logo.png}"/></a>
                                 </h1>
                                 
                             </div>
@@ -56,9 +65,9 @@
                                   
                                 <nav id="main-nav" class="collapse navbar-collapse clearfix">
                                     <ul>
-                                        <li><a href="#">Khuyến mãi</a></li>
-                                        <li><a href="">Lịch trình</a></li>
-                                        <li><a href="">Liên hệ</a></li>
+                                        <li><a th:href="@{/promotions}">Khuyến mãi</a></li>
+                                        <li><a th:href="@{/schedules}">Lịch trình</a></li>
+                                        <li><a th:href="@{contact}">Liên hệ</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -72,7 +81,7 @@
                 
                 <div id="head-banner" class="container">
                     <a href="">
-                        <img src="res/head-news.jpg">
+                        <img th:src="@{/img/head-news.jpg}">
                     </a>
                 </div>
                 
@@ -82,13 +91,13 @@
                            <div class="row">
                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                                    <a class="img-thumb" href="">
-                                       <img src="res/thumb-1.jpg">
+                                       <img th:src="@{/img/thumb-1.jpg}">
                                    </a>
                                </div>       
                                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
                                     <h3 class="text-uppercase text-primary">Tuyển dụng chi nhánh cần thơ</h3>
-                                    <p><small class="text-muted">16-10-2015</small></p>
-                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                                    <p><small class="text-muted">16-10-2024</small></p>
+                                    <p class="text-justify">Chúng tôi đang tìm kiếm LÁI XE để gia nhập đội ngũ của công ty. Nếu bạn đam mê công việc lái xe và mong muốn làm việc trong môi trường năng động, hãy gia nhập cùng chúng tôi!</p>
                                     <p class="clearfix">
                                         <a class="pull-right" href="#">Xem thêm <i class="fa fa-angle-double-right"></i> </a>
                                     </p>
@@ -102,8 +111,7 @@
                                <div class="panel-body">
                                    <ul>
                                        <li><a href="#"><i class="fa fa-caret-right"></i> Chào trà vinh! Futa Bus Lines đã về phục vụ Bà con</a></li>
-                                       <li><a href="#"><i class="fa fa-caret-right"></i> Thông báo lỗi</a></li>
-                                       <li><a href="#"><i class="fa fa-caret-right"></i> Chào trà vinh! Futa Bus Lines đã về phục vụ Bà con</a></li>
+                                       <li><a href="#"><i class="fa fa-caret-right"></i> Thông báo cập nhât giao diện mới </a></li>
                                        <li><a href="#"><i class="fa fa-caret-right"></i> Thông báo lỗi</a></li>
                                        <li><a href="#"><i class="fa fa-caret-right"></i> Chào trà vinh! Futa Bus Lines đã về phục vụ Bà con</a></li>
                                        <li><a href="#"><i class="fa fa-caret-right"></i> Thông báo lỗi</a></li>
@@ -120,13 +128,15 @@
                            <div class="row">
                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                                    <a class="img-thumb" href="">
-                                       <img src="res/thumb-3.jpg">
+                                       <img th:src="@{/img/thumb-3.jpg}">
                                    </a>
                                </div>       
                                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
-                                    <h3 class="text-uppercase text-primary">Tuyển dụng chi nhánh cần thơ</h3>
-                                    <p><small class="text-muted">16-10-2015</small></p>
-                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                                    <h3 class="text-uppercase text-primary">Nâng cấp dòng xe chất lượng cao</h3>
+                                    <p><small class="text-muted">16-11-2024</small></p>
+                                    <p class="text-justify">Nhằm tri ân khách hàng đã đồng hành cùng Công ty Phan Trương trong suốt thời gian vừa qua, Công ty Phan Trương nâng cấp toàn bộ xe từ 36 giường phổ thông lên 34 giường phòng VIP riêng tư với giá vé không đổi chỉ 180.000 đồng/vé.
+
+                                    </p>
                                     <p class="clearfix">
                                         <a class="pull-right" href="#">Xem thêm <i class="fa fa-angle-double-right"></i> </a>
                                     </p>
@@ -138,13 +148,13 @@
                            <div class="row">
                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                                    <a class="img-thumb" href="">
-                                       <img src="res/thumb-4.jpg">
+                                       <img th:src="@{/img/thumb-4.jpg}">
                                    </a>
                                </div>       
                                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
-                                    <h3 class="text-uppercase text-primary">Tuyển dụng chi nhánh cần thơ</h3>
-                                    <p><small class="text-muted">16-10-2015</small></p>
-                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                                    <h3 class="text-uppercase text-primary">KHAI TRƯƠNG VĂN PHÒNG BẾN XE PHÍA NAM ĐÀ NẴNG</h3>
+                                    <p><small class="text-muted">22-11-2024</small></p>
+                                    <p class="text-justify">Từ ngày 22/11/2024 chính thức khai trương văn phòng Bến xe phía Nam Đà Nẵng tại Thôn Quá Giáng, Xã Hòa Phước, Huyện Hòa Vang, TP. Đà Nẵng.</p>
                                     <p class="clearfix">
                                         <a class="pull-right" href="#">Xem thêm <i class="fa fa-angle-double-right"></i> </a>
                                     </p>
@@ -160,13 +170,13 @@
                            <div class="row">
                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                                    <a class="img-thumb" href="">
-                                       <img src="res/thumb-3.jpg">
+                                       <img th:src="@{/img/thumb-2.jpg}">
                                    </a>
                                </div>       
                                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
-                                    <h3 class="text-uppercase text-primary">Tuyển dụng chi nhánh cần thơ</h3>
-                                    <p><small class="text-muted">16-10-2015</small></p>
-                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                                    <h3 class="text-uppercase text-primary">ĐƯA VÀO VẬN HÀNH 3 TUYẾN XE BUÝT TẠI HẬU GIANG</h3>
+                                    <p><small class="text-muted">25-04-2024</small></p>
+                                    <p class="text-justify">Vào ngày 25/4/2024, khai thác 3 tuyến xe buýt không trợ giá trên địa bàn tỉnh Hậu Giang. Việc đầu tư dàn xe buýt hiện đại trong bối cảnh hiện giao thông nay là mục tiêu cải thiện chất lượng đi lại bằng phương tiện công cộng của người dân Hậu Giang, cũng như cung cấp dịch vụ vận tải thúc đẩy kết nối các khu vực trong tỉnh và với các tỉnh liền kề như Sóc Trăng, Cần Thơ.</p>
                                     <p class="clearfix">
                                         <a class="pull-right" href="#">Xem thêm <i class="fa fa-angle-double-right"></i> </a>
                                     </p>
@@ -178,13 +188,14 @@
                            <div class="row">
                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-ms-12">
                                    <a class="img-thumb" href="">
-                                       <img src="res/thumb-4.jpg">
+                                       <img th:src="@{/img/thumb-5.jpg}">
                                    </a>
                                </div>       
                                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-ms-12">
-                                    <h3 class="text-uppercase text-primary">Tuyển dụng chi nhánh cần thơ</h3>
-                                    <p><small class="text-muted">16-10-2015</small></p>
-                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                                    <h3 class="text-uppercase text-primary">ĐỒNG HÀNH CÙNG SHB - X3 QUÀ TẶNG</h3>
+                                    <p><small class="text-muted">06-06-2023</small></p>
+                                    <p class="text-justify">Thời gian áp dụng: Từ ngày 06/06/2023 đến hết ngày 31/12/2023
+                                        Cơ hội không thể bỏ lỡ dành cho Khách hàng thanh toán dịch vụ bằng tài khoản liên kết với tài khoản ngân hàng SHB.</p>
                                     <p class="clearfix">
                                         <a class="pull-right" href="#">Xem thêm <i class="fa fa-angle-double-right"></i> </a>
                                     </p>
@@ -221,149 +232,23 @@
                 
                 
             </section>
-            
-            <section id="body-news" class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-ms-12">
-                        <div class="items-news text-center">
-                            <img src="img/customer.png"/>
-                            <h5>
-                                <a href="">Hơn 20 khách hàng</a>
-                                
-                            </h5>
-                            <p>Phương trang phục vụ hơn 20 triệu khách hàng trên toàn quốc</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-ms-12">
-                        <div class="items-news text-center">
-                            <img src="img/home.png"/>
-                            <h5>
-                                <a href="">Hơn 20 khách hàng</a>
-                               
-                            </h5>
-                             <p>Phương trang phục vụ hơn 20 triệu khách hàng trên toàn quốc</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-ms-12">
-                        <div class="items-news text-center">
-                            <img src="img/tech.png"/>
-                            <h5>
-                                <a href="">Hơn 20 khách hàng</a>
-                               
-                            </h5>
-                             <p>Phương trang phục vụ hơn 20 triệu khách hàng trên toàn quốc</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="body-service" class="container">
-                <h3 class="heading">Các dịch vụ của phương trang</h3>
-                <div class="row">
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-6">
-                        <div class="service-items">
-                            <a href="#">
-                                <h5>Vận chuyển hàng hóa</h5>
-                                <img src="img/service.jpg">
-                            </a>    
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-6">
-                        <div class="service-items">
-                            <a href="#">
-                                <h5>Vận chuyển hành khách</h5>
-                                <img src="img/service.jpg">
-                            </a>    
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-6">
-                        <div class="service-items">
-                            <a href="#">
-                                <h5>Khách sạn</h5>
-                                <img src="img/service.jpg">
-                            </a>    
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-6">
-                        <div class="service-items">
-                            <a href="#">
-                                <h5>Trạm dừng</h5>
-                                <img src="img/service.jpg">
-                            </a>    
-                        </div>
-                    </div>
-                </div>
-            </section>
+
+
             
             <!-- footer -->
             <footer>
-                <div id="footer-header" >
+                <div id="footer-header">
             <div class="container">
-                <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-12 ">
-                    <h4>Các tuyến xe miền nam</h4>
-                    <ul class="f-link">
-                        <li><a href="#">TPHCM</a></li>
-                        <li><a href="#">Vũng tàu</a></li>
-                        <li><a href="#">Cần thơ</a></li>
-                        <li><a href="#">Đà Lạt</a></li>
-                        <li><a href="#">Bla bla</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-12">
-                    <h4>Các tuyến xe miền nam</h4>
-                    <ul class="f-link">
-                        <li><a href="#">TPHCM</a></li>
-                        <li><a href="#">Vũng tàu</a></li>
-                        <li><a href="#">Cần thơ</a></li>
-                        <li><a href="#">Đà Lạt</a></li>
-                        <li><a href="#">Bla bla</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-12">
-                    <h4>Các tuyến xe miền nam</h4>
-                    <ul class="f-link">
-                        <li><a href="#">TPHCM</a></li>
-                        <li><a href="#">Vũng tàu</a></li>
-                        <li><a href="#">Cần thơ</a></li>
-                        <li><a href="#">Đà Lạt</a></li>
-                        <li><a href="#">Bla bla</a></li>
-                    </ul>
-                </div>
-                
-                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ms-12">
-                    <h4>Các tuyến xe miền nam</h4>
-                    <ul class="f-link">
-                        <li><a href="#">TPHCM</a></li>
-                        <li><a href="#">Vũng tàu</a></li>
-                        <li><a href="#">Cần thơ</a></li>
-                        <li><a href="#">Đà Lạt</a></li>
-                        <li><a href="#">Bla bla</a></li>
-                    </ul>
-                </div>
-                
-                
-            </div>
+
             </div>
         </div>
         
                 <div id="footer-img">
-                     <img src="img/bg-top-footer.png" class="center-block">
+                     <img th:src="@{/img/bg-top-footer.png}" class="center-block">
                 </div>
                 <div id="footer-body">
                     <div class="f-body-wrap container">
-                       
-                        <nav id="nav-f">
-                            <ul>
-                                <li><a href="#">Lịch trình</a></li>
-                                <li><a href="#">Về chúng tôi</a></li>
-                                <li><a href="#">Hỗ trợ khách hàng</a></li>
-                                <li><a href="#">Thanh toán oan toàn</a></li>
-                                <li><a href="#">Tuyển dung</a></li>
-                            </ul>
-                        </nav>
+
                         
                         <div id="f-info" class="row">
                            <div id="social" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
@@ -386,20 +271,19 @@
                                     </li>
                                 </ul>
                             </div>
-                            
-                             <div id="info" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
-                                 <div id="info-c">
-                                     <p>Công Ty CP Xe khách phương trang EAF</p>
-                                     <p>Địa chỉ: 80 Trần Hưng Đạo, Q1, TP Hồ Chí Minh.</p>
-                                     <p>Điện thoại: 0902 181852 - Fax: 0902 181852</p>
-                                     <p>Website: <a href="#">viralwave.vn</a> - Email: info@viralwave.vn </p>
-                                 </div>
-                             </div>
+
+                            <div id="info" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-ms-12">
+                                <div id="info-c">
+                                    <p>Công Ty CP Xe khách Phan Trương</p>
+                                    <p>Địa chỉ: 273 An Dương Vương, Q5, TP Hồ Chí Minh.</p>
+                                    <p>Điện thoại: 0123456789</p>
+                                    <p>Website: <a href="">info.vn</a> - Email: info@gmail.com </p>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="f-copy">
-                            <p>Copyright &copy; 2015 Công ty TNHH ABC</p>
-                            <p>Design by <a href="">viralwave.vn</a> </p>
+                            <p>Design by <a href="">info.vn</a> </p>
                         </div>
                     </div>
                 </div>
