@@ -1,11 +1,10 @@
 package com.bookingticket.dto.respond;
 
+import com.bookingticket.entity.Bus;
+import com.bookingticket.entity.User;
 import com.bookingticket.enumtype.TicketStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
@@ -20,8 +19,15 @@ public class TicketRespond {
     Long id;
     Long bus_id;
     Long user_id;
+    Bus bus;
+    User user;
     String seat_number;
     LocalDateTime departure_time;
     BigDecimal price;
     String status;
+    // Getter và Setter cho randomDate
+    @Setter
+    @Getter
+    private String randomDate; // Không cần ánh xạ vào cơ sở dữ liệu
+
 }

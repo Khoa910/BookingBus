@@ -44,13 +44,11 @@ function filterCompany() {
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const companyID = removeDiacritics(row.cells[0].innerText.toLowerCase());
         const companyName = removeDiacritics(row.cells[1].innerText.toLowerCase());
         const companyPhone = removeDiacritics(row.cells[2].innerText.toLowerCase());
 
         // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            fuzzySearch(companyID, searchInput) ||
             fuzzySearch(companyName, searchInput) ||
             fuzzySearch(companyPhone, searchInput);
 

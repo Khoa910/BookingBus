@@ -45,14 +45,13 @@ function filterStation() {
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const companyID = removeDiacritics(row.cells[1].innerText.toLowerCase());
-        const companyName = removeDiacritics(row.cells[2].innerText.toLowerCase());
+        const stationName = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const stationAddress = removeDiacritics(row.cells[2].innerText.toLowerCase());
 
         // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            fuzzySearch(companyID, searchInput) ||
-            fuzzySearch(companyName, searchInput) ||
-            fuzzySearch(companyPhone, searchInput);
+            fuzzySearch(stationName, searchInput) ||
+            fuzzySearch(stationAddress, searchInput);
 
         // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
         row.style.display = matchesSearch ? '' : 'none';
@@ -157,7 +156,7 @@ function addStation() {
         });
 }
 
-function deleteAccount(button) {
+function deleteStation(button) {
     const accountId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
@@ -184,7 +183,7 @@ function deleteAccount(button) {
     confirmDeleteModal.show();
 }
 
-function editAccount(button) {
+function editStation(button) {
     // Lấy accountId từ button
     const accountId = button.getAttribute('data-id');
     console.log(accountId);
@@ -218,12 +217,12 @@ function editAccount(button) {
         });
 }
 
-function closeModal() {
+function closeModalStation() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }
 
-function saveChanges() {
+function saveChangesStation() {
     const id = document.getElementById('AccountId').value;
     const username = document.getElementById('editAccountName').value;
     const password = document.getElementById('editPassword').value;

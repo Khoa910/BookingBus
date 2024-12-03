@@ -190,14 +190,54 @@ function deleteAccount(button) {
     confirmDeleteModal.show();
 }
 
+// function editAccount(button) {
+//     // Lấy accountId từ button
+//     const accountId = event.target.getAttribute('data-id');
+//     console.log(accountId);
+//
+//     // Fetch thông tin tài khoản từ API
+//     fetch(`/admin/user/${accountId}`)
+//         .then(response => response.json())
+//         .then(account => {
+//             console.log(account);
+//             // Gán giá trị vào các trường input trong modal
+//             document.getElementById('AccountId').value = account.id;
+//             document.getElementById('editAccountName').value = account.username;
+//             document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
+//             document.getElementById('editFullName').value = account.full_name;
+//             document.getElementById('editPhoneNumber').value = account.phone_number;
+//             document.getElementById('editEmail').value = account.email;
+//             document.getElementById('editAddress').value = account.address;
+//             document.getElementById('editRole').value = account.role;
+//
+//             // Hiển thị modal chỉnh sửa
+//             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+//             editModal.show();
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
+//         });
+// }
+
 function editAccount(button) {
     // Lấy accountId từ button
-    const accountId = event.target.getAttribute('data-id');
+    const accountId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
     console.log(accountId);
 
-    // Fetch thông tin tài khoản từ API
-    fetch(`/admin/user/${accountId}`)
-        .then(response => response.json())
+    // Fetch thông tin tài khoản từ API với phương thức GET
+    fetch(`/admin/user/${accountId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(account => {
             console.log(account);
             // Gán giá trị vào các trường input trong modal
@@ -219,6 +259,49 @@ function editAccount(button) {
             showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
         });
 }
+
+// function editAccount(button) {
+//     // Lấy accountId từ button
+//     const accountId = button.getAttribute('data-id');
+//     console.log(accountId);
+//
+//     // Fetch thông tin tài khoản từ API với phương thức POST
+//     fetch(`/admin/user/findId`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ accountId: accountId }) // Gửi accountId trong body
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(account => {
+//             console.log(account);
+//             // Gán giá trị vào các trường input trong modal
+//             document.getElementById('AccountId').value = account.id;
+//             document.getElementById('editAccountName').value = account.username;
+//             document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
+//             document.getElementById('editFullName').value = account.full_name;
+//             document.getElementById('editPhoneNumber').value = account.phone_number;
+//             document.getElementById('editEmail').value = account.email;
+//             document.getElementById('editAddress').value = account.address;
+//             document.getElementById('editRole').value = account.role;
+//
+//             // Hiển thị modal chỉnh sửa
+//             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+//             editModal.show();
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
+//         });
+// }
+
+
 
 function closeModal() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));

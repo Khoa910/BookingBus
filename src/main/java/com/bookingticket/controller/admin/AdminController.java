@@ -142,17 +142,30 @@ public class AdminController {
         return email.matches(emailRegex);
     }
 
-    @GetMapping("/user/{id}")
+    @PostMapping("/user/{id}")
     @ResponseBody
-    public ResponseEntity<User> getAccountById(@PathVariable long id) {
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable("id") long id) {
         Optional<User> account = userService.getAccountById(id);
         if (account == null) {
             logger.warn("Account with ID {} not found.", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        logger.info("Account found: {}", account.get());
-        return ResponseEntity.ok(account.get());
+        logger.info("Account found: {}", account);
+        return ResponseEntity.ok(account);
     }
+
+    @PostMapping("/user/findId")
+    public ResponseEntity<?> getUserDetails(@RequestBody Map<String, String> request) {
+        long accountId = Long.parseLong(request.get("accountId"));
+        // Logic để tìm user theo accountId
+        Optional<User> user = userService.getAccountById(accountId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
 
     @PutMapping("/user/update/{id}")
     @ResponseBody

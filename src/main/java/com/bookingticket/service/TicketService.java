@@ -18,7 +18,11 @@ import com.bookingticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,11 +42,63 @@ public class TicketService {
         this.validationService = validationService;
     }
 
+//    public List<TicketRespond> getAllTickets() {
+//        List<Ticket> tickets = ticketRepository.findAll();
+//        return tickets.stream()
+//                .map(ticketMapper::toRespond)
+//                .collect(Collectors.toList());
+//    }
+
     public List<TicketRespond> getAllTickets() {
+        // Lấy danh sách các vé từ cơ sở dữ liệu
         List<Ticket> tickets = ticketRepository.findAll();
+
+        // Gán randomDate cho mỗi ticket và chuyển sang đối tượng TicketRespond
         return tickets.stream()
-                .map(ticketMapper::toRespond)
+                .map(ticket -> {
+                    TicketRespond respond = ticketMapper.toRespond(ticket);
+                    respond.setRandomDate(getRandomDateWithinLastWeek());
+                    return respond;
+                })
                 .collect(Collectors.toList());
+    }
+
+    public List<Ticket> getAllTickets1() {
+        return ticketRepository.findAll();
+    }
+
+//    public List<Ticket> getAllTickets1() {
+//        List<Ticket> tickets = ticketRepository.findAll();
+//
+//        // Tạo random date cho mỗi vé
+//        for (Ticket ticket : tickets) {
+//            String randomDate = getRandomDateWithinLastWeek();
+//            ticket.setRandomDate(randomDate); // Gán giá trị randomDate cho từng ticket
+//        }
+//
+//        return tickets;
+//    }
+
+    // Hàm tạo thời gian ngẫu nhiên trong khoảng 1 tuần trước
+    private String getRandomDateWithinLastWeek() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneWeekAgo = now.minusWeeks(1);
+
+        long nowEpoch = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long oneWeekAgoEpoch = oneWeekAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        // Random epoch time giữa oneWeekAgo và now
+        long randomEpoch = ThreadLocalRandom.current().nextLong(oneWeekAgoEpoch, nowEpoch);
+
+        // Chuyển đổi epoch time thành LocalDateTime
+        LocalDateTime randomDate = LocalDateTime.ofInstant(
+                java.time.Instant.ofEpochMilli(randomEpoch),
+                ZoneId.systemDefault()
+        );
+
+        // Format ngày giờ
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return randomDate.format(formatter);
     }
 
     public TicketRespond getTicketById(Long id) {

@@ -76,6 +76,9 @@ public class SecurityConfig {
                                 "/admin/user/**",
                                 "/admin/user/add",
                                 "/admin/user/listUser",
+                                "/admin/user/edit",
+                                "/admin/user/findId",
+                                "/admin/user/{id}",
 
                                 "/admin/trip-list",
                                 "/admin-schedule/",
@@ -97,6 +100,10 @@ public class SecurityConfig {
                                 "/admin/seat-list",
                                 "/admin-seat",
                                 "/admin-seat/seat",
+
+                                "/admin/ticket-list",
+                                "/admin-ticket",
+                                "/admin-ticket/ticket",
 
                                 "/admin/stype-list",
                                 "/admin-type",

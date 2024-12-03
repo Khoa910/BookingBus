@@ -69,7 +69,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" id="manage-ticket-link">
                     <img src="https://cdn-icons-png.flaticon.com/128/3355/3355184.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Vé
@@ -160,6 +160,15 @@
     document.getElementById('manage-seat-type-link').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent page reload
         fetch('/admin-type/type')  // Assuming '/admin/trip' is the URL for your trip form
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('dashboard-content').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading trip form:', error));
+    });
+    document.getElementById('manage-ticket-link').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent page reload
+        fetch('/admin-ticket/ticket')  // Assuming '/admin/trip' is the URL for your trip form
             .then(response => response.text())
             .then(html => {
                 document.getElementById('dashboard-content').innerHTML = html;
