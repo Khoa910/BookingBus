@@ -14,22 +14,24 @@ function showAlert(type, message) {
     }, 3000);
 }
 
-function loadCompany() {
-    fetch('/admin-company/company/listCompany')
+function loadBuss() {
+    fetch('/admin-bus/bus/listBus')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
-            data.forEach(company => {
+            data.forEach(buss => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td>${company.id}</td>
-                        <td>${company.name}</td>
-                        <td>${company.phone_numberC}</td>
+                        <td>${buss.id}</td>
+                        <td>${buss.PlateBus}</td>
+                        <td>${buss.SeatType}</td>
+                        <td>${buss.BusType}</td>
+                        <td>${buss.BCompany}</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" data-id="${company.id}" onclick="editCompany(this)">Chỉnh sửa</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-id="${company.id}" onclick="deleteCompany(this)">Xóa</button>
+                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${buss.id}" onclick="editBuss(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${buss.id}" onclick="deleteBuss(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -40,18 +42,18 @@ function loadCompany() {
         });
 }
 
-function filterCompany() {
+function filterBuss() {
     const searchInput = removeDiacritics(document.getElementById('searchInput').value.toLowerCase().trim());  // Loại bỏ dấu và chuyển thành chữ thường
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const companyName = removeDiacritics(row.cells[1].innerText.toLowerCase());
-        const companyPhone = removeDiacritics(row.cells[2].innerText.toLowerCase());
+        const PlateBuss = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const companyName = removeDiacritics(row.cells[4].innerText.toLowerCase());
 
         // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            fuzzySearch(companyName, searchInput) ||
-            fuzzySearch(companyPhone, searchInput);
+            fuzzySearch(PlateBuss, searchInput) ||
+            fuzzySearch(companyName, searchInput);
 
         // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
         row.style.display = matchesSearch ? '' : 'none';
@@ -90,7 +92,7 @@ function removeDiacritics(str) {
     return str;
 }
 
-function showAddModalCompany() {
+function showAddModalBuss() {
     // Làm sạch các trường trong form
     document.getElementById('addForm').reset(); // Giả sử form của bạn có id là 'accountForm'
 
@@ -99,13 +101,15 @@ function showAddModalCompany() {
     addModal.show();
 }
 
-function addCompany() {
+function addBuss() {
     // Lấy dữ liệu từ các trường input
-    const companyName = document.getElementById('addCompanyName').value;
-    const companyPhone = document.getElementById('addCompanyPhone').value;
+    const plate = document.getElementById('newBusPlate').value;
+    const selectedSeatId = document.getElementById('newSeatCount').value;
+    const selectedBusType = document.getElementById('newBusType').value;
+    const selectedCompanyId = document.getElementById('newCompany').value;
 
     // Kiểm tra dữ liệu đầu vào
-    if (!companyName || !companyPhone) {
+    if (!plate) {
         showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
         return;
     }
@@ -117,50 +121,52 @@ function addCompany() {
     }
 
     // Tạo đối tượng dữ liệu tài khoản
-    const companyData = {
-        companyName,
-        companyPhone
+    const bussData = {
+        plate,
+        selectedSeatId,
+        selectedBusType,
+        selectedCompanyId
     };
-    console.log('Dữ liệu gửi:', companyData);
+    console.log('Dữ liệu gửi:', bussData);
 
     // Gửi yêu cầu POST tới server
-    fetch('/admin-company/company/add', {
+    fetch('/admin-bus/bus/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             // [csrfHeader]: csrfToken // Thêm CSRF token vào header
         },
-        body: JSON.stringify(companyData)
+        body: JSON.stringify(bussData)
     })
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    showAlert('danger', errorData.message || 'Thêm công ty thất bại!');
+                    showAlert('danger', errorData.message || 'Thêm xe thất bại!');
                 });
             }
-            showAlert('success', 'Thêm công ty thành công!');
-            loadCompany(); // Tải lại danh sách công ty
+            showAlert('success', 'Thêm xe thành công!');
+            loadBuss(); // Tải lại danh sách công ty
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công
         })
         .catch(error => {
-            console.error('Lỗi khi thêm công ty:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi thêm công ty!');
+            console.error('Lỗi khi thêm xe:', error);
+            showAlert('danger', 'Có lỗi xảy ra khi thêm xe!');
         });
 }
 
-function deleteCompany(button) {
-    const companyId = button.getAttribute('data-id');
+function deleteBuss(button) {
+    const busId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
     document.getElementById('confirmDeleteButton').onclick = function() {
-        fetch(`/admin-company/company/delete/${companyId}`, { method: 'DELETE' })
+        fetch(`/admin-bus/bus/delete/${busId}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     showAlert('success', 'Xóa công ty thành công!');
                     // Disable the delete button instead of removing the row
-                    loadCompany();
+                    loadBuss();
                     clearFormSearch();
 
                 } else {
@@ -177,39 +183,70 @@ function deleteCompany(button) {
     confirmDeleteModal.show();
 }
 
-function editCompany(button) {
-    const companyId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
+function editBuss(button) {
+    const bussId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
     const row = button.parentElement.parentElement;
     const cells = row.querySelectorAll('td');
-    const station = {
-        name: cells[1].innerText,
-        phone: cells[2].innerText,
+    const buss = {
+        Bplate: cells[1].innerText,
+        Bseat: cells[2].innerText,
+        Btypeseat: cells[3].innerText,
+        Bcompany: cells[4].innerText,
     };
 
-    document.getElementById('CompanyId').value = companyId;
-    document.getElementById('editCompanyName').value = station.name;
-    document.getElementById('editCompanyPhone').value = station.phone;
+    document.getElementById('BusId').value = bussId;
+    document.getElementById('editBusPlate').value = buss.Bplate;
+    document.getElementById('editBusType').value = buss.Btypeseat;
+    // Gán text vào dropdown của "Số chỗ"
+    const seatOptions = document.getElementById('editSeatCount').options;
+    for (let i = 0; i < seatOptions.length; i++) {
+        if (seatOptions[i].innerText.trim() === buss.Bseat.trim()) {
+            seatOptions[i].selected = true;
+            break;
+        }
+    }
+
+    // Gán giá trị vào dropdown "Loại ghế"
+    document.getElementById('editBusType').value = buss.Btypeseat;
+
+    // Gán text vào dropdown "Công ty"
+    const companyOptions = document.getElementById('editCompany').options;
+    for (let i = 0; i < companyOptions.length; i++) {
+        if (companyOptions[i].innerText.trim() === buss.Bcompany.trim()) {
+            companyOptions[i].selected = true;
+            break;
+        }
+    }
     const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
     editModal.show();
 }
 
-function closeModalCompany() {
+function closeModalBuss() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }
 
-function saveChangesCompany() {
-    const id = document.getElementById('CompanyId').value;
-    const name = document.getElementById('editCompanyName').value;
-    const phoneN = document.getElementById('editCompanyPhone').value;
+function saveChangesBuss() {
+    const id = document.getElementById('BusId').value;
+    const plate = document.getElementById('editBusPlate').value;
+    const selectedSeatId = document.getElementById('editSeatCount').value;
+    const selectedBusType = document.getElementById('editBusType').value;
+    const selectedCompanyId = document.getElementById('editCompany').value;
+
+    console.log(plate);
+    console.log(selectedSeatId);
+    console.log(selectedBusType);
+    console.log(selectedCompanyId);
 
     const updatedData = {
         id,
-        name,
-        phoneN,
+        plate,
+        selectedSeatId,
+        selectedBusType,
+        selectedCompanyId
     };
 
-    fetch(`/admin-company/company/update/${id}`, {
+    fetch(`/admin-bus/bus/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -226,7 +263,7 @@ function saveChangesCompany() {
             showAlert('success', 'Lưu thay đổi thành công!');
             const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal1'));
             editModal.hide();
-            loadCompany(); // Cập nhật danh sách tài khoản
+            loadBuss(); // Cập nhật danh sách xe
         })
         .catch(error => {
             console.error('Error:', error);

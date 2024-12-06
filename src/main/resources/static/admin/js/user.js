@@ -91,13 +91,13 @@ function addAccount() {
     const username = document.getElementById('newAccountName').value;
     const password = document.getElementById('newPassword').value;
     const full_name = document.getElementById('newFullName').value;
-    const phone_number = document.getElementById('newPhoneNumber').value;
+    const phone_Number = document.getElementById('newPhoneNumber').value;
     const email = document.getElementById('newEmail').value;
     const address = document.getElementById('newAddress').value;
     const role = document.getElementById('newRole').value;
 
     // Kiểm tra dữ liệu đầu vào
-    if (!username || !password || !full_name || !phone_number || !email || !address || !role) {
+    if (!username || !password || !full_name || !phone_Number || !email || !address || !role) {
         showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
         return;
     }
@@ -118,7 +118,7 @@ function addAccount() {
         username,
         password,
         full_name,
-        phone_number,
+        phone_Number,
         email,
         address,
         role
@@ -229,7 +229,7 @@ function saveChangesAccount() {
     const username = document.getElementById('editAccountName').value;
     // const password = document.getElementById('editPassword').value;
     const full_name = document.getElementById('editFullName').value;
-    const phone_number = document.getElementById('editPhoneNumber').value;
+    const phone_Number = document.getElementById('editPhoneNumber').value;
     const email = document.getElementById('editEmail').value;
     const address = document.getElementById('editAddress').value;
     const role = document.getElementById('editRole').value;
@@ -238,7 +238,7 @@ function saveChangesAccount() {
         id,
         username,
         full_name,
-        phone_number,
+        phone_Number,
         email,
         address,
         role

@@ -59,8 +59,7 @@
         <form class="row g-2" id="searchForm" onsubmit="return false;">
             <div class="col-md-8">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="searchInput" placeholder="Tìm kiếm theo tên tài khoản..." aria-label="Search">
-                    <button type="button" class="btn btn-primary">Tìm kiếm</button>
+                    <input class="form-control" type="text" id="searchInput" placeholder="Tìm kiếm..." aria-label="Search">
                 </div>
             </div>
         </form>
@@ -69,14 +68,14 @@
     <div class="filter-section mb-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-8">
-                <select id="statusSelect" class="form-select" onchange="filterTours()">
+                <select id="statusSelect" class="form-select" onchange="filterBuss()">
                     <option value="">Tất cả ghế</option>
                     <option value="1">Ghế ngồi</option>
                     <option value="0">Ghế nằm</option>
                 </select>
             </div>
             <div class="col-md-4 text-end">
-                <button type="button" class="btn btn-success" onclick="showAddModal()">Thêm</button> <!-- Nút Thêm -->
+                <button type="button" class="btn btn-success" onclick="showAddModalBuss()">Thêm</button> <!-- Nút Thêm -->
             </div>
         </div>
     </div>
@@ -102,10 +101,8 @@
                 <td th:text="${bus.bus_type}">Arrival</td>
                 <td th:text="${bus.bus_company.name}">Price</td>
                 <td class="d-flex justify-content-evenly">
-                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${bus.id}" onclick="editAccount(this)">Chỉnh sửa</button>
-                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
-                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
-                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${bus.id}" onclick="editBuss(this)">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${bus.id}" onclick="deleteBuss(this)">Xóa</button>
                 </td>
             </tr>
             </tbody>
@@ -123,32 +120,44 @@
             </div>
             <div class="modal-body">
                 <form id="editForm1" onsubmit="return false;">
-                    <input type="hidden" id="AccountId" />
+                    <input type="hidden" id="BusId" />
                     <div class="mb-3">
-                        <label for="editBusID" class="form-label">Mã xe</label>
-                        <input type="text" class="form-control" id="editBusID" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPlate" class="form-label">Biển xe</label>
-                        <input type="text" class="form-control" id="editPlate" required> <!-- Thêm trường mật khẩu -->
+                        <label for="editBusPlate" class="form-label">Biển xe</label>
+                        <input type="text" class="form-control" id="editBusPlate" required>
                     </div>
                     <div class="mb-3">
                         <label for="editSeatCount" class="form-label">Số chỗ</label>
-                        <input type="text" class="form-control" id="editSeatCount" required> <!-- Thêm trường họ tên -->
+                        <select id="editSeatCount" class="form-control select2" required>
+                            <option value="" disabled selected>Chọn số chỗ</option>
+                            <option th:each="seat : ${seattypes}"
+                                    th:value="${seat.id}"
+                                    th:text="${seat.seat_count}">
+                            </option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editBusType" class="form-label">Loại xe</label>
-                        <input type="text" class="form-control" id="editBusType" required> <!-- Thêm trường sdt -->
+                        <label for="editBusType" class="form-label">Loại ghế</label>
+                        <select id="editBusType" class="form-select" required>
+                            <option value="" disabled selected>Chọn ghế</option>
+                            <option value="SEATED">Ghế ngồi</option>
+                            <option value="SLEEPER">Ghế nằm</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="editCompany" class="form-label">Công ty</label>
-                        <input type="text" class="form-control" id="editCompany" required>
+                        <select id="editCompany" class="form-control select2" required>
+                            <option value="" disabled selected>Chọn số chỗ</option>
+                            <option th:each="company : ${companies}"
+                                    th:value="${company.id}"
+                                    th:text="${company.name}">
+                            </option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModalBuss()">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChangesBuss()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -160,36 +169,48 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Thêm Tài Khoản</h5>
+                <h5 class="modal-title" id="addModalLabel">Thêm Xe</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method="post" id="addForm" onsubmit="return false;">
                     <div class="mb-3">
-                        <label for="addBusID" class="form-label">Mã xe</label>
-                        <input type="text" class="form-control" id="addBusID" required>
+                        <label for="newBusPlate" class="form-label">Biển xe</label>
+                        <input type="text" class="form-control" id="newBusPlate" required>
                     </div>
                     <div class="mb-3">
-                        <label for="addPlate" class="form-label">Biển xe</label>
-                        <input type="text" class="form-control" id="addPlate" required> <!-- Thêm trường mật khẩu -->
+                        <label for="newSeatCount" class="form-label">Số chỗ</label>
+                        <select id="newSeatCount" class="form-control select2" required>
+                            <option value="" disabled selected>Chọn số chỗ</option>
+                            <option th:each="seat : ${seattypes}"
+                                    th:value="${seat.id}"
+                                    th:text="${seat.seat_count}">
+                            </option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="addSeatCount" class="form-label">Số chỗ</label>
-                        <input type="text" class="form-control" id="addSeatCount" required> <!-- Thêm trường họ tên -->
+                        <label for="newBusType" class="form-label">Loại ghế</label>
+                        <select id="newBusType" class="form-select" required>
+                            <option value="" disabled selected>Chọn ghế</option>
+                            <option value="SEATED">Ghế ngồi</option>
+                            <option value="SLEEPER">Ghế nằm</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="addBusType" class="form-label">Loại xe</label>
-                        <input type="text" class="form-control" id="addBusType" required> <!-- Thêm trường sdt -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="addCompany" class="form-label">Công ty</label>
-                        <input type="text" class="form-control" id="addCompany" required>
+                        <label for="newCompany" class="form-label">Công ty</label>
+                        <select id="newCompany" class="form-control select2" required>
+                            <option value="" disabled selected>Chọn số chỗ</option>
+                            <option th:each="company : ${companies}"
+                                    th:value="${company.id}"
+                                    th:text="${company.name}">
+                            </option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="addAccount()">Thêm xe</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModalBuss()">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="addBuss()">Thêm xe</button>
             </div>
         </div>
     </div>

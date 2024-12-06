@@ -3,14 +3,10 @@ package com.bookingticket.service;
 import com.bookingticket.dto.request.BusRequest;
 import com.bookingticket.dto.respond.BusRespond;
 import com.bookingticket.entity.Bus;
-import com.bookingticket.entity.BusCompany;
 import com.bookingticket.entity.BusStation;
-import com.bookingticket.entity.SeatType;
 import com.bookingticket.mapper.BusMapper;
-import com.bookingticket.repository.BusCompanyRepository;
 import com.bookingticket.repository.BusRepository;
 import com.bookingticket.repository.BusStationRepository;
-import com.bookingticket.repository.SeatTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +67,16 @@ public class BusService {
         return busMapper.toRespond(savedBus);
     }
 
+    public boolean addBuss(Bus bus) {
+        try {
+            busRepository.save(bus); // Lưu xe mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
     public Optional<BusRespond> updateBus(Long id, Long departureStationId, Long arrivalStationId) {
         Optional<Bus> existingBus = busRepository.findById(id);
         if (existingBus.isPresent()) {
@@ -98,12 +104,26 @@ public class BusService {
         return Optional.empty();
     }
 
-    public boolean deleteBus(Long busId) {
-        if (busRepository.existsById(busId)) {
-            busRepository.deleteById(busId);
+    public boolean updateBus2(Bus bus) {
+        Bus Buss = busRepository.findById(bus.getId()).orElse(null);
+        if (Buss != null) {
+            Buss.setLicense_plate(bus.getLicense_plate());
+            Buss.getSeatType().setId(bus.getSeatType().getId());
+            Buss.setBus_type(bus.getBus_type());
+            Buss.getBus_company().setId(bus.getBus_company().getId());
+            busRepository.save(Buss);
             return true;
         }
         return false;
+    }
+
+    public void deleteBus(Long busId) {
+        Optional<Bus> BusOptional = busRepository.findById(busId);
+        if (BusOptional.isPresent()) {
+            busRepository.delete(BusOptional.get());
+        } else {
+            throw new RuntimeException("BusStation not found with id: " + busId);
+        }
     }
 
 }

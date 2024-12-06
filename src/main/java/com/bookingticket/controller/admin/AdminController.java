@@ -109,7 +109,7 @@ public class AdminController {
             String username = (String) accountData.get("username");
             String password = (String) accountData.get("password");
             String fullName = (String) accountData.get("full_name");
-            String phoneNumber = (String) accountData.get("phone_number");
+            String phoneNumber = (String) accountData.get("phone_Number");
             String email = (String) accountData.get("email");
             String address = (String) accountData.get("address");
             String roleName = (String) accountData.get("role");
@@ -173,7 +173,7 @@ public class AdminController {
             Long accountIdLong = Long.parseLong(accountId);
             String username = (String) accountData.get("username");
             String fullName = (String) accountData.get("full_name");
-            String phoneNumber = (String) accountData.get("phone_number");
+            String phoneNumber = (String) accountData.get("phone_Number");
             String email = (String) accountData.get("email");
             String address = (String) accountData.get("address");
             String roleName = (String) accountData.get("role");

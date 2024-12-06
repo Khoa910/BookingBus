@@ -38,6 +38,10 @@ public class BusCompanyService {
         return busCompany.map(busCompanyMapper::toRespond);
     }
 
+    public Optional<BusCompany> getBusCompanyById2(long stationId) {
+        return busCompanyRepository.findById(stationId);
+    }
+
     public BusCompanyRespond addBusCompany(BusCompanyRequest busCompanyRequest) {
 
         Optional<BusCompany> existingBusCompany = busCompanyRepository.findByName(busCompanyRequest.getName());
@@ -77,11 +81,24 @@ public class BusCompanyService {
         return Optional.empty();
     }
 
-    public boolean deleteBusCompany(Long id) {
-        if (busCompanyRepository.existsById(id)) {
-            busCompanyRepository.deleteById(id);
+    public boolean updateBusCompany2(BusCompany company) {
+        BusCompany BCompany = busCompanyRepository.findById(company.getId()).orElse(null);
+        if (BCompany != null) {
+            BCompany.setName(company.getName());
+            BCompany.setPhone_number(company.getPhone_number());
+            busCompanyRepository.save(BCompany);
             return true;
         }
         return false;
+    }
+
+
+    public void deleteBusCompany(Long id) {
+        Optional<BusCompany> busCompanyOptional = busCompanyRepository.findById(id);
+        if (busCompanyOptional.isPresent()) {
+            busCompanyRepository.delete(busCompanyOptional.get());
+        } else {
+            throw new RuntimeException("BusStation not found with id: " + id);
+        }
     }
 }

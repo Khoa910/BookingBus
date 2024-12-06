@@ -15,7 +15,7 @@ function showAlert(type, message) {
 }
 
 function loadCompany() {
-    fetch('/admin-company/company')
+    fetch('/admin-company/company/listCompany')
         .then(response => response.json())
         .then(data => {
             const tableContent = document.getElementById('table-content');
@@ -24,11 +24,12 @@ function loadCompany() {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${company.id}">ID</td>
-                        <td th:text="${company.name}">Name</td>
-                        <td th:text="${company.phone_number}">PhoneNumber</td>
+                        <td>${company.id}</td>
+                        <td>${company.name}</td>
+                        <td>${company.phone_numberC}</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${company.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${company.id}" onclick="editCompany(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${company.id}" onclick="deleteCompany(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -101,7 +102,7 @@ function showAddModalCompany() {
 function addCompany() {
     // Lấy dữ liệu từ các trường input
     const companyName = document.getElementById('addCompanyName').value;
-    const companyPhone = document.getElementById('addPhoneNumber').value;
+    const companyPhone = document.getElementById('addCompanyPhone').value;
 
     // Kiểm tra dữ liệu đầu vào
     if (!companyName || !companyPhone) {
@@ -110,7 +111,7 @@ function addCompany() {
     }
 
     // Hiển thị alert xác nhận
-    const confirmation = confirm("Bạn có chắc chắn muốn thêm tài khoản này không?");
+    const confirmation = confirm("Bạn có chắc chắn muốn thêm công ty này không?");
     if (!confirmation) {
         return; // Nếu người dùng không xác nhận, dừng thao tác
     }
@@ -144,26 +145,26 @@ function addCompany() {
             addModal.hide(); // Ẩn modal sau khi thêm thành công
         })
         .catch(error => {
-            console.error('Lỗi khi thêm tài khoản:', error);
+            console.error('Lỗi khi thêm công ty:', error);
             showAlert('danger', 'Có lỗi xảy ra khi thêm công ty!');
         });
 }
 
 function deleteCompany(button) {
-    const accountId = button.getAttribute('data-id');
+    const companyId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
     document.getElementById('confirmDeleteButton').onclick = function() {
-        fetch('/admin/accounts/delete/${accountId}', { method: 'DELETE' })
+        fetch(`/admin-company/company/delete/${companyId}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
-                    showAlert('success', 'Xóa tài khoản thành công!');
+                    showAlert('success', 'Xóa công ty thành công!');
                     // Disable the delete button instead of removing the row
-                    loadAccounts()
+                    loadCompany();
                     clearFormSearch();
 
                 } else {
-                    showAlert('danger', 'Xóa tài khoản thất bại!');
+                    showAlert('danger', 'Xóa công ty thất bại!');
                 }
                 confirmDeleteModal.hide();
             })
@@ -177,33 +178,19 @@ function deleteCompany(button) {
 }
 
 function editCompany(button) {
-    // Lấy accountId từ button
-    const companyId = event.target.getAttribute('data-id');
-    console.log(companyId);
+    const companyId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll('td');
+    const station = {
+        name: cells[1].innerText,
+        phone: cells[2].innerText,
+    };
 
-    // Fetch thông tin tài khoản từ API
-    fetch(`/admin/user/${accountId}`)
-        .then(response => response.json())
-        .then(account => {
-            console.log(account);
-            // Gán giá trị vào các trường input trong modal
-            document.getElementById('AccountId').value = account.id;
-            document.getElementById('editAccountName').value = account.username;
-            document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-            document.getElementById('editFullName').value = account.full_name;
-            document.getElementById('editPhoneNumber').value = account.phone_number;
-            document.getElementById('editEmail').value = account.email;
-            document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role;
-
-            // Hiển thị modal chỉnh sửa
-            const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-            editModal.show();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-        });
+    document.getElementById('CompanyId').value = companyId;
+    document.getElementById('editCompanyName').value = station.name;
+    document.getElementById('editCompanyPhone').value = station.phone;
+    const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+    editModal.show();
 }
 
 function closeModalCompany() {
@@ -211,27 +198,18 @@ function closeModalCompany() {
     if (modal) modal.hide();
 }
 
-function saveChanges() {
-    const id = document.getElementById('AccountId').value;
-    const username = document.getElementById('editAccountName').value;
-    const password = document.getElementById('editPassword').value;
-    const fullName = document.getElementById('editFullName').value;
-    const phoneNumber = document.getElementById('editPhoneNumber').value;
-    const email = document.getElementById('editEmail').value;
-    const address = document.getElementById('editAddress').value;
-    const role = document.getElementById('editRole').value;
+function saveChangesCompany() {
+    const id = document.getElementById('CompanyId').value;
+    const name = document.getElementById('editCompanyName').value;
+    const phoneN = document.getElementById('editCompanyPhone').value;
 
     const updatedData = {
         id,
-        username,
-        fullName,
-        phoneNumber,
-        email,
-        address,
-        role
+        name,
+        phoneN,
     };
 
-    fetch(`/admin/bus/update/${id}`, {
+    fetch(`/admin-company/company/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -248,7 +226,7 @@ function saveChanges() {
             showAlert('success', 'Lưu thay đổi thành công!');
             const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal1'));
             editModal.hide();
-            loadAccounts(); // Cập nhật danh sách tài khoản
+            loadCompany(); // Cập nhật danh sách tài khoản
         })
         .catch(error => {
             console.error('Error:', error);

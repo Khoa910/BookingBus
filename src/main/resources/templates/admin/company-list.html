@@ -97,9 +97,7 @@
                 <td th:text="${company.phone_number}">PhoneNumber</td>
                 <td class="d-flex justify-content-evenly">
                     <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${company.id}" onclick="editCompany(this)">Chỉnh sửa</button>
-                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
-                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
-                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                    <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${company.id}" onclick="deleteCompany(this)">Xóa</button>
                 </td>
             </tr>
             </tbody>
@@ -117,23 +115,20 @@
             </div>
             <div class="modal-body">
                 <form id="editForm1" onsubmit="return false;">
-                    <div class="mb-3">
-                        <label for="editCompanyID" class="form-label">Mã công ty</label>
-                        <input type="text" class="form-control" id="editCompanyID" required>
-                    </div>
+                    <input type="hidden" id="CompanyId" />
                     <div class="mb-3">
                         <label for="editCompanyName" class="form-label">Tên công ty</label>
                         <input type="text" class="form-control" id="editCompanyName" required> <!-- Thêm trường mật khẩu -->
                     </div>
                     <div class="mb-3">
-                        <label for="editPhoneNumber" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="editPhoneNumber" required> <!-- Thêm trường họ tên -->
+                        <label for="editCompanyPhone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="editCompanyPhone" required> <!-- Thêm trường họ tên -->
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModalCompany()">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+                <button type="button" class="btn btn-primary" onclick="saveChangesCompany()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -150,22 +145,18 @@
             </div>
             <div class="modal-body">
                 <form method="post" id="addForm" onsubmit="return false;">
-<!--                    <div class="mb-3">-->
-<!--                        <label for="addCompanyID" class="form-label">Mã công ty</label>-->
-<!--                        <input type="text" class="form-control" id="addCompanyID" required>-->
-<!--                    </div>-->
                     <div class="mb-3">
                         <label for="addCompanyName" class="form-label">Tên công ty</label>
                         <input type="text" class="form-control" id="addCompanyName" required> <!-- Thêm trường mật khẩu -->
                     </div>
                     <div class="mb-3">
-                        <label for="addPhoneNumber" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="addPhoneNumber" required> <!-- Thêm trường họ tên -->
+                        <label for="addCompanyPhone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="addCompanyPhone" required> <!-- Thêm trường họ tên -->
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModalCompany()">Đóng</button>
                 <button type="button" class="btn btn-primary" onclick="addCompany()">Thêm công ty</button>
             </div>
         </div>

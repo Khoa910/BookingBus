@@ -97,6 +97,9 @@ public class SecurityConfig {
                                 "/admin-bus",
                                 "/admin-bus/bus",
                                 "/admin/bus-list",
+                                "/admin-bus/bus/add",
+                                "/admin-bus/bus/update/{id}",
+                                "/admin-bus/bus/delete/{id}",
 
                                 "/admin/company-list",
                                 "/admin-company",

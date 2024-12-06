@@ -2,6 +2,7 @@ package com.bookingticket.service;
 
 import com.bookingticket.dto.request.SeatTypeRequest;
 import com.bookingticket.dto.respond.SeatTypeRespond;
+import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.SeatType;
 import com.bookingticket.mapper.SeatTypeMapper;
 import com.bookingticket.repository.SeatTypeRepository;
@@ -29,6 +30,10 @@ public class SeatTypeService {
         return seatTypes.stream()
                 .map(seatTypeMapper::toRespond)
                 .collect(Collectors.toList());
+    }
+
+    public List<SeatType> getAllSeatTypes2(){
+        return seatTypeRepository.findAll();
     }
 
     public SeatTypeRespond getSeatTypeById(Long id) {
