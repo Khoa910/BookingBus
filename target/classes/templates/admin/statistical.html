@@ -275,82 +275,188 @@
 
 
 
+<!--<!DOCTYPE html>-->
+<!--<html lang="vi" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Thống kê thanh toán</title>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Thống kê thanh toán</h1>-->
+<!--<div>-->
+<!--    <button id="btn-monthly">Xem theo tháng</button>-->
+<!--    <button id="btn-daily">Xem theo ngày</button>-->
+<!--</div>-->
+<!--<canvas id="myChart"></canvas>-->
+
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        var monthlyPayments = ${monthlyPayments};-->
+<!--        var dailyPayments = ${dailyPayments};-->
+
+<!--        // Khởi tạo biến để lưu trữ lựa chọn của người dùng-->
+<!--        var selectedView = 'monthly'; // Mặc định hiển thị biểu đồ theo tháng-->
+
+<!--        // Hàm tạo biểu đồ-->
+<!--        function createChart(data) {-->
+<!--            var ctx = document.getElementById('myChart').getContext('2d');-->
+<!--            var myChart = new Chart(ctx, {-->
+<!--                type: 'bar',-->
+<!--                data: {-->
+<!--                    labels: data.labels,-->
+<!--                    datasets: [{-->
+<!--                        label: 'Số lượng thanh toán',-->
+<!--                        data: data.data,-->
+<!--                        backgroundColor: 'rgba(54, 162, 235, 0.2)',-->
+<!--                        borderColor: 'rgba(54, 162, 235, 1)',-->
+<!--                        borderWidth: 1-->
+<!--                    }]-->
+<!--                },-->
+<!--                options: {-->
+<!--                    scales: {-->
+<!--                        yAxes: [{-->
+<!--                            ticks: {-->
+<!--                                beginAtZero:true-->
+<!--                            }-->
+<!--                        }]-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Hàm chuẩn bị dữ liệu cho biểu đồ-->
+<!--        function prepareData(view) {-->
+<!--            var labels, data;-->
+<!--            if (view === 'monthly') {-->
+<!--                labels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']; // Thay thế bằng danh sách tháng thực tế-->
+<!--                data = monthlyPayments;-->
+<!--            } else {-->
+<!--                labels = Array.from({ length: 31 }, (_, i) => `Ngày ${i + 1}`); // Thay thế bằng danh sách ngày thực tế-->
+<!--                data = dailyPayments;-->
+<!--            }-->
+<!--            return {-->
+<!--                labels: labels,-->
+<!--                data: data-->
+<!--            };-->
+<!--        }-->
+
+<!--        // Tạo biểu đồ mặc định theo tháng-->
+<!--        createChart(prepareData(selectedView));-->
+
+<!--        // Thêm nút chuyển đổi giữa biểu đồ theo ngày và tháng-->
+<!--        $('#btn-monthly').click(function() {-->
+<!--            selectedView = 'monthly';-->
+<!--            createChart(prepareData(selectedView));-->
+<!--        });-->
+<!--        $('#btn-daily').click(function() {-->
+<!--            selectedView = 'daily';-->
+<!--            createChart(prepareData(selectedView));-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Thống kê thanh toán</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Payment Statistics</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: right; /* Dịch nội dung sang phải */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        label, select {
+            display: block; /* Hiển thị trên từng dòng */
+            margin-bottom: 10px;
+            text-align: right; /* Dịch nhãn và combo box sang phải */
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-left: auto; /* Dịch bảng sang phải */
+            margin-right: 0;
+            text-align: left; /* Nội dung bên trong bảng căn trái */
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #filter {
+            padding: 5px;
+            width: 200px;
+            float: right; /* Đưa combo box sang bên phải */
+        }
+    </style>
 </head>
 <body>
-<h1>Thống kê thanh toán</h1>
-<div>
-    <button id="btn-monthly">Xem theo tháng</button>
-    <button id="btn-daily">Xem theo ngày</button>
-</div>
-<canvas id="myChart"></canvas>
+<h1>Payment Statistics</h1>
+<label for="filter">View statistics by:</label>
+<select id="filter">
+    <option value="monthly">Monthly</option>
+    <option value="daily">Daily</option>
+</select>
+
+<table id="statisticsTable" border="1">
+    <thead>
+    <tr>
+        <th>Time Period</th>
+        <th>Total Payment</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 
 <script>
-    $(document).ready(function() {
-        var monthlyPayments = ${monthlyPayments};
-        var dailyPayments = ${dailyPayments};
-
-        // Khởi tạo biến để lưu trữ lựa chọn của người dùng
-        var selectedView = 'monthly'; // Mặc định hiển thị biểu đồ theo tháng
-
-        // Hàm tạo biểu đồ
-        function createChart(data) {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Số lượng thanh toán',
-                        data: data.data,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
-                }
+    $(document).ready(function () {
+        function fetchData(filter) {
+            $.get('/admin-payment/payment-statistics-data', function (data) {
+                const stats = filter === 'monthly' ? data.monthlyPayments : data.dailyPayments;
+                updateTable(stats, filter);
             });
         }
 
-        // Hàm chuẩn bị dữ liệu cho biểu đồ
-        function prepareData(view) {
-            var labels, data;
-            if (view === 'monthly') {
-                labels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']; // Thay thế bằng danh sách tháng thực tế
-                data = monthlyPayments;
-            } else {
-                labels = Array.from({ length: 31 }, (_, i) => `Ngày ${i + 1}`); // Thay thế bằng danh sách ngày thực tế
-                data = dailyPayments;
-            }
-            return {
-                labels: labels,
-                data: data
-            };
+        function updateTable(stats, filter) {
+            const tableBody = $('#statisticsTable tbody');
+            tableBody.empty();
+            const isMonthly = filter === 'monthly';
+            stats.forEach((stat, index) => {
+                const period = isMonthly ? `Month ${index + 1}` : `Day ${index + 1}`;
+                tableBody.append(`
+                    <tr>
+                        <td>${period}</td>
+                        <td>${stat}</td>
+                    </tr>
+                `);
+            });
         }
 
-        // Tạo biểu đồ mặc định theo tháng
-        createChart(prepareData(selectedView));
-
-        // Thêm nút chuyển đổi giữa biểu đồ theo ngày và tháng
-        $('#btn-monthly').click(function() {
-            selectedView = 'monthly';
-            createChart(prepareData(selectedView));
-        });
-        $('#btn-daily').click(function() {
-            selectedView = 'daily';
-            createChart(prepareData(selectedView));
+        fetchData('monthly');
+        $('#filter').on('change', function () {
+            const filter = $(this).val();
+            fetchData(filter);
         });
     });
 </script>

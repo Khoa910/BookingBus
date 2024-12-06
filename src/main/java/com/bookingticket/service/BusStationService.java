@@ -47,6 +47,10 @@ public class BusStationService {
                 .orElse(null); // Use Optional to handle null values
     }
 
+    public Optional<BusStation> getBusStationById2(long stationId) {
+        return busStationRepository.findById(stationId);
+    }
+
     public BusStationRespond createBusStation(BusStationRequest request) {
         BusStation busStation = busStationMapper.toEntity(request);
         BusStation savedBusStation = busStationRepository.save(busStation);
@@ -74,6 +78,17 @@ public class BusStationService {
         } else {
             throw new RuntimeException("BusStation not found with id: " + id);
         }
+    }
+
+    public boolean updateBusStation2(BusStation station) {
+        BusStation Bstation = busStationRepository.findById(station.getId()).orElse(null);
+        if (Bstation != null) {
+            Bstation.setName(station.getName());
+            Bstation.setAddress(station.getAddress());
+            busStationRepository.save(Bstation);
+            return true;
+        }
+        return false;
     }
 
     public void deleteBusStation(Long id) {

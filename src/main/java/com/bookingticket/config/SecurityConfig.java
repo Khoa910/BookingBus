@@ -89,6 +89,10 @@ public class SecurityConfig {
                                 "/admin/station-list",
                                 "/admin-station",
                                 "/admin-station/station",
+                                "/admin-station/station/listStation",
+                                "/admin-station/station/add",
+                                "/admin-station/station/update/{id}",
+                                "/admin-station/station/delete/{id}",
 
                                 "/admin-bus",
                                 "/admin-bus/bus",

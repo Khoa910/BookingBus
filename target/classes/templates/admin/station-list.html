@@ -89,17 +89,14 @@
                 <th>Địa chỉ</th>
             </tr>
             </thead>
-            <!--            <tbody id="table-content">-->
-            <tbody>
+            <tbody id="table-content">
             <tr th:each="station : ${stations}">
                 <td th:text="${station.id}">ID</td>
                 <td th:text="${station.name}">Plate</td>
                 <td th:text="${station.address}">Price</td>
                 <td class="d-flex justify-content-evenly">
-                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${station.id}" onclick="editAccount(this)">Chỉnh sửa</button>
-                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
-                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
-                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                    <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${station.id}" onclick="editStation(this)">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${station.id}" onclick="deleteStation(this)">Xóa</button>
                 </td>
             </tr>
             </tbody>
@@ -117,44 +114,15 @@
             </div>
             <div class="modal-body">
                 <form id="editForm1" onsubmit="return false;">
-                    <input type="hidden" id="AccountId" />
+                    <input type="hidden" id="StationId" />
                     <div class="mb-3">
-                        <label for="editAccountName" class="form-label">Tên Tài Khoản</label>
-                        <input type="text" class="form-control" id="editAccountName" required>
+                        <label for="editStationName" class="form-label">Tên Trạm Xe</label>
+                        <input type="text" class="form-control" id="editStationName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editPassword" class="form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" id="editPassword" required> <!-- Thêm trường mật khẩu -->
+                        <label for="editStationAddress" class="form-label">Địa Chỉ</label>
+                        <input type="text" class="form-control" id="editStationAddress" required> <!-- Thêm trường mật khẩu -->
                     </div>
-                    <div class="mb-3">
-                        <label for="editFullName" class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" id="editFullName" required> <!-- Thêm trường họ tên -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPhoneNumber" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="editPhoneNumber" required> <!-- Thêm trường sdt -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAddress" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="editAddress" required> <!-- Thêm trường địa chỉ -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="editRole" class="form-label">Vai Trò</label>
-                        <!--                        <select id="editRole" class="form-control" required>-->
-                        <!--                            <option value="" disabled selected>Chọn vai trò</option>-->
-                        <!--                            <option th:each="role : ${roles}"-->
-                        <!--                                    th:text="${role.name}"></option>-->
-                        <!--                        </select>-->
-                        <input type="text" class="form-control" id="editRole" required>
-                    </div>
-                    <!--                    <div class="modal-footer">-->
-                    <!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
-                    <!--                        <button type="button" class="btn btn-primary">Lưu thay đổi</button>-->
-                    <!--                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">
@@ -181,8 +149,8 @@
                         <input type="text" class="form-control" id="newStationName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="newAddress" class="form-label">Địa Chỉ</label>
-                        <input type="text" class="form-control" id="newAddress" required> <!-- Thêm trường mật khẩu -->
+                        <label for="newStationAddress" class="form-label">Địa Chỉ</label>
+                        <input type="text" class="form-control" id="newStationAddress" required> <!-- Thêm trường mật khẩu -->
                     </div>
                 </form>
             </div>

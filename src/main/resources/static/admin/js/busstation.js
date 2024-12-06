@@ -15,21 +15,33 @@ function showAlert(type, message) {
 }
 
 function loadStations() {
-    fetch('/admin-station/station/listStation')
+    fetch('/admin-station/station/listStation', {
+        method: 'GET', // Sử dụng GET
+        headers: {
+            'Content-Type': 'application/json', // Định dạng dữ liệu là JSON
+        }
+    })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
+            // const values = Object.values(data);
+            // console.log(values);
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
 
             data.forEach(station => {
+            // Duyệt qua từng key trong đối tượng
+            // Object.keys(data).forEach(key => {
+            //     const station = data[key]; // Lấy từng đối tượng station
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${station.id}"></td>
-                        <td th:text="${station.name}"></td> 
-                        <td th:text="${station.address}"></td> 
+                        <td>${station.id}</td>
+                        <td>${station.name}</td> 
+                        <td>${station.address}</td> 
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${station.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${station.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${station.id}" onclick="deleteStation(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -102,7 +114,7 @@ function showAddModalStation() {
 function addStation() {
     // Lấy dữ liệu từ các trường input
     const nameStation = document.getElementById('newStationName').value;
-    const addressStation = document.getElementById('newAddress').value;
+    const addressStation = document.getElementById('newStationAddress').value;
 
     // Kiểm tra dữ liệu đầu vào
     if (!nameStation || !addressStation) {
@@ -145,7 +157,7 @@ function addStation() {
                 });
             }
             showAlert('success', 'Thêm trạm xe thành công!');
-            loadAccounts(); // Tải lại danh sách trạm xe
+            loadStations(); // Tải lại danh sách trạm xe
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công
@@ -157,16 +169,16 @@ function addStation() {
 }
 
 function deleteStation(button) {
-    const accountId = button.getAttribute('data-id');
+    const stationId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
     document.getElementById('confirmDeleteButton').onclick = function() {
-        fetch('/admin/accounts/delete/${accountId}', { method: 'DELETE' })
+        fetch(`/admin-station/station/delete/${stationId}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     showAlert('success', 'Xóa tài khoản thành công!');
                     // Disable the delete button instead of removing the row
-                    loadAccounts()
+                    loadStations();
                     clearFormSearch();
 
                 } else {
@@ -184,37 +196,19 @@ function deleteStation(button) {
 }
 
 function editStation(button) {
-    // Lấy accountId từ button
-    const accountId = button.getAttribute('data-id');
-    console.log(accountId);
+    const stationId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll('td');
+    const station = {
+        name: cells[1].innerText,
+        address: cells[2].innerText,
+    };
 
-    // Fetch thông tin tài khoản từ API
-    fetch(`/admin/user/${accountId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Không thể lấy thông tin tài khoản!');
-            }
-            return response.json();
-        })
-        .then(account => {
-            // Gán giá trị vào các trường input trong modal
-            document.getElementById('AccountId').value = account.id;
-            document.getElementById('editAccountName').value = account.username;
-            document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-            document.getElementById('editFullName').value = account.full_name;
-            document.getElementById('editPhoneNumber').value = account.phone_number;
-            document.getElementById('editEmail').value = account.email;
-            document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role;
-
-            // Hiển thị modal chỉnh sửa
-            const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-            editModal.show();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-        });
+    document.getElementById('StationId').value = stationId;
+    document.getElementById('editStationName').value = station.name;
+    document.getElementById('editStationAddress').value = station.address;
+    const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+    editModal.show();
 }
 
 function closeModalStation() {
@@ -223,26 +217,17 @@ function closeModalStation() {
 }
 
 function saveChangesStation() {
-    const id = document.getElementById('AccountId').value;
-    const username = document.getElementById('editAccountName').value;
-    const password = document.getElementById('editPassword').value;
-    const fullName = document.getElementById('editFullName').value;
-    const phoneNumber = document.getElementById('editPhoneNumber').value;
-    const email = document.getElementById('editEmail').value;
-    const address = document.getElementById('editAddress').value;
-    const role = document.getElementById('editRole').value;
+    const id = document.getElementById('StationId').value;
+    const name = document.getElementById('editStationName').value;
+    const address = document.getElementById('editStationAddress').value;
 
     const updatedData = {
         id,
-        username,
-        fullName,
-        phoneNumber,
-        email,
-        address,
-        role
+        name,
+        address
     };
 
-    fetch(`/admin/bus/update/${id}`, {
+    fetch(`/admin-station/station/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -259,7 +244,7 @@ function saveChangesStation() {
             showAlert('success', 'Lưu thay đổi thành công!');
             const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal1'));
             editModal.hide();
-            loadAccounts(); // Cập nhật danh sách tài khoản
+            loadStations(); // Cập nhật danh sách trạm xe
         })
         .catch(error => {
             console.error('Error:', error);
