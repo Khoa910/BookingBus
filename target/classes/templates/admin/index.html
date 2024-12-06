@@ -19,7 +19,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-trip-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/17212/17212113.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/17212/17212113.png" alt="Quản lý chuyến xe" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Quản lý chuyến xe
                             </span>
@@ -28,7 +28,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-bus-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/15553/15553211.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/15553/15553211.png" alt="Quản lý xe" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Quản lý xe
                             </span>
@@ -37,7 +37,7 @@
             </li>
             <li class="has-subnav">
                 <a href="#" id="manage-station-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/6395/6395324.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/6395/6395324.png" alt="Trạm xe" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Trạm xe
                             </span>
@@ -46,7 +46,7 @@
             </li>
             <li>
                 <a href="#" id="manage-company-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/4300/4300059.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/4300/4300059.png" alt="Công ty" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Công ty
                             </span>
@@ -62,7 +62,7 @@
 <!--            </li>-->
             <li>
                 <a href="#" id="manage-seat-type-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/17386/17386784.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/17386/17386784.png" alt="Loại chỗ ngồi" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Loại chỗ ngồi
                             </span>
@@ -70,7 +70,7 @@
             </li>
             <li>
                 <a href="#" id="manage-ticket-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/3355/3355184.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/3355/3355184.png" alt="Vé" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Vé
                             </span>
@@ -78,7 +78,7 @@
             </li>
             <li>
                 <a href="#" id="statistical-payment">
-                    <img src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/11083/11083287.png" alt="Thống kê" style="width: 50px; height: 50px; margin-right: 20px;">
                     <span class="nav-text">
                                 Thống kê
                             </span>
@@ -181,15 +181,44 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById('dashboard-content').innerHTML = html;
+                // After content is loaded, initialize the JS for statistical page
+                initializeStatisticalPage();
             })
             .catch(error => console.error('Error loading statistics form:', error));
     });
 
-    // document.getElementById('viewChart').addEventListener('click', function () {
-    //     const viewType = document.getElementById('viewType').value;
-    //     const chartImage = document.getElementById('chartImage');
-    //     chartImage.src = `/api/payment-chart?viewType=${viewType}`;
-    // });
+    function initializeStatisticalPage() {
+        $(document).ready(function () {
+            function fetchData(filter) {
+                $.get('/admin-payment/payment-statistics-data', function (data) {
+                    const stats = filter === 'monthly' ? data.monthlyPayments : data.dailyPayments;
+                    updateTable(stats, filter);
+                });
+            }
+
+            function updateTable(stats, filter) {
+                const tableBody = $('#statisticsTable tbody');
+                tableBody.empty();
+                const isMonthly = filter === 'monthly';
+                stats.forEach((stat, index) => {
+                    const period = isMonthly ? `Tháng ${index + 1}` : `Ngày ${index + 1}`;
+                    tableBody.append(`
+                    <tr>
+                        <td>${period}</td>
+                        <td>${stat}</td>
+                    </tr>
+                `);
+                });
+            }
+
+            fetchData('monthly');
+            $('#filter').on('change', function () {
+                const filter = $(this).val();
+                fetchData(filter);
+            });
+        });
+    }
+
 </script>
 <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -201,6 +230,7 @@
 <script th:src="@{/admin/js/busstation.js}"></script>
 <script th:src="@{/admin/js/seat.js}"></script>
 <script th:src="@{/admin/js/bus.js}"></script>
-<!--<script th:src="@{/admin/js/statistical.js}"></script>-->
+<script th:src="@{/admin/js/stype.js}"></script>
+<script th:src="@{/admin/js/statistical.js}"></script>
 </body>
 </html>

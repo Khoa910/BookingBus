@@ -2,7 +2,6 @@ package com.bookingticket.service;
 
 import com.bookingticket.dto.request.SeatTypeRequest;
 import com.bookingticket.dto.respond.SeatTypeRespond;
-import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.SeatType;
 import com.bookingticket.mapper.SeatTypeMapper;
 import com.bookingticket.repository.SeatTypeRepository;
@@ -68,6 +67,27 @@ public class SeatTypeService {
         } else {
             throw new RuntimeException("SeatType not found with id: " + id);
         }
+    }
+
+    public boolean addSeatType2(SeatType seat) {
+        try {
+            seatTypeRepository.save(seat); // Lưu tài khoản mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
+    public boolean updateSeatType2(SeatType seat) {
+        SeatType BSeat = seatTypeRepository.findById(seat.getId()).orElse(null);
+        if (BSeat != null) {
+            BSeat.setSeat_count(seat.getSeat_count());
+            BSeat.setDescription(seat.getDescription());
+            seatTypeRepository.save(BSeat);
+            return true;
+        }
+        return false;
     }
 
     public void deleteSeatType(Long id) {

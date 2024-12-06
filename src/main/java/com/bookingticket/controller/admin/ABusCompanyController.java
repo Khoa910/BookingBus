@@ -31,7 +31,7 @@ public class ABusCompanyController {
 
     @GetMapping("/company/listCompany")
     @ResponseBody
-    public ResponseEntity<List<Map<String, String>>> getAllStationJson() {
+    public ResponseEntity<List<Map<String, String>>> getAllCompanyJson() {
         List<BusCompany> companies = AbusCompanyService.getAllBusCompanies2();
         List<Map<String, String>> companyList = new ArrayList<>();
 

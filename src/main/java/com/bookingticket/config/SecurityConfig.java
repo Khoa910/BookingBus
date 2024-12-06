@@ -118,6 +118,9 @@ public class SecurityConfig {
                                 "/admin/stype-list",
                                 "/admin-type",
                                 "/admin-type/type",
+                                "/admin-type/type/add",
+                                "/admin-type/type/update/{id}",
+                                "/admin-type/type/delete/{id}",
 
                                 "/admin/statistical",
                                 "/admin-payment",
