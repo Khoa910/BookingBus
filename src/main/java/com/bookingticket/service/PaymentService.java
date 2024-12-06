@@ -31,6 +31,10 @@ public class PaymentService {
                 .collect(Collectors.toList());
     }
 
+    public List<Payment> getAllPayments2() {
+        return paymentRepository.findAll();
+    }
+
     public PaymentRespond getPaymentById(Long id) {
         Optional<Payment> paymentOptional = paymentRepository.findById(id);
         return paymentOptional.map(paymentMapper::toRespond)

@@ -242,7 +242,7 @@ function saveChangesStation() {
         role
     };
 
-    fetch(`/admin/user/update/${id}`, {
+    fetch(`/admin/bus/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

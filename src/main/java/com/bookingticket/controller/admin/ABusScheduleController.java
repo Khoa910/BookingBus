@@ -1,32 +1,39 @@
 package com.bookingticket.controller.admin;
 
-import com.bookingticket.dto.respond.BusScheduleDisplayRespond;
-import com.bookingticket.dto.respond.BusScheduleRespond;
 import com.bookingticket.dto.respond.ScheduleInfoRespond;
+import com.bookingticket.entity.Bus;
 import com.bookingticket.entity.BusSchedule;
+import com.bookingticket.entity.BusStation;
 import com.bookingticket.service.BusScheduleService;
+import com.bookingticket.service.BusService;
+import com.bookingticket.service.BusStationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
-@RequestMapping( "/admin-schebus")
+@RequestMapping( "/admin-schedule")
 public class ABusScheduleController {
     private final BusScheduleService AbusScheduleService;
+    private final BusService AbusService;
+    private final BusStationService AbusStationService;
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-    public ABusScheduleController(BusScheduleService AbusScheduleService){
+    public ABusScheduleController(BusScheduleService AbusScheduleService, BusService AbusService, BusStationService AbusStationService){
         this.AbusScheduleService = AbusScheduleService;
+        this.AbusService = AbusService;
+        this.AbusStationService = AbusStationService;
     }
 
 //    @GetMapping("/trip")
@@ -97,4 +104,62 @@ public class ABusScheduleController {
         }
         return ResponseEntity.ok(busSche); // Trả về 200 với tài khoản
     }
+
+    @PostMapping("/trip/add")
+    public ResponseEntity<Map<String, String>> addSchedule(@RequestBody Map<String, Object> scheduleData) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            // Retrieve schedule data
+            String plate = (String) scheduleData.get("plate");
+            String departure = (String) scheduleData.get("departure");
+            String arrival = (String) scheduleData.get("arrival");
+            String start = (String) scheduleData.get("start");
+            String end = (String) scheduleData.get("end");
+            String price = (String) scheduleData.get("price");
+
+            LocalDateTime startDateTime = LocalDateTime.parse(start);
+            LocalDateTime endDateTime = LocalDateTime.parse(end);
+            BigDecimal priceValue = new BigDecimal(price);
+
+            // Fetch Bus by license plate
+            Bus bus = AbusService.findByLicensePlate(plate);
+            if (bus == null) {
+                response.put("message", "Bus not found with plate: " + plate);
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Fetch departure and arrival stations by names
+            BusStation departureStation = AbusStationService.findByName(departure);
+            BusStation arrivalStation = AbusStationService.findByName(arrival);
+            if (departureStation == null || arrivalStation == null) {
+                response.put("message", "Departure or arrival station not found.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Create new schedule
+            BusSchedule newSchedule = new BusSchedule();
+            newSchedule.setBus(bus);
+            newSchedule.setDepartureStation(departureStation);
+            newSchedule.setArrivalStation(arrivalStation);
+            newSchedule.setDeparture_time(startDateTime);
+            newSchedule.setArrival_time(endDateTime);
+            newSchedule.setPrice(priceValue);
+
+            // Save schedule
+            boolean added = AbusScheduleService.addSchedule(newSchedule);
+            if (added) {
+                response.put("message", "Chuyến xe đã được thêm thành công!");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "Thêm chuyến xe thất bại!");
+                return ResponseEntity.badRequest().body(response);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
+        }
+    }
+
 }

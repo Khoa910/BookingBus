@@ -32,6 +32,7 @@ function loadAccounts() {
                         <td th:text="${account.role.name}">Role</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
                         <td class="d-flex justify-content-evenly">
                             <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${account.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${account.id}" onclick="deleteAccount(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -164,11 +165,11 @@ function isValidEmail(email) {
 }
 
 function deleteAccount(button) {
-    const accountId = button.getAttribute('data-id');
+    const accId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
     document.getElementById('confirmDeleteButton').onclick = function() {
-        fetch('/admin/accounts/delete/${accountId}', { method: 'DELETE' })
+        fetch(`/admin/user/delete/${accId}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     showAlert('success', 'Xóa tài khoản thành công!');
@@ -190,130 +191,45 @@ function deleteAccount(button) {
     confirmDeleteModal.show();
 }
 
-// function editAccount(button) {
-//     // Lấy accountId từ button
-//     const accountId = event.target.getAttribute('data-id');
-//     console.log(accountId);
-//
-//     // Fetch thông tin tài khoản từ API
-//     fetch(`/admin/user/${accountId}`)
-//         .then(response => response.json())
-//         .then(account => {
-//             console.log(account);
-//             // Gán giá trị vào các trường input trong modal
-//             document.getElementById('AccountId').value = account.id;
-//             document.getElementById('editAccountName').value = account.username;
-//             document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-//             document.getElementById('editFullName').value = account.full_name;
-//             document.getElementById('editPhoneNumber').value = account.phone_number;
-//             document.getElementById('editEmail').value = account.email;
-//             document.getElementById('editAddress').value = account.address;
-//             document.getElementById('editRole').value = account.role;
-//
-//             // Hiển thị modal chỉnh sửa
-//             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-//             editModal.show();
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-//         });
-// }
-
-function editAccount(button) {
-    // Lấy accountId từ button
+function editAccount(button){
     const accountId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
-    console.log(accountId);
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll('td');
+    const account = {
+        name: cells[0].innerText,
+        pass: cells[1].innerText,
+        fullname: cells[2].innerText,
+        phone: cells[3].innerText,
+        email: cells[4].innerText,
+        addressAcc: cells[5].innerText,
+        roleAcc: cells[6].innerText
+    };
 
-    // Fetch thông tin tài khoản từ API với phương thức GET
-    fetch(`/admin/user/${accountId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(account => {
-            console.log(account);
-            // Gán giá trị vào các trường input trong modal
-            document.getElementById('AccountId').value = account.id;
-            document.getElementById('editAccountName').value = account.username;
-            document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-            document.getElementById('editFullName').value = account.full_name;
-            document.getElementById('editPhoneNumber').value = account.phone_number;
-            document.getElementById('editEmail').value = account.email;
-            document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role;
+    document.getElementById('AccountId').value = accountId;
+    document.getElementById('editAccountName').value = account.name;
+    document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
+    document.getElementById('editFullName').value = account.fullname;
+    document.getElementById('editPhoneNumber').value = account.phone;
+    document.getElementById('editEmail').value = account.email;
+    document.getElementById('editAddress').value = account.addressAcc;
+    document.getElementById('editRole').value = account.roleAcc;
+    const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+    editModal.show();
 
-            // Hiển thị modal chỉnh sửa
-            const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-            editModal.show();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-        });
 }
-
-// function editAccount(button) {
-//     // Lấy accountId từ button
-//     const accountId = button.getAttribute('data-id');
-//     console.log(accountId);
-//
-//     // Fetch thông tin tài khoản từ API với phương thức POST
-//     fetch(`/admin/user/findId`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ accountId: accountId }) // Gửi accountId trong body
-//     })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(account => {
-//             console.log(account);
-//             // Gán giá trị vào các trường input trong modal
-//             document.getElementById('AccountId').value = account.id;
-//             document.getElementById('editAccountName').value = account.username;
-//             document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-//             document.getElementById('editFullName').value = account.full_name;
-//             document.getElementById('editPhoneNumber').value = account.phone_number;
-//             document.getElementById('editEmail').value = account.email;
-//             document.getElementById('editAddress').value = account.address;
-//             document.getElementById('editRole').value = account.role;
-//
-//             // Hiển thị modal chỉnh sửa
-//             const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-//             editModal.show();
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-//         });
-// }
-
-
 
 function closeModal() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     if (modal) modal.hide();
 }
 
-function saveChanges() {
+function saveChangesAccount() {
     const id = document.getElementById('AccountId').value;
+    console.log(id);
     const username = document.getElementById('editAccountName').value;
-    const password = document.getElementById('editPassword').value;
-    const fullName = document.getElementById('editFullName').value;
-    const phoneNumber = document.getElementById('editPhoneNumber').value;
+    // const password = document.getElementById('editPassword').value;
+    const full_name = document.getElementById('editFullName').value;
+    const phone_number = document.getElementById('editPhoneNumber').value;
     const email = document.getElementById('editEmail').value;
     const address = document.getElementById('editAddress').value;
     const role = document.getElementById('editRole').value;
@@ -321,8 +237,8 @@ function saveChanges() {
     const updatedData = {
         id,
         username,
-        fullName,
-        phoneNumber,
+        full_name,
+        phone_number,
         email,
         address,
         role

@@ -100,9 +100,7 @@
                 <td th:text="${schedule.price}">Price</td>
                 <td class="d-flex justify-content-evenly">
                     <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${schedule.id}" onclick="editSchedule(this)">Chỉnh sửa</button>
-                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
-                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
-                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                    <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${schedule.id}" onclick="deleteAccount(this)">Xóa</button>
                 </td>
             </tr>
             </tbody>
@@ -224,7 +222,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="addAccount()">Thêm tài khoản</button>
+                <button type="button" class="btn btn-primary" onclick="addSchedule()">Thêm chuyến xe</button>
             </div>
         </div>
     </div>

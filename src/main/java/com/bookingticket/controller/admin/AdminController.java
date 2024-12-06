@@ -81,16 +81,24 @@ public class AdminController {
 
     @GetMapping("/user/listUser")
     @ResponseBody
-    public ResponseEntity<List<UserRespond>> getAllUserJson() {
-        List<UserRespond> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            logger.warn("No accounts found.");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản
-        } else {
-            logger.info("Total accounts: {}", users.size());
-            users.forEach(user -> logger.info("User: {}", user)); // Ghi từng tài khoản
-            return ResponseEntity.ok(users); // Trả về danh sách tài khoản với mã 200
+//    public ResponseEntity<List<UserRespond>> getAllUserJson() {
+//        List<UserRespond> users = userService.getAllUsers();
+//        if (users.isEmpty()) {
+//            logger.warn("No accounts found.");
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản
+//        } else {
+//            logger.info("Total accounts: {}", users.size());
+//            users.forEach(user -> logger.info("User: {}", user)); // Ghi từng tài khoản
+//            return ResponseEntity.ok(users); // Trả về danh sách tài khoản với mã 200
+//        }
+//    }
+    public ResponseEntity<List<User>> getAllCustomersJson() {
+        List<User> customers = userService.getAllUsers2();
+        if (customers.isEmpty()) {
+            logger.warn("No customers found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(customers);
         }
+        return ResponseEntity.ok(customers);
     }
 
     @PostMapping("/user/add")
@@ -144,8 +152,8 @@ public class AdminController {
 
     @PostMapping("/user/{id}")
     @ResponseBody
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable("id") long id) {
-        Optional<User> account = userService.getAccountById(id);
+    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+        User account = userService.getAccountById2(id);
         if (account == null) {
             logger.warn("Account with ID {} not found.", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -154,27 +162,82 @@ public class AdminController {
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/user/findId")
-    public ResponseEntity<?> getUserDetails(@RequestBody Map<String, String> request) {
-        long accountId = Long.parseLong(request.get("accountId"));
-        // Logic để tìm user theo accountId
-        Optional<User> user = userService.getAccountById(accountId);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    @PutMapping("/user/update/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> updateAccount(@PathVariable Integer id, @RequestBody Map<String, Object> accountData) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            // Lấy các thông tin từ accountData
+            String accountId = (String) accountData.get("id");
+            Long accountIdLong = Long.parseLong(accountId);
+            String username = (String) accountData.get("username");
+            String fullName = (String) accountData.get("full_name");
+            String phoneNumber = (String) accountData.get("phone_number");
+            String email = (String) accountData.get("email");
+            String address = (String) accountData.get("address");
+            String roleName = (String) accountData.get("role");
+
+            Role role = roleService.getRoleByName(roleName);
+
+            // Kiểm tra xem tất cả các trường cần thiết đều có giá trị
+//            if (accountName == null || accountName.isEmpty() ||
+//                    email == null || email.isEmpty() ||
+//                    password == null || password.isEmpty() || // Kiểm tra mật khẩu
+//                    status == null) {
+//                response.put("message", "Vui lòng điền đầy đủ thông tin!");
+//                return ResponseEntity.badRequest().body(response);
+//            }
+//
+//            // Kiểm tra tính hợp lệ của địa chỉ email
+//            if (!isValidEmail(email)) {
+//                response.put("message", "Địa chỉ email không hợp lệ!");
+//                return ResponseEntity.badRequest().body(response);
+//            }
+
+            // Lấy Account từ ID
+            Optional<User> optionalAccount = userService.getAccountById(accountIdLong);
+            if (!optionalAccount.isPresent()) {
+                response.put("message", "Tài khoản không tồn tại!");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            User existingAccount = optionalAccount.get();
+            existingAccount.setUsername(username);
+            existingAccount.setFull_name(fullName);
+            existingAccount.setPhone_number(phoneNumber);
+            existingAccount.setEmail(email);
+            existingAccount.setAddress(address);
+            existingAccount.setRole(role);
+
+            // Gọi service để cập nhật tài khoản
+            boolean updated = userService.updateUser2(existingAccount);
+            if (updated) {
+                logger.info("Account with ID {} updated successfully.", existingAccount.getId());
+                response.put("message", "Tài khoản đã được cập nhật thành công!");
+                return ResponseEntity.ok(response);
+            } else {
+                logger.warn("Failed to update account with ID {}.", existingAccount.getId());
+                response.put("message", "Cập nhật tài khoản thất bại!");
+                return ResponseEntity.badRequest().body(response);
+            }
+        } catch (IllegalArgumentException e) {
+            response.put("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.put("message", "Có lỗi xảy ra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
 
-    @PutMapping("/user/update/{id}")
-    @ResponseBody
-    public ResponseEntity<String> updateUser(@PathVariable("id") int id, @RequestBody User user) {
-        boolean updated = userService.updateUser(user);
-        if (updated) {
-            return ResponseEntity.ok("Cập nhật khách hàng thành công.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy khách hàng.");
+    @DeleteMapping("/user/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.ok("User deleted successfully!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body("User not found with id: " + id);
         }
     }
 

@@ -107,9 +107,7 @@
                 <td th:text="${user.role.name}">Role</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
                 <td class="d-flex justify-content-evenly">
                     <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${user.id}" onclick="editAccount(this)">Chỉnh sửa</button>
-                    <!--                    <button type="button" class="btn btn-danger btn-sm"-->
-                    <!--                            th:attr="data-id=${account.accountId}, disabled=${account.status == 0 ? 'disabled' : null}"-->
-                    <!--                            onclick="deleteAccount(this)">Xóa</button>-->
+                    <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${user.id}" onclick="deleteAccount(this)">Xóa</button>
                 </td>
             </tr>
             </tbody>
@@ -133,7 +131,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="editPassword" class="form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" id="editPassword" required> <!-- Thêm trường mật khẩu -->
+                        <input type="password" class="form-control" id="editPassword" readonly required> <!-- Thêm trường mật khẩu -->
                     </div>
                     <div class="mb-3">
                         <label for="editFullName" class="form-label">Họ và tên</label>
@@ -168,7 +166,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+                <button type="button" class="btn btn-primary" onclick="saveChangesAccount()">Lưu thay đổi</button>
             </div>
         </div>
     </div>

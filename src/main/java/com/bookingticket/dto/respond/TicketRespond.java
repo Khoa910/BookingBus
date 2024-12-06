@@ -22,12 +22,10 @@ public class TicketRespond {
     Bus bus;
     User user;
     String seat_number;
+    @Setter
+    @Getter
     LocalDateTime departure_time;
     BigDecimal price;
     String status;
-    // Getter và Setter cho randomDate
-    @Setter
-    @Getter
-    private String randomDate; // Không cần ánh xạ vào cơ sở dữ liệu
 
 }

@@ -42,6 +42,11 @@ public class BusStationService {
                 .orElseThrow(() -> new RuntimeException("BusStation not found with id: " + id));
     }
 
+    public BusStation findByName(String name) {
+        return busStationRepository.findIDByName(name)
+                .orElse(null); // Use Optional to handle null values
+    }
+
     public BusStationRespond createBusStation(BusStationRequest request) {
         BusStation busStation = busStationMapper.toEntity(request);
         BusStation savedBusStation = busStationRepository.save(busStation);

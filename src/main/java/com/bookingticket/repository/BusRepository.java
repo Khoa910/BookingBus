@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface BusRepository extends JpaRepository<Bus, Long> {
     @Query("SELECT b FROM Bus  b WHERE b.license_plate = :license_plate")
     Optional<Bus> findByLicensePlate(@Param("license_plate") String licensePlate);
+
+    @Query("SELECT b FROM Bus  b WHERE b.license_plate = :license_plate")
+    Bus findByLicensePlate2(@Param("license_plate") String licensePlate);
 }

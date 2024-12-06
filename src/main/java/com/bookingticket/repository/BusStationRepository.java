@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface BusStationRepository extends JpaRepository<BusStation, Long> {
+    Optional<BusStation> findIDByName(String name);
     List<BusStation> findByName(String departureStationName);
 }

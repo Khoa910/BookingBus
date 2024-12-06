@@ -75,35 +75,39 @@ public class UserService {
         return userRepository.findById(accountId);
     }
 
-//    public UserRespond updateUser(Long id, UserRequest userRequest) {
-//        Optional<User> userOptional = userRepository.findById(id);
-//        if (userOptional.isPresent()) {
-//            User user = userOptional.get();
-//            user.setUsername(userRequest.getUsername());
-//            user.setFull_name(userRequest.getFull_name());
-//            user.setPhone_number(userRequest.getPhone_number());
-//            user.setEmail(userRequest.getEmail());
-//            user.setAddress(userRequest.getAddress());
-//
-//            if (userRequest.getRole() != null) {
-//                Optional<Role> roleOptional = roleRepository.findById(userRequest.getRole());
-//                if (roleOptional.isPresent()) {
-//                    user.setRole(roleOptional.get());
-//                } else {
-//                    throw new RuntimeException("Role not found with id: " + userRequest.getRole());
-//                }
-//            } else {
-//                user.setRole(null);
-//            }
-//
-//            User updatedUser = userRepository.save(user);
-//            return userMapper.toRespond(updatedUser);
-//        } else {
-//            throw new RuntimeException("User not found with id: " + id);
-//        }
-//    }
+    public User getAccountById2(long accountId) {
+        return userRepository.findById(accountId).orElse(null);
+    }
 
-    public boolean updateUser(User userDetails) {
+    public UserRespond updateUser(Long id, UserRequest userRequest) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUsername(userRequest.getUsername());
+            user.setFull_name(userRequest.getFull_name());
+            user.setPhone_number(userRequest.getPhone_number());
+            user.setEmail(userRequest.getEmail());
+            user.setAddress(userRequest.getAddress());
+
+            if (userRequest.getRole() != null) {
+                Optional<Role> roleOptional = roleRepository.findById(userRequest.getRole());
+                if (roleOptional.isPresent()) {
+                    user.setRole(roleOptional.get());
+                } else {
+                    throw new RuntimeException("Role not found with id: " + userRequest.getRole());
+                }
+            } else {
+                user.setRole(null);
+            }
+
+            User updatedUser = userRepository.save(user);
+            return userMapper.toRespond(updatedUser);
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+    }
+
+    public boolean updateUser2(User userDetails) {
         User user = userRepository.findById(userDetails.getId()).orElse(null);
         if (user != null) {
             user.setUsername(userDetails.getUsername());
@@ -127,6 +131,7 @@ public class UserService {
             throw new RuntimeException("User not found with id: " + id);
         }
     }
+
     public UserRespond registerUser(UserRequest userRequest) {
         // Kiểm tra xem tên đăng nhập đã tồn tại chưa
         if (userRepository.existsByUsername(userRequest.getUsername())) {

@@ -45,6 +45,19 @@ public class BusService {
         return bus.map(busMapper::toRespond);
     }
 
+    public Optional<Bus> getBusById2(Long id) {
+        return busRepository.findById(id);
+    }
+
+    public Bus getBusById3(Long id) {
+        return busRepository.findById(id).orElse(null);
+    }
+
+    public Bus findByLicensePlate(String licensePlate) {
+        return busRepository.findByLicensePlate(licensePlate)
+                .orElse(null); // Use Optional to handle null values
+    }
+
     public BusRespond addBus(BusRequest busRequest) {
 
         Optional<Bus> existingBus = busRepository.findByLicensePlate(busRequest.getLicense_plate());

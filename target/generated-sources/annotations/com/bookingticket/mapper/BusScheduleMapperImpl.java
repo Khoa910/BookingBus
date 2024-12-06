@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-28T01:34:51+0700",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2024-12-06T02:40:57+0700",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.12 (JetBrains s.r.o.)"
 )
 @Component
 public class BusScheduleMapperImpl implements BusScheduleMapper {
@@ -47,8 +47,6 @@ public class BusScheduleMapperImpl implements BusScheduleMapper {
         busScheduleRespond.setDepartureStation_id( busScheduleDepartureStationId( busSchedule ) );
         busScheduleRespond.setArrivalStation_id( busScheduleArrivalStationId( busSchedule ) );
         busScheduleRespond.setId( busSchedule.getId() );
-        busScheduleRespond.setDepartureStation( busSchedule.getDepartureStation() );
-        busScheduleRespond.setArrivalStation( busSchedule.getArrivalStation() );
         busScheduleRespond.setDeparture_time( busSchedule.getDeparture_time() );
         busScheduleRespond.setArrival_time( busSchedule.getArrival_time() );
         busScheduleRespond.setPrice( busSchedule.getPrice() );

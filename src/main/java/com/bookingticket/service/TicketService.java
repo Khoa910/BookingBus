@@ -49,17 +49,38 @@ public class TicketService {
 //                .collect(Collectors.toList());
 //    }
 
-    public List<TicketRespond> getAllTickets() {
-        // Lấy danh sách các vé từ cơ sở dữ liệu
-        List<Ticket> tickets = ticketRepository.findAll();
+    // Phương thức random thời gian departure_time trong vòng 1 tuần trước
+    public LocalDateTime getRandomDepartureTime() {
+        LocalDateTime now = LocalDateTime.now();  // Lấy thời gian hiện tại
+        LocalDateTime oneWeekAgo = now.minusWeeks(1);  // Lấy thời gian 1 tuần trước
 
-        // Gán randomDate cho mỗi ticket và chuyển sang đối tượng TicketRespond
+        // Chuyển LocalDateTime thành epoch milliseconds (time in milliseconds)
+        long nowEpoch = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long oneWeekAgoEpoch = oneWeekAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        // Random giá trị epoch time giữa oneWeekAgoEpoch và nowEpoch
+        long randomEpoch = ThreadLocalRandom.current().nextLong(oneWeekAgoEpoch, nowEpoch);
+
+        // Chuyển epoch time ngẫu nhiên thành LocalDateTime
+        return LocalDateTime.ofInstant(java.time.Instant.ofEpochMilli(randomEpoch), ZoneId.systemDefault());
+    }
+
+    // Phương thức tạo TicketRespond với thời gian random
+    public TicketRespond createTicketWithRandomDepartureTime(Ticket ticket) {
+        TicketRespond ticketRespond = ticketMapper.toRespond(ticket);
+
+        // Gán thời gian ngẫu nhiên vào departure_time
+        ticketRespond.setDeparture_time(getRandomDepartureTime());
+
+        return ticketRespond;
+    }
+
+    // Phương thức lấy tất cả vé và gán thời gian random cho từng vé
+    public List<TicketRespond> getAllTickets() {
+        List<Ticket> tickets = ticketRepository.findAll();  // Lấy tất cả vé từ DB
+
         return tickets.stream()
-                .map(ticket -> {
-                    TicketRespond respond = ticketMapper.toRespond(ticket);
-                    respond.setRandomDate(getRandomDateWithinLastWeek());
-                    return respond;
-                })
+                .map(this::createTicketWithRandomDepartureTime)  // Gán thời gian random cho từng vé
                 .collect(Collectors.toList());
     }
 
@@ -78,28 +99,6 @@ public class TicketService {
 //
 //        return tickets;
 //    }
-
-    // Hàm tạo thời gian ngẫu nhiên trong khoảng 1 tuần trước
-    private String getRandomDateWithinLastWeek() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneWeekAgo = now.minusWeeks(1);
-
-        long nowEpoch = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        long oneWeekAgoEpoch = oneWeekAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-
-        // Random epoch time giữa oneWeekAgo và now
-        long randomEpoch = ThreadLocalRandom.current().nextLong(oneWeekAgoEpoch, nowEpoch);
-
-        // Chuyển đổi epoch time thành LocalDateTime
-        LocalDateTime randomDate = LocalDateTime.ofInstant(
-                java.time.Instant.ofEpochMilli(randomEpoch),
-                ZoneId.systemDefault()
-        );
-
-        // Format ngày giờ
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return randomDate.format(formatter);
-    }
 
     public TicketRespond getTicketById(Long id) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);

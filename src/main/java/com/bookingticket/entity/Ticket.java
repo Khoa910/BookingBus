@@ -36,15 +36,4 @@ public class Ticket {
 
     private String status;
 
-    private String randomDate; // Không cần ánh xạ vào cơ sở dữ liệu
-
-    // Getter và Setter cho randomDate
-    public String getRandomDate() {
-        return randomDate;
-    }
-
-    public void setRandomDate(String randomDate) {
-        this.randomDate = randomDate;
-    }
-
 }

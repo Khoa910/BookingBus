@@ -78,10 +78,13 @@ public class SecurityConfig {
                                 "/admin/user/edit",
                                 "/admin/user/findId",
                                 "/admin/user/{id}",
+                                "/admin/user/delete/{id}",
+                                "/admin/user/update/{id}",
 
                                 "/admin/trip-list",
                                 "/admin-schedule/",
                                 "/admin-schedule/trip",
+                                "/admin-schedule/trip/add",
 
                                 "/admin/station-list",
                                 "/admin-station",
@@ -107,6 +110,11 @@ public class SecurityConfig {
                                 "/admin/stype-list",
                                 "/admin-type",
                                 "/admin-type/type",
+
+                                "/admin/statistical",
+                                "/admin-payment",
+                                "/admin-payment/payment-statistics",
+                                "admin-payment/payment-statistics-data",
 
                                 "/mobile-vnpay",
                                 "/submitOrder",
