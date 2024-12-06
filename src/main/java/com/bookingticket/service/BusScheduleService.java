@@ -62,15 +62,43 @@ public class BusScheduleService {
             return busScheduleRepository.findAll();
         }
 
+//    public boolean addSchedule(BusSchedule schedule) {
+//        try {
+//            busScheduleRepository.save(schedule); // Lưu chuyến xe mới
+//            return true; // Trả về true nếu thêm thành công
+//        } catch (Exception e) {
+//            // Ghi log lỗi nếu cần
+//            return false; // Trả về false nếu có lỗi xảy ra
+//        }
+//    }
+
     public boolean addSchedule(BusSchedule schedule) {
         try {
-            busScheduleRepository.save(schedule); // Lưu chuyến xe mới
-            return true; // Trả về true nếu thêm thành công
+            // Tạo đối tượng Bus và set ID từ schedule (đã set trong controller)
+            Bus bus = new Bus();
+            bus.setId(schedule.getBus().getId());  // Lấy ID từ schedule (được set trong controller)
+            schedule.setBus(bus);
+
+            // Tạo đối tượng BusStation cho Departure và set ID
+            BusStation departureStation = new BusStation();
+            departureStation.setId(schedule.getDepartureStation().getId());  // Lấy ID từ schedule
+            schedule.setDepartureStation(departureStation);
+
+            // Tạo đối tượng BusStation cho Arrival và set ID
+            BusStation arrivalStation = new BusStation();
+            arrivalStation.setId(schedule.getArrivalStation().getId());  // Lấy ID từ schedule
+            schedule.setArrivalStation(arrivalStation);
+
+            // Tiến hành lưu chuyến xe vào cơ sở dữ liệu
+            busScheduleRepository.save(schedule);  // Lưu đối tượng schedule vào cơ sở dữ liệu
+
+            return true;  // Trả về true nếu thêm thành công
         } catch (Exception e) {
-            // Ghi log lỗi nếu cần
-            return false; // Trả về false nếu có lỗi xảy ra
+            // Ghi log lỗi nếu có bất kỳ vấn đề nào xảy ra
+            return false;  // Trả về false nếu có lỗi xảy ra
         }
     }
+
 
     public List<BusScheduleDisplayRespond> getDisplaySchedulesByDepartureStationId(Long departureStationId) {
         List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
@@ -114,6 +142,16 @@ public class BusScheduleService {
 
         BusSchedule savedBusSchedule = busScheduleRepository.save(busSchedule);
         return busScheduleMapper.toRespond(savedBusSchedule);
+    }
+
+    public boolean addBusSchedule2(BusSchedule schedule) {
+        try {
+            busScheduleRepository.save(schedule); // Lưu tài khoản mới
+            return true; // Trả về true nếu thêm thành công
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
     }
 
     public Optional<BusScheduleRespond> updateBusSchedule(Long id, BusScheduleRequest busScheduleRequest) {

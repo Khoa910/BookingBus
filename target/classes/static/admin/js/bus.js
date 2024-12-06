@@ -18,6 +18,7 @@ function loadBuss() {
     fetch('/admin-bus/bus/listBus')
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
             data.forEach(buss => {
@@ -25,10 +26,10 @@ function loadBuss() {
 
                 row.innerHTML = `
                         <td>${buss.id}</td>
-                        <td>${buss.PlateBus}</td>
-                        <td>${buss.SeatType}</td>
-                        <td>${buss.BusType}</td>
-                        <td>${buss.BCompany}</td>
+                        <td>${buss.license_plate}</td>
+                        <td>${buss.seat_count}</td>
+                        <td>${buss.bus_type}</td>
+                        <td>${buss.bus_company_name}</td>
                         <td class="d-flex justify-content-evenly">
                             <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${buss.id}" onclick="editBuss(this)">Chỉnh sửa</button>
                             <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${buss.id}" onclick="deleteBuss(this)">Xóa</button>
@@ -48,11 +49,13 @@ function filterBuss() {
 
     tableRows.forEach(row => {
         const PlateBuss = removeDiacritics(row.cells[1].innerText.toLowerCase());
+        const type = removeDiacritics(row.cells[3].innerText.toLowerCase());
         const companyName = removeDiacritics(row.cells[4].innerText.toLowerCase());
 
         // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
             fuzzySearch(PlateBuss, searchInput) ||
+            fuzzySearch(type, searchInput) ||
             fuzzySearch(companyName, searchInput);
 
         // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm

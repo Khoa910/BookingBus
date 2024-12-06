@@ -108,15 +108,15 @@ function showAddModalSchedule() {
 
 function addSchedule() {
     // Lấy dữ liệu từ các trường input
-    const plate = document.getElementById('addPlate').value;
-    const departure = document.getElementById('addDeparture').value;
-    const arrival = document.getElementById('addArrival').value;
-    const start = document.getElementById('addDepartureTime').value;
-    const end = document.getElementById('addArrivalTime').value;
-    const price = document.getElementById('addPrice').value;
+    const plate = document.getElementById('addPlate').value.trim();
+    const departure = document.getElementById('addDeparture').value.trim();
+    const arrival = document.getElementById('addArrival').value.trim();
+    const start = new Date(document.getElementById('addDepartureTime').value).toISOString();
+    const end = new Date(document.getElementById('addArrivalTime').value).toISOString();
+    const price = parseFloat(document.getElementById('addPrice').value.trim());
 
     // Kiểm tra dữ liệu đầu vào
-    if (plate || !departure || !arrival || !start || !end || !price) {
+    if (!plate || !departure || !arrival || !start || !end || !price) {
         showAlert('danger', 'Vui lòng điền đầy đủ thông tin!');
         return;
     }
@@ -154,8 +154,7 @@ function addSchedule() {
                 });
             }
             showAlert('success', 'Thêm chuyến xe thành công!');
-            // loadAccounts(); // Tải lại danh sách chuyến xe
-            loadSchedules();
+            loadSchedules(); // Tải lại danh sách chuyến xe
             document.getElementById('addForm').reset(); // Reset form
             const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
             addModal.hide(); // Ẩn modal sau khi thêm thành công
@@ -165,6 +164,7 @@ function addSchedule() {
             showAlert('danger', 'Có lỗi xảy ra khi thêm tài khoản!');
         });
 }
+
 
 function deleteSchedule(button) {
     const accountId = button.getAttribute('data-id');

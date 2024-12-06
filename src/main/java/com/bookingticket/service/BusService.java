@@ -3,10 +3,14 @@ package com.bookingticket.service;
 import com.bookingticket.dto.request.BusRequest;
 import com.bookingticket.dto.respond.BusRespond;
 import com.bookingticket.entity.Bus;
+import com.bookingticket.entity.BusCompany;
 import com.bookingticket.entity.BusStation;
+import com.bookingticket.entity.SeatType;
 import com.bookingticket.mapper.BusMapper;
+import com.bookingticket.repository.BusCompanyRepository;
 import com.bookingticket.repository.BusRepository;
 import com.bookingticket.repository.BusStationRepository;
+import com.bookingticket.repository.SeatTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +23,16 @@ public class BusService {
     private final BusRepository busRepository;
     private final BusStationRepository busStationRepository;
     private final BusMapper busMapper;
+    private final SeatTypeRepository seatTypeRepository;
+    private final BusCompanyRepository busCompanyRepository;
 
     @Autowired
-    public BusService(BusRepository busRepository, BusStationRepository busStationRepository, BusMapper busMapper) {
+    public BusService(BusRepository busRepository, BusStationRepository busStationRepository, BusMapper busMapper, SeatTypeRepository seatTypeRepository, BusCompanyRepository busCompanyRepository) {
         this.busRepository = busRepository;
         this.busStationRepository = busStationRepository;
         this.busMapper = busMapper;
+        this.seatTypeRepository = seatTypeRepository;
+        this.busCompanyRepository = busCompanyRepository;
     }
 
     public List<BusRespond> getAllBuses() {
@@ -104,17 +112,54 @@ public class BusService {
         return Optional.empty();
     }
 
+//    public boolean updateBus2(Bus bus) {
+//        Bus Buss = busRepository.findById(bus.getId()).orElse(null);
+//        if (Buss != null) {
+//            Buss.setLicense_plate(bus.getLicense_plate());
+//            Buss.getSeatType().setId(bus.getSeatType().getId());
+//            Buss.setBus_type(bus.getBus_type());
+//            Buss.getBus_company().setId(bus.getBus_company().getId());
+//            busRepository.save(Buss);
+//            return true;
+//        }
+//        return false;
+//    }
+
     public boolean updateBus2(Bus bus) {
-        Bus Buss = busRepository.findById(bus.getId()).orElse(null);
-        if (Buss != null) {
-            Buss.setLicense_plate(bus.getLicense_plate());
-            Buss.getSeatType().setId(bus.getSeatType().getId());
-            Buss.setBus_type(bus.getBus_type());
-            Buss.getBus_company().setId(bus.getBus_company().getId());
-            busRepository.save(Buss);
+        // Tìm kiếm Bus từ database theo ID
+        Bus existingBus = busRepository.findById(bus.getId()).orElse(null);
+
+        if (existingBus != null) {
+            // Cập nhật các thông tin trong Bus
+            existingBus.setLicense_plate(bus.getLicense_plate());
+            existingBus.setBus_type(bus.getBus_type());
+
+            // Cập nhật SeatType
+            // Kiểm tra nếu SeatType đã tồn tại trong cơ sở dữ liệu, nếu không cần truy vấn thêm hoặc tạo mới
+            SeatType seatType = seatTypeRepository.findById(bus.getSeatType().getId()).orElse(null);
+            if (seatType != null) {
+                existingBus.setSeatType(seatType);
+            } else {
+                // Nếu không tìm thấy SeatType hợp lệ trong cơ sở dữ liệu, bạn có thể xử lý ở đây (nếu cần).
+                // Ví dụ: throw exception hoặc tạo SeatType mới (tùy thuộc vào yêu cầu của bạn).
+                return false;
+            }
+
+            // Cập nhật BusCompany
+            BusCompany busCompany = busCompanyRepository.findById(bus.getBus_company().getId()).orElse(null);
+            if (busCompany != null) {
+                existingBus.setBus_company(busCompany);
+            } else {
+                // Nếu không tìm thấy BusCompany hợp lệ, xử lý tương tự như SeatType
+                return false;
+            }
+
+            // Lưu đối tượng Bus đã cập nhật vào cơ sở dữ liệu
+            busRepository.save(existingBus);
             return true;
         }
-        return false;
+
+        return false; // Trả về false nếu không tìm thấy Bus trong cơ sở dữ liệu
     }
 
     public void deleteBus(Long busId) {

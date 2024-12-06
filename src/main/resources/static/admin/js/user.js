@@ -18,18 +18,20 @@ function loadAccounts() {
     fetch('/admin/user/listUser')
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
             data.forEach(account => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${account.username}">Username</td>
-                        <td th:text="${account.full_name}">Full Name</td> <!-- Sửa thành full_name -->
-                        <td th:text="${account.phone_number}">Phone Number</td> <!-- Sửa thành phone_number -->
-                        <td th:text="${account.email}">Email</td>
-                        <td th:text="${account.address}">Address</td>
-                        <td th:text="${account.role.name}">Role</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
+                        <td>${account.username}</td>
+                        <td>${account.password}</td>
+                        <td>${account.full_nameA}</td> <!-- Sửa thành full_name -->
+                        <td>${account.phone_numberA}</td> <!-- Sửa thành phone_number -->
+                        <td>${account.email}</td>
+                        <td>${account.address}</td>
+                        <td>${account.role_name}</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
                         <td class="d-flex justify-content-evenly">
                             <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${account.id}" onclick="editAccount(this)">Chỉnh sửa</button>
                             <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${account.id}" onclick="deleteAccount(this)">Xóa</button>
@@ -45,36 +47,59 @@ function loadAccounts() {
 
 function filterAccounts() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('statusFilter').value;
     const tableRows = document.querySelectorAll('#table-content tr');
 
     tableRows.forEach(row => {
-        const accountID = row.cells[0].innerText.toLowerCase();  // Cột Mã Tài Khoản
-        const accountName = row.cells[1].innerText.toLowerCase(); // Cột Tên Tài Khoản
-        const customerID = row.cells[4].innerText.toLowerCase();  // Cột Mã Khách Hàng
-        const status = row.cells[5].innerText.toLowerCase().trim(); // Cột Trạng Thái
+        const acc = removeDiacritics(row.cells[0].innerText.toLowerCase());
+        const name = removeDiacritics(row.cells[2].innerText.toLowerCase());
+        const phone = removeDiacritics(row.cells[3].innerText.toLowerCase());
+        const email = removeDiacritics(row.cells[4].innerText.toLowerCase());
+        const address = removeDiacritics(row.cells[5].innerText.toLowerCase());
+        const role = removeDiacritics(row.cells[6].innerText.toLowerCase());
 
-        // Kiểm tra nếu searchInput có trong accountID, accountName hoặc customerID
+        // Kiểm tra nếu giá trị tìm kiếm có trong một trong các cột (so sánh gần đúng)
         const matchesSearch =
-            accountID.includes(searchInput) ||
-            accountName.includes(searchInput) ||
-            customerID.includes(searchInput);
+            fuzzySearch(acc, searchInput) ||
+            fuzzySearch(name, searchInput)||
+            fuzzySearch(phone, searchInput)||
+            fuzzySearch(email, searchInput)||
+            fuzzySearch(address, searchInput)||
+            fuzzySearch(role, searchInput);
 
-        const matchesStatus =
-            statusFilter === '' || // Nếu trạng thái là Tất cả
-            (statusFilter === '1' && status === 'hoạt động') ||
-            (statusFilter === '0' && status === 'ngưng hoạt động');
-
-        // Nếu ô tìm kiếm không trống và không khớp với trạng thái
-        if (searchInput && matchesSearch) {
-            row.style.display = matchesStatus ? '' : 'none'; // Hiển thị hoặc ẩn dựa trên trạng thái
-        } else if (!searchInput) {
-            // Nếu ô tìm kiếm trống, chỉ cần kiểm tra trạng thái
-            row.style.display = matchesStatus ? '' : 'none';
-        } else {
-            row.style.display = 'none'; // Ẩn hàng nếu không khớp với tìm kiếm
-        }
+        // Hiển thị hoặc ẩn hàng dựa trên kết quả tìm kiếm
+        row.style.display = matchesSearch ? '' : 'none';
     });
+}
+
+function fuzzySearch(text, searchInput) {
+    // Nếu không có tìm kiếm, hiển thị tất cả
+    if (searchInput === '') return true;
+
+    // Loại bỏ khoảng trắng và chuyển thành chữ thường
+    const normalizedText = text.replace(/\s+/g, '').toLowerCase();
+    const normalizedSearchInput = searchInput.replace(/\s+/g, '').toLowerCase();
+
+    // Kiểm tra nếu chuỗi tìm kiếm là một phần của chuỗi tìm thấy
+    return normalizedText.includes(normalizedSearchInput);
+}
+
+// Hàm loại bỏ dấu tiếng Việt
+function removeDiacritics(str) {
+    const map = {
+        a: 'áàảãạăắằẳẵặâấầẩẫậ',
+        e: 'éèẻẽẹêếềểễệ',
+        i: 'íìỉĩị',
+        o: 'óòỏõọôốồổỗộơớờởỡợ',
+        u: 'úùủũụưứừửữự',
+        y: 'ýỳỷỹỵ',
+        d: 'đ',
+    };
+    str = str.toLowerCase();
+    for (const letter in map) {
+        const regex = new RegExp('[' + map[letter] + ']', 'g');
+        str = str.replace(regex, letter);
+    }
+    return str;
 }
 
 function showAddModal() {

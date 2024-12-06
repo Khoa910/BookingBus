@@ -45,26 +45,68 @@ public class ABusController {
     @GetMapping("/bus/listBus")
     @ResponseBody
     public ResponseEntity<List<Map<String, String>>> getAllBusJson() {
-        List<Bus> buses = AbusService.getAllBuses2();
+        List<Bus> buses = AbusService.getAllBuses2(); // Lấy danh sách xe từ service
         List<Map<String, String>> busList = new ArrayList<>();
 
         if (buses.isEmpty()) {
-            logger.warn("No stations found.");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(busList); // Trả về 204 nếu không có trạm
+            logger.warn("No buses found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(busList); // Trả về 204 nếu không có xe
         } else {
-            logger.info("Total stations: {}", buses.size());
+            logger.info("Total buses: {}", buses.size());
             buses.forEach(buss -> {
-                // Tạo Map đại diện cho từng trạm xe
+                // Tạo Map đại diện cho từng xe
                 Map<String, String> busMap = new HashMap<>();
                 busMap.put("id", String.valueOf(buss.getId()));
-                busMap.put("PlateBus", buss.getLicense_plate());
-                busMap.put("SeatType", buss.getSeatType().getSeat_count().toString());
-                busMap.put("BusType", buss.getBus_type());
-                busMap.put("BCompany", buss.getBus_company().getName());
-                busList.add(busMap); // Thêm vào danh sách
-//                logger.info("Station: {} - Name: {}, Address: {}", buss.getId(), buss.getLicense_plate(), buss.getSeatType().getSeat_count().toString(), buss.getBus_type(), buss.getBus_company().getName());
+                busMap.put("license_plate", buss.getLicense_plate());
+//                busMap.put("bus_type", buss.getBus_type());
+
+                // Lấy thông tin SeatType nếu tồn tại
+//                SeatType seatType = buss.getSeatType();
+//                if (seatType != null) {
+//                    busMap.put("seat_count", String.valueOf(seatType.getSeat_count()));
+//                    busMap.put("seat_type_name", seatType.getName()); // Nếu có thêm thông tin tên loại ghế
+//                } else {
+//                    busMap.put("seat_count", "N/A");
+//                    busMap.put("seat_type_name", "N/A");
+//                }
+//
+//                // Lấy thông tin BusCompany nếu tồn tại
+//                BusCompany busCompany = buss.getBus_company();
+//                if (busCompany != null) {
+//                    busMap.put("bus_company_name", busCompany.getName());
+//                    busMap.put("bus_company_phone", busCompany.getPhone_number()); // Nếu cần thêm số điện thoại công ty
+//                } else {
+//                    busMap.put("bus_company_name", "N/A");
+//                    busMap.put("bus_company_phone", "N/A");
+//                }
+                if (buss.getSeatType() != null) {
+                    busMap.put("seat_count", buss.getSeatType().getSeat_count().toString());
+                } else {
+                    busMap.put("seat_count", "N/A");
+                }
+
+                busMap.put("bus_type", buss.getBus_type());
+
+                if (buss.getBus_company() != null) {
+                    busMap.put("bus_company_name", buss.getBus_company().getName());
+                } else {
+                    busMap.put("bus_company_name", "N/A");
+                }
+
+                // Thêm Map vào danh sách
+                busList.add(busMap);
+
+                // Ghi log thông tin từng xe
+//                logger.info("Bus ID: {}, License Plate: {}, Bus Type: {}, Seat Count: {}, Company: {}",
+//                        buss.getId(),
+//                        buss.getLicense_plate(),
+//                        buss.getBus_type(),
+//                        seatType != null ? seatType.getSeat_count() : "N/A",
+//                        busCompany != null ? busCompany.getName() : "N/A");
             });
-            return ResponseEntity.ok(busList); // Trả về danh sách các trạm với mã 200
+
+            // Trả về danh sách xe với mã 200
+            return ResponseEntity.ok(busList);
         }
     }
 
@@ -84,9 +126,19 @@ public class ABusController {
             // Tạo đối tượng Bus mới
             Bus newBuss = new Bus();
             newBuss.setLicense_plate(plate);
-            newBuss.getSeatType().setId(seatIdLong);
             newBuss.setBus_type(Btype);
-            newBuss.getBus_company().setId(companyIdLong);
+
+            // Tạo đối tượng SeatType từ seatIdLong
+            SeatType seatType = new SeatType();
+            seatType.setId(seatIdLong);
+            // Gán đối tượng SeatType vào Bus
+            newBuss.setSeatType(seatType);
+
+            // Tạo đối tượng BusCompany từ companyIdLong
+            BusCompany busCompany = new BusCompany();
+            busCompany.setId(companyIdLong);
+            // Gán đối tượng BusCompany vào Bus
+            newBuss.setBus_company(busCompany);
 
             // Gọi service để thêm xe
             boolean added = AbusService.addBuss(newBuss);
@@ -95,15 +147,21 @@ public class ABusController {
                 response.put("message", "Xe đã được thêm thành công!");
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Thêm xe thất bại!"));
+                logger.warn("Failed to add bus with plate {}.", plate);
+                response.put("message", "Thêm xe thất bại!");
+                return ResponseEntity.badRequest().body(response);
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage()));
+            logger.error("Invalid input data: {}", e.getMessage());
+            response.put("message", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
+            logger.error("An error occurred: {}", e.getMessage());
+            response.put("message", "Có lỗi xảy ra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
     @PutMapping("/bus/update/{id}")
     @ResponseBody
@@ -130,9 +188,20 @@ public class ABusController {
 
             Bus existingBus = optionalBus.get();
             existingBus.setLicense_plate(plate);
-            existingBus.getSeatType().setId(seatIdLong);
+//            existingBus.getSeatType().setId(seatIdLong);
+
+//            existingBus.getBus_company().setId(companyIdLong);
+            // Tạo đối tượng SeatType từ seatIdLong
+            SeatType seatType = new SeatType();
+            seatType.setId(seatIdLong);
+            // Cập nhật SeatType vào bus
+            existingBus.setSeatType(seatType);
+
             existingBus.setBus_type(Btype);
-            existingBus.getBus_company().setId(companyIdLong);
+            // Cập nhật thông tin của công ty xe
+            BusCompany busCompany = new BusCompany();
+            busCompany.setId(companyIdLong);
+            existingBus.setBus_company(busCompany);
             // Gọi service để cập nhật trạm xe
             boolean updated = AbusService.updateBus2(existingBus);
             if (updated) {

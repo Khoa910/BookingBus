@@ -52,14 +52,14 @@
                             </span>
                 </a>
             </li>
-            <li>
-                <a href="#" id="manage-seat-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/1683/1683707.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
-                    <span class="nav-text">
-                               Chỗ ngồi
-                            </span>
-                </a>
-            </li>
+<!--            <li>-->
+<!--                <a href="#" id="manage-seat-link">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/128/1683/1683707.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">-->
+<!--                    <span class="nav-text">-->
+<!--                               Chỗ ngồi-->
+<!--                            </span>-->
+<!--                </a>-->
+<!--            </li>-->
             <li>
                 <a href="#" id="manage-seat-type-link">
                     <img src="https://cdn-icons-png.flaticon.com/128/17386/17386784.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
@@ -148,15 +148,15 @@
             })
             .catch(error => console.error('Error loading trip form:', error));
     });
-    document.getElementById('manage-seat-link').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent page reload
-        fetch('/admin-seat/seat')  // Assuming '/admin/trip' is the URL for your trip form
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('dashboard-content').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading trip form:', error));
-    });
+    // document.getElementById('manage-seat-link').addEventListener('click', function (event) {
+    //     event.preventDefault(); // Prevent page reload
+    //     fetch('/admin-seat/seat')  // Assuming '/admin/trip' is the URL for your trip form
+    //         .then(response => response.text())
+    //         .then(html => {
+    //             document.getElementById('dashboard-content').innerHTML = html;
+    //         })
+    //         .catch(error => console.error('Error loading trip form:', error));
+    // });
     document.getElementById('manage-seat-type-link').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent page reload
         fetch('/admin-type/type')  // Assuming '/admin/trip' is the URL for your trip form
@@ -201,6 +201,8 @@
 <script th:src="@{/admin/js/busstation.js}"></script>
 <script th:src="@{/admin/js/seat.js}"></script>
 <script th:src="@{/admin/js/bus.js}"></script>
+<script th:src="@{/admin/js/stype.js}"></script>
+<script th:src="@{/admin/js/statistical.js}"></script>
 <!--<script th:src="@{/admin/js/statistical.js}"></script>-->
 </body>
 </html>

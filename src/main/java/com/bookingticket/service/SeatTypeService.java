@@ -42,6 +42,14 @@ public class SeatTypeService {
                 .orElseThrow(() -> new RuntimeException("SeatType not found with id: " + id));
     }
 
+    public Optional<SeatType> getSeatTypeById2(long Id) {
+        return seatTypeRepository.findById(Id);
+    }
+
+    public SeatType getSeatTypeById3(long Id) {
+        return seatTypeRepository.findById(Id).orElse(null);
+    }
+
     public SeatTypeRespond createSeatType(SeatTypeRequest seatTypeRequest) {
         SeatType seatType = seatTypeMapper.toEntity(seatTypeRequest);
         SeatType savedSeatType = seatTypeRepository.save(seatType);

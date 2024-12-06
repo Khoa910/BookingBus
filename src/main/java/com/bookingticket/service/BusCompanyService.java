@@ -42,6 +42,10 @@ public class BusCompanyService {
         return busCompanyRepository.findById(stationId);
     }
 
+    public BusCompany getBusCompanyById3(long Id) {
+        return busCompanyRepository.findById(Id).orElse(null);
+    }
+
     public BusCompanyRespond addBusCompany(BusCompanyRequest busCompanyRequest) {
 
         Optional<BusCompany> existingBusCompany = busCompanyRepository.findByName(busCompanyRequest.getName());

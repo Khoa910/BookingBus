@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping( "/admin")
@@ -81,17 +78,49 @@ public class AdminController {
 
     @GetMapping("/user/listUser")
     @ResponseBody
-//    public ResponseEntity<List<UserRespond>> getAllUserJson() {
-//        List<UserRespond> users = userService.getAllUsers();
-//        if (users.isEmpty()) {
-//            logger.warn("No accounts found.");
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users); // Trả về 204 nếu không có tài khoản
-//        } else {
-//            logger.info("Total accounts: {}", users.size());
-//            users.forEach(user -> logger.info("User: {}", user)); // Ghi từng tài khoản
-//            return ResponseEntity.ok(users); // Trả về danh sách tài khoản với mã 200
-//        }
-//    }
+    public ResponseEntity<List<Map<String, String>>> getAllAccountJson() {
+        List<User> accounts = userService.getAllUsers2(); // Lấy danh sách người dùng từ service
+        List<Map<String, String>> accountList = new ArrayList<>();
+
+        if (accounts.isEmpty()) {
+            logger.warn("No accounts found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(accountList); // Trả về 204 nếu không có tài khoản
+        } else {
+            logger.info("Total accounts: {}", accounts.size());
+            accounts.forEach(account -> {
+                // Tạo Map đại diện cho từng người dùng
+                Map<String, String> userMap = new HashMap<>();
+//                userMap.put("id", String.valueOf(account.getId()));
+                userMap.put("username", account.getUsername());
+                userMap.put("password", account.getPassword());
+                userMap.put("full_nameA", account.getFull_name());
+                userMap.put("phone_numberA", account.getPhone_number());
+                userMap.put("email", account.getEmail());
+                userMap.put("address", account.getAddress());
+
+                // Lấy thông tin role nếu tồn tại
+                if (account.getRole() != null) {
+                    userMap.put("role_name", account.getRole().getName());
+                } else {
+                    userMap.put("role_name", "N/A");
+                }
+
+                // Thêm vào danh sách
+                accountList.add(userMap);
+
+                // Ghi log thông tin
+                logger.info("Account ID: {}, Username: {}, Role: {}",
+                        account.getId(),
+                        account.getUsername(),
+                        account.getRole() != null ? account.getRole().getName() : "N/A");
+            });
+
+            // Trả về danh sách tài khoản với mã 200
+            return ResponseEntity.ok(accountList);
+        }
+    }
+
+
     public ResponseEntity<List<User>> getAllCustomersJson() {
         List<User> customers = userService.getAllUsers2();
         if (customers.isEmpty()) {
@@ -148,18 +177,6 @@ public class AdminController {
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         return email.matches(emailRegex);
-    }
-
-    @PostMapping("/user/{id}")
-    @ResponseBody
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        User account = userService.getAccountById2(id);
-        if (account == null) {
-            logger.warn("Account with ID {} not found.", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        logger.info("Account found: {}", account);
-        return ResponseEntity.ok(account);
     }
 
     @PutMapping("/user/update/{id}")

@@ -59,7 +59,7 @@
         <form class="row g-2" id="searchForm" onsubmit="return false;">
             <div class="col-md-8">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="searchInput" placeholder="Tìm kiếm..." aria-label="Search">
+                    <input class="form-control" type="text" id="searchInput" oninput="filterBuss()" placeholder="Tìm kiếm..." aria-label="Search">
                 </div>
             </div>
         </form>
@@ -67,13 +67,7 @@
 
     <div class="filter-section mb-3">
         <div class="row g-2 align-items-center">
-            <div class="col-md-8">
-                <select id="statusSelect" class="form-select" onchange="filterBuss()">
-                    <option value="">Tất cả ghế</option>
-                    <option value="1">Ghế ngồi</option>
-                    <option value="0">Ghế nằm</option>
-                </select>
-            </div>
+            <div class="col-md-8"></div>
             <div class="col-md-4 text-end">
                 <button type="button" class="btn btn-success" onclick="showAddModalBuss()">Thêm</button> <!-- Nút Thêm -->
             </div>

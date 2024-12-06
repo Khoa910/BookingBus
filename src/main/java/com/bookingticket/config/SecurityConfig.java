@@ -85,6 +85,7 @@ public class SecurityConfig {
                                 "/admin-schedule/",
                                 "/admin-schedule/trip",
                                 "/admin-schedule/trip/add",
+                                "/admin-schedule/**",
 
                                 "/admin/station-list",
                                 "/admin-station",
