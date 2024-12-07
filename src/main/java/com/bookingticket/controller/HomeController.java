@@ -17,7 +17,7 @@ public class HomeController {
     @Autowired
     private BusScheduleService busScheduleService;
 
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public String index(Model model) {
         List<ScheduleInfoRespond> schedules = busScheduleService.getAllSchedulesInfo();
         model.addAttribute("schedules", schedules);
