@@ -23,7 +23,7 @@ public class ABusController {
     private final BusService AbusService;
     private final SeatTypeService AseatTypeService;
     private final BusCompanyService AbusCompanyService;
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ABusController.class);
 
     public ABusController(BusService AbusService, SeatTypeService AseatTypeService, BusCompanyService AbusCompanyService) {
         this.AbusService = AbusService;
@@ -56,55 +56,42 @@ public class ABusController {
             buses.forEach(buss -> {
                 // Tạo Map đại diện cho từng xe
                 Map<String, String> busMap = new HashMap<>();
-                busMap.put("id", String.valueOf(buss.getId()));
+                busMap.put("idB", String.valueOf(buss.getId()));
                 busMap.put("license_plate", buss.getLicense_plate());
 //                busMap.put("bus_type", buss.getBus_type());
 
                 // Lấy thông tin SeatType nếu tồn tại
-//                SeatType seatType = buss.getSeatType();
-//                if (seatType != null) {
-//                    busMap.put("seat_count", String.valueOf(seatType.getSeat_count()));
-//                    busMap.put("seat_type_name", seatType.getName()); // Nếu có thêm thông tin tên loại ghế
-//                } else {
-//                    busMap.put("seat_count", "N/A");
-//                    busMap.put("seat_type_name", "N/A");
-//                }
-//
-//                // Lấy thông tin BusCompany nếu tồn tại
-//                BusCompany busCompany = buss.getBus_company();
-//                if (busCompany != null) {
-//                    busMap.put("bus_company_name", busCompany.getName());
-//                    busMap.put("bus_company_phone", busCompany.getPhone_number()); // Nếu cần thêm số điện thoại công ty
-//                } else {
-//                    busMap.put("bus_company_name", "N/A");
-//                    busMap.put("bus_company_phone", "N/A");
-//                }
-                if (buss.getSeatType() != null) {
-                    busMap.put("seat_count", buss.getSeatType().getSeat_count().toString());
+                SeatType seatType = buss.getSeatType();
+                if (seatType != null) {
+                    busMap.put("seat_count", String.valueOf(seatType.getSeat_count()));
                 } else {
                     busMap.put("seat_count", "N/A");
                 }
 
-                busMap.put("bus_type", buss.getBus_type());
-
-                if (buss.getBus_company() != null) {
-                    busMap.put("bus_company_name", buss.getBus_company().getName());
+                // Lấy thông tin BusCompany nếu tồn tại
+                BusCompany busCompany = buss.getBus_company();
+                if (busCompany != null) {
+                    busMap.put("bus_company_name", busCompany.getName());
                 } else {
                     busMap.put("bus_company_name", "N/A");
                 }
+//                if (buss.getSeatType() != null) {
+//                    busMap.put("seat_count", buss.getSeatType().getSeat_count().toString());
+//                } else {
+//                    busMap.put("seat_count", "N/A");
+//                }
+//
+                busMap.put("bus_type", buss.getBus_type());
+//
+//                if (buss.getBus_company() != null) {
+//                    busMap.put("bus_company_name", buss.getBus_company().getName());
+//                } else {
+//                    busMap.put("bus_company_name", "N/A");
+//                }
 
                 // Thêm Map vào danh sách
                 busList.add(busMap);
-
-                // Ghi log thông tin từng xe
-//                logger.info("Bus ID: {}, License Plate: {}, Bus Type: {}, Seat Count: {}, Company: {}",
-//                        buss.getId(),
-//                        buss.getLicense_plate(),
-//                        buss.getBus_type(),
-//                        seatType != null ? seatType.getSeat_count() : "N/A",
-//                        busCompany != null ? busCompany.getName() : "N/A");
             });
-
             // Trả về danh sách xe với mã 200
             return ResponseEntity.ok(busList);
         }
@@ -170,7 +157,7 @@ public class ABusController {
 
         try {
             // Lấy các thông tin từ accountData
-            String BussId = (String) bussData.get("id");
+            String BussId = (String) bussData.get("idBus");
             Long BussIdLong = Long.parseLong(BussId);
             String plate = (String) bussData.get("plate");
             String seatId = (String) bussData.get("selectedSeatId");
@@ -188,9 +175,6 @@ public class ABusController {
 
             Bus existingBus = optionalBus.get();
             existingBus.setLicense_plate(plate);
-//            existingBus.getSeatType().setId(seatIdLong);
-
-//            existingBus.getBus_company().setId(companyIdLong);
             // Tạo đối tượng SeatType từ seatIdLong
             SeatType seatType = new SeatType();
             seatType.setId(seatIdLong);

@@ -24,15 +24,16 @@ function loadSchedules() {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td th:text="${schedule.id}">ID</td>
-                        <td th:text="${schedule.bus_id.license_plate}">Plate</td>
-                        <td th:text="${schedule.departureStation}">Departure</td>
-                        <td th:text="${schedule.arrivalStation}">Arrival</td>
-                        <td th:text="${schedule.departureTime}">Time Start</td>
-                        <td th:text="${schedule.arrivalTime}">Time End</td>
-                        <td th:text="${schedule.price}">Price</td>
+                        <td>${schedule.idS}</td>
+                        <td>${schedule.license_plateS}</td>
+                        <td>${schedule.departureS}</td>
+                        <td>${schedule.arrivalS}</td>
+                        <td>${schedule.departure_timeS}</td>
+                        <td>${schedule.arrival_timeS}</td>
+                        <td>${schedule.priceS}</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${schedule.id}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${schedule.idS}" onclick="editSchedule(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${schedule.idS}" onclick="deleteSchedule(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -108,12 +109,12 @@ function showAddModalSchedule() {
 
 function addSchedule() {
     // Lấy dữ liệu từ các trường input
-    const plate = document.getElementById('addPlate').value.trim();
-    const departure = document.getElementById('addDeparture').value.trim();
-    const arrival = document.getElementById('addArrival').value.trim();
-    const start = new Date(document.getElementById('addDepartureTime').value).toISOString();
-    const end = new Date(document.getElementById('addArrivalTime').value).toISOString();
-    const price = parseFloat(document.getElementById('addPrice').value.trim());
+    const plate = document.getElementById('addSPlate').value.trim();
+    const departure = document.getElementById('addSDeparture').value.trim();
+    const arrival = document.getElementById('addSArrival').value.trim();
+    const start = document.getElementById('addSDepartureTime').value.trim();
+    const end = document.getElementById('addSArrivalTime').value.trim();
+    const price = parseFloat(document.getElementById('addSPrice').value.trim());
 
     // Kiểm tra dữ liệu đầu vào
     if (!plate || !departure || !arrival || !start || !end || !price) {
@@ -167,17 +168,17 @@ function addSchedule() {
 
 
 function deleteSchedule(button) {
-    const accountId = button.getAttribute('data-id');
+    const scheId = button.getAttribute('data-id');
     const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
     document.getElementById('confirmDeleteButton').onclick = function() {
-        fetch('/admin/accounts/delete/${accountId}', { method: 'DELETE' })
+        fetch(`/admin-schedule/trip/delete/${scheId}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     showAlert('success', 'Xóa tài khoản thành công!');
                     // Disable the delete button instead of removing the row
-                    loadAccounts()
-                    clearFormSearch();
+                    loadSchedules()
+                    clearFormSearchSchedules();
 
                 } else {
                     showAlert('danger', 'Xóa tài khoản thất bại!');
@@ -194,33 +195,46 @@ function deleteSchedule(button) {
 }
 
 function editSchedule(button) {
-    // Lấy accountId từ button
-    const accountId = event.target.getAttribute('data-id');
-    console.log(accountId);
+    const scheId = button.getAttribute('data-id'); // Sử dụng button thay vì event.target
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll('td');
+    const Sche = {
+        Splate: cells[1].innerText,
+        Sdepart: cells[2].innerText,
+        Sarrival: cells[3].innerText,
+        SdepartTime: cells[4].innerText,
+        SarrivalTime: cells[5].innerText,
+        Sprice: cells[6].innerText
+    };
 
-    // Fetch thông tin tài khoản từ API
-    fetch(`/admin/user/${accountId}`)
-        .then(response => response.json())
-        .then(account => {
-            console.log(account);
-            // Gán giá trị vào các trường input trong modal
-            document.getElementById('AccountId').value = account.id;
-            document.getElementById('editAccountName').value = account.username;
-            document.getElementById('editPassword').value = ""; // Không hiển thị mật khẩu
-            document.getElementById('editFullName').value = account.full_name;
-            document.getElementById('editPhoneNumber').value = account.phone_number;
-            document.getElementById('editEmail').value = account.email;
-            document.getElementById('editAddress').value = account.address;
-            document.getElementById('editRole').value = account.role;
+    document.getElementById('ScheId').value = scheId;
+    const plateOptions = document.getElementById('editSPlate').options;
+    for (let i = 0; i < plateOptions.length; i++) {
+        if (plateOptions[i].innerText.trim() === Sche.Splate.trim()) {
+            plateOptions[i].selected = true;
+            break;
+        }
+    }
+    const DepOptions = document.getElementById('editSDeparture').options;
+    for (let i = 0; i < DepOptions.length; i++) {
+        if (DepOptions[i].innerText.trim() === Sche.Sdepart.trim()) {
+            DepOptions[i].selected = true;
+            break;
+        }
+    }
+    const ArrOptions = document.getElementById('editSArrival').options;
+    for (let i = 0; i < ArrOptions.length; i++) {
+        if (ArrOptions[i].innerText.trim() === Sche.Sarrival.trim()) {
+            ArrOptions[i].selected = true;
+            break;
+        }
+    }
+    document.getElementById('editSDepartureTime').value = Sche.SdepartTime;
+    document.getElementById('editSArrivalTime').value = Sche.SarrivalTime;
+    document.getElementById('editSPrice').value = Sche.Sprice;
 
-            // Hiển thị modal chỉnh sửa
-            const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
-            editModal.show();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('danger', 'Có lỗi xảy ra khi lấy thông tin tài khoản!');
-        });
+    const editModal = new bootstrap.Modal(document.getElementById('editModal1'));
+    editModal.show();
 }
 
 function closeModalSchedule() {
@@ -229,26 +243,26 @@ function closeModalSchedule() {
 }
 
 function saveChangesSchedule() {
-    const id = document.getElementById('AccountId').value;
-    const username = document.getElementById('editAccountName').value;
-    const password = document.getElementById('editPassword').value;
-    const fullName = document.getElementById('editFullName').value;
-    const phoneNumber = document.getElementById('editPhoneNumber').value;
-    const email = document.getElementById('editEmail').value;
-    const address = document.getElementById('editAddress').value;
-    const role = document.getElementById('editRole').value;
+    const idS = document.getElementById('ScheId').value;
+    const plate = document.getElementById('editSPlate').value.trim();
+    const departure = document.getElementById('editSDeparture').value.trim();
+    const arrival = document.getElementById('editSArrival').value.trim();
+    const start = document.getElementById('editSDepartureTime').value.trim();
+    const end = document.getElementById('editSArrivalTime').value.trim();
+    const price = parseFloat(document.getElementById('editSPrice').value.trim());
 
     const updatedData = {
-        id,
-        username,
-        fullName,
-        phoneNumber,
-        email,
-        address,
-        role
+        idS,
+        plate,
+        departure,
+        arrival,
+        start,
+        end,
+        price
     };
 
-    fetch(`/admin/bus/update/${id}`, {
+    console.log(updatedData);
+    fetch(`/admin-schedule/trip/update/${idS}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -265,7 +279,7 @@ function saveChangesSchedule() {
             showAlert('success', 'Lưu thay đổi thành công!');
             const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal1'));
             editModal.hide();
-            loadAccounts(); // Cập nhật danh sách tài khoản
+            loadSchedules(); // Cập nhật danh sách
         })
         .catch(error => {
             console.error('Error:', error);
@@ -273,7 +287,7 @@ function saveChangesSchedule() {
         });
 }
 
-function clearFormSearch() {
+function clearFormSearchSchedules() {
     // Xóa nội dung ô input tìm kiếm
     document.getElementById('searchInput').value = '';
 

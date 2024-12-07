@@ -4,10 +4,7 @@ import com.bookingticket.dto.request.BusScheduleRequest;
 import com.bookingticket.dto.respond.BusScheduleDisplayRespond;
 import com.bookingticket.dto.respond.BusScheduleRespond;
 import com.bookingticket.dto.respond.ScheduleInfoRespond;
-import com.bookingticket.entity.BusSchedule;
-import com.bookingticket.entity.Bus;
-import com.bookingticket.entity.BusStation;
-import com.bookingticket.entity.User;
+import com.bookingticket.entity.*;
 import com.bookingticket.mapper.BusScheduleMapper;
 import com.bookingticket.repository.BusScheduleRepository;
 import com.bookingticket.repository.BusStationRepository;
@@ -44,6 +41,11 @@ public class BusScheduleService {
                 .map(busScheduleMapper::toRespond)
                 .toList();
     }
+
+    public List<BusSchedule> getAllBusSchedules2(){
+        return busScheduleRepository.findAll();
+    }
+
     public List<BusScheduleRespond> getBusSchedulesByDepartureStationId(Long departureStationId) {
         List<BusSchedule> busSchedules = busScheduleRepository.findByDepartureStationId(departureStationId);
         return busSchedules.stream()
@@ -62,15 +64,9 @@ public class BusScheduleService {
             return busScheduleRepository.findAll();
         }
 
-//    public boolean addSchedule(BusSchedule schedule) {
-//        try {
-//            busScheduleRepository.save(schedule); // Lưu chuyến xe mới
-//            return true; // Trả về true nếu thêm thành công
-//        } catch (Exception e) {
-//            // Ghi log lỗi nếu cần
-//            return false; // Trả về false nếu có lỗi xảy ra
-//        }
-//    }
+    public Optional<BusSchedule> getBusScheduleById2(Long id) {
+        return busScheduleRepository.findById(id);
+    }
 
     public boolean addSchedule(BusSchedule schedule) {
         try {
@@ -144,14 +140,49 @@ public class BusScheduleService {
         return busScheduleMapper.toRespond(savedBusSchedule);
     }
 
-    public boolean addBusSchedule2(BusSchedule schedule) {
-        try {
-            busScheduleRepository.save(schedule); // Lưu tài khoản mới
-            return true; // Trả về true nếu thêm thành công
-        } catch (Exception e) {
-            // Ghi log lỗi nếu cần
-            return false; // Trả về false nếu có lỗi xảy ra
+    public boolean updateBusSchedule2(BusSchedule busSchedule) {
+        // Tìm kiếm BusSchedule từ database theo ID
+        Optional<BusSchedule> optionalBusSchedule = busScheduleRepository.findById(busSchedule.getId());
+        if (optionalBusSchedule.isPresent()) {
+            BusSchedule existingSchedule = optionalBusSchedule.get();
+
+            // Cập nhật các thông tin trong BusSchedule
+            Bus bus = busRepository.findById(busSchedule.getBus().getId()).orElse(null);
+            if (bus == null) {
+                // Nếu không tìm thấy Bus hợp lệ trong cơ sở dữ liệu
+                return false;
+            }
+            existingSchedule.setBus(bus);
+
+            // Cập nhật DepartureStation
+            BusStation departureStation = busStationRepository.findById(busSchedule.getDepartureStation().getId()).orElse(null);
+            if (departureStation == null) {
+                // Nếu không tìm thấy DepartureStation hợp lệ
+                return false;
+            }
+            existingSchedule.setDepartureStation(departureStation);
+
+            // Cập nhật ArrivalStation
+            BusStation arrivalStation = busStationRepository.findById(busSchedule.getArrivalStation().getId()).orElse(null);
+            if (arrivalStation == null) {
+                // Nếu không tìm thấy ArrivalStation hợp lệ
+                return false;
+            }
+            existingSchedule.setArrivalStation(arrivalStation);
+
+            // Cập nhật thời gian khởi hành và kết thúc
+            existingSchedule.setDeparture_time(busSchedule.getDeparture_time());
+            existingSchedule.setArrival_time(busSchedule.getArrival_time());
+
+            // Cập nhật giá vé
+            existingSchedule.setPrice(busSchedule.getPrice());
+
+            // Lưu đối tượng BusSchedule đã cập nhật vào cơ sở dữ liệu
+            busScheduleRepository.save(existingSchedule);
+            return true;
         }
+
+        return false; // Trả về false nếu không tìm thấy BusSchedule trong cơ sở dữ liệu
     }
 
     public Optional<BusScheduleRespond> updateBusSchedule(Long id, BusScheduleRequest busScheduleRequest) {
@@ -187,12 +218,13 @@ public class BusScheduleService {
         return Optional.of(busScheduleMapper.toRespond(updatedBusSchedule));
     }
 
-    public boolean deleteBusSchedule(Long id) {
-        if (busScheduleRepository.existsById(id)) {
-            busScheduleRepository.deleteById(id);
-            return true;
+    public void deleteBusSchedule(Long id) {
+        Optional<BusSchedule> BusScheduleOptional = busScheduleRepository.findById(id);
+        if (BusScheduleOptional.isPresent()) {
+            busScheduleRepository.delete(BusScheduleOptional.get());
+        } else {
+            throw new RuntimeException("BusStation not found with id: " + id);
         }
-        return false;
     }
 
     public List<ScheduleInfoRespond> getAllSchedulesInfo() {

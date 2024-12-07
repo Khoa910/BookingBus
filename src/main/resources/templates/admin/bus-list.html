@@ -140,7 +140,7 @@
                     <div class="mb-3">
                         <label for="editCompany" class="form-label">Công ty</label>
                         <select id="editCompany" class="form-control select2" required>
-                            <option value="" disabled selected>Chọn số chỗ</option>
+                            <option value="" disabled selected>Chọn công ty</option>
                             <option th:each="company : ${companies}"
                                     th:value="${company.id}"
                                     th:text="${company.name}">

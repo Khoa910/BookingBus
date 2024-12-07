@@ -33,8 +33,8 @@ function loadAccounts() {
                         <td>${account.address}</td>
                         <td>${account.role_name}</td> <!-- Nếu RoleRespond có thuộc tính 'name' -->
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${account.id}" onclick="editAccount(this)">Chỉnh sửa</button>
-                            <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${account.id}" onclick="deleteAccount(this)">Xóa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${account.idU}" onclick="editAccount(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${account.idU}" onclick="deleteAccount(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);

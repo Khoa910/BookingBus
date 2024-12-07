@@ -17,7 +17,7 @@ import java.util.*;
 @RequestMapping("/admin-type")
 public class ASeatTypeController {
     private final SeatTypeService AseatTypeService;
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ASeatTypeController.class);
 
     public ASeatTypeController(SeatTypeService AseatTypeService) {
         this.AseatTypeService = AseatTypeService;
@@ -32,27 +32,28 @@ public class ASeatTypeController {
 
     @GetMapping("/type/listType")
     @ResponseBody
-    public ResponseEntity<List<Map<String, String>>> getAllTypeJson() {
-        List<SeatType> types = AseatTypeService.getAllSeatTypes2();
-        List<Map<String, String>> companyList = new ArrayList<>();
+    public ResponseEntity<?> getAllTypeJson() {
+        try {
+            List<SeatType> types = AseatTypeService.getAllSeatTypes2();
+            if (types.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Collections.emptyList());
+            }
+            List<Map<String, String>> typeList = types.stream()
+                    .map(type -> Map.of(
+                            "id", String.valueOf(type.getId()),
+                            "seatCount", String.valueOf(type.getSeat_count()),
+                            "description", type.getDescription()))
+                    .toList();
 
-        if (types.isEmpty()) {
-            logger.warn("No stations found.");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(companyList); // Trả về 204 nếu không có trạm
-        } else {
-            logger.info("Total stations: {}", types.size());
-            types.forEach(type -> {
-                // Tạo Map đại diện cho từng trạm xe
-                Map<String, String> typeMap = new HashMap<>();
-                typeMap.put("id", String.valueOf(type.getId()));
-                typeMap.put("SeatCount", String.valueOf(type.getSeat_count()));
-                typeMap.put("describe", type.getDescription());
-                companyList.add(typeMap); // Thêm vào danh sách
-                logger.info("ComapnyID: {} - Name: {}, Phone: {}", type.getId(), type.getSeat_count(), type.getDescription());
-            });
-            return ResponseEntity.ok(companyList); // Trả về danh sách các trạm với mã 200
+            return ResponseEntity.ok(typeList);
+        } catch (Exception e) {
+            logger.error("Error retrieving seat types", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Unable to process request"));
         }
     }
+
+
 
     @PostMapping("/type/add")
     public ResponseEntity<Map<String, String>> addType(@RequestBody Map<String, Object> typeData) {

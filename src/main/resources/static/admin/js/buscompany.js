@@ -24,12 +24,12 @@ function loadCompany() {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td>${company.id}</td>
-                        <td>${company.name}</td>
+                        <td>${company.idC}</td>
+                        <td>${company.nameC}</td>
                         <td>${company.phone_numberC}</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" data-id="${company.id}" onclick="editCompany(this)">Chỉnh sửa</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-id="${company.id}" onclick="deleteCompany(this)">Xóa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${company.idC}" onclick="editCompany(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${company.idC}" onclick="deleteCompany(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -161,7 +161,7 @@ function deleteCompany(button) {
                     showAlert('success', 'Xóa công ty thành công!');
                     // Disable the delete button instead of removing the row
                     loadCompany();
-                    clearFormSearch();
+                    clearFormSearchCompany();
 
                 } else {
                     showAlert('danger', 'Xóa công ty thất bại!');
@@ -234,7 +234,7 @@ function saveChangesCompany() {
         });
 }
 
-function clearFormSearch() {
+function clearFormSearchCompany() {
     // Xóa nội dung ô input tìm kiếm
     document.getElementById('searchInput').value = '';
 

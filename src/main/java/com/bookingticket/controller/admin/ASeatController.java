@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin-seat")
+@RequestMapping("/admin-seater")
 public class ASeatController {
     private final SeatService AseatService;
 

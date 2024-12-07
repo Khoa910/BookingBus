@@ -21,7 +21,7 @@ import java.util.*;
 @RequestMapping( "/admin-station")
 public class ABusStationController {
     private final BusStationService AbusStationService;
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ABusStationController.class);
 
     public ABusStationController(BusStationService AbusStationService) {
         this.AbusStationService = AbusStationService;

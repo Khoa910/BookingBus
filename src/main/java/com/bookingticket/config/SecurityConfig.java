@@ -85,6 +85,8 @@ public class SecurityConfig {
                                 "/admin-schedule/",
                                 "/admin-schedule/trip",
                                 "/admin-schedule/trip/add",
+                                "/admin-schedule/trip/update/{id}",
+                                "/admin-schedule/trip/delete/{id}",
                                 "/admin-schedule/**",
 
                                 "/admin/station-list",
@@ -95,9 +97,10 @@ public class SecurityConfig {
                                 "/admin-station/station/update/{id}",
                                 "/admin-station/station/delete/{id}",
 
+                                "/admin/bus-list",
                                 "/admin-bus",
                                 "/admin-bus/bus",
-                                "/admin/bus-list",
+                                "/admin-bus/bus/listBus",
                                 "/admin-bus/bus/add",
                                 "/admin-bus/bus/update/{id}",
                                 "/admin-bus/bus/delete/{id}",
@@ -108,8 +111,9 @@ public class SecurityConfig {
                                 "/admin-company/**",
 
                                 "/admin/seat-list",
-                                "/admin-seat",
-                                "/admin-seat/seat",
+                                "/admin-seater",
+                                "/admin-seater/seat",
+                                "/admin-seater/**",
 
                                 "/admin/ticket-list",
                                 "/admin-ticket",
@@ -118,6 +122,7 @@ public class SecurityConfig {
                                 "/admin/stype-list",
                                 "/admin-type",
                                 "/admin-type/type",
+                                "/admin-type/type/listType",
                                 "/admin-type/type/add",
                                 "/admin-type/type/update/{id}",
                                 "/admin-type/type/delete/{id}",

@@ -3,10 +3,7 @@
 <head>
     <title>Payment Statistics</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/jquery-1.11.3.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" th:src="@{/plugins/flexslider/jquery.flexslider-min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/theme.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,37 +18,20 @@
         }
 
         label, select {
-            display: block; /* Hiển thị trên từng dòng */
+            display: block;
             margin-bottom: 10px;
-            text-align: right; /* Dịch nhãn và combo box sang phải */
-        }
-
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-left: auto; /* Dịch bảng sang phải */
-            margin-right: 0;
-            text-align: left; /* Nội dung bên trong bảng căn trái */
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+            text-align: right;
         }
 
         #filter {
             padding: 5px;
             width: 200px;
-            float: right; /* Đưa combo box sang bên phải */
+            float: right;
+        }
+
+        #chartContainer {
+            width: 80%;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -63,18 +43,9 @@
     <option value="daily">Ngày</option>
 </select>
 
-<table id="statisticsTable" border="1">
-    <thead>
-    <tr>
-        <th>Thời gian</th>
-        <th>Tổng doanh thu</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="chartContainer">
+    <canvas id="statisticsChart"></canvas>
+</div>
 
-<script th:src="@{/admin/js/statistical.js}"></script>
 </body>
 </html>
-

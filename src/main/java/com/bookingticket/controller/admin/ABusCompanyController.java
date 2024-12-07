@@ -16,7 +16,7 @@ import java.util.*;
 @RequestMapping("/admin-company")
 public class ABusCompanyController {
     private final BusCompanyService AbusCompanyService;
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ABusCompanyController.class);
 
     public ABusCompanyController(BusCompanyService AbusCompanyService) {
         this.AbusCompanyService = AbusCompanyService;
@@ -43,8 +43,8 @@ public class ABusCompanyController {
             companies.forEach(company -> {
                 // Tạo Map đại diện cho từng trạm xe
                 Map<String, String> companyMap = new HashMap<>();
-                companyMap.put("id", String.valueOf(company.getId()));
-                companyMap.put("name", company.getName());
+                companyMap.put("idC", String.valueOf(company.getId()));
+                companyMap.put("nameC", company.getName());
                 companyMap.put("phone_numberC", company.getPhone_number());
                 companyList.add(companyMap); // Thêm vào danh sách
                 logger.info("ComapnyID: {} - Name: {}, Phone: {}", company.getId(), company.getName(), company.getPhone_number());

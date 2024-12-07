@@ -15,24 +15,35 @@ function showAlert(type, message) {
 }
 
 function loadStype() {
-    fetch('/admin-type/type/listType')
-        .then(response => response.json())
+    fetch('/admin-type/type/listType',{
+        method: 'GET', // Sử dụng GET
+        headers: {
+            'Content-Type': 'application/json', // Định dạng dữ liệu là JSON
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log(data);
+            console.log('Dữ liệu nhận được:', data);
             const tableContent = document.getElementById('table-content');
             tableContent.innerHTML = ''; // Xóa nội dung cũ
+
             data.forEach(type => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td>${type.id}</td>
-                        <td>${type.SeatCount}</td>
-                        <td>${type.describe}</td>
-                        <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" data-id="${type.id}" onclick="editCompany(this)">Chỉnh sửa</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-id="${type.id}" onclick="deleteCompany(this)">Xóa</button>
-                        </td>
-                    `;
+                    <td>${type.id}</td>
+                    <td>${type.seatCount}</td> <!-- Tên key phải khớp -->
+                    <td>${type.description}</td>
+                    <td class="d-flex justify-content-evenly">
+                        <button type="button" class="btn btn-warning btn-sm" data-id="${type.id}" onclick="editStype(this)">Chỉnh sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-id="${type.id}" onclick="deleteStype(this)">Xóa</button>
+                    </td>
+                `;
                 tableContent.appendChild(row);
             });
         })

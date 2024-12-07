@@ -25,14 +25,14 @@ function loadBuss() {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                        <td>${buss.id}</td>
+                        <td>${buss.idB}</td>
                         <td>${buss.license_plate}</td>
                         <td>${buss.seat_count}</td>
                         <td>${buss.bus_type}</td>
                         <td>${buss.bus_company_name}</td>
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-warning btn-sm" th:attr="data-id=${buss.id}" onclick="editBuss(this)">Chỉnh sửa</button>
-                            <button type="button" class="btn btn-danger btn-sm" th:attr="data-id=${buss.id}" onclick="deleteBuss(this)">Xóa</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-id="${buss.idB}" onclick="editBuss(this)">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-id="${buss.idB}" onclick="deleteBuss(this)">Xóa</button>
                         </td>
                     `;
                 tableContent.appendChild(row);
@@ -209,9 +209,6 @@ function editBuss(button) {
         }
     }
 
-    // Gán giá trị vào dropdown "Loại ghế"
-    document.getElementById('editBusType').value = buss.Btypeseat;
-
     // Gán text vào dropdown "Công ty"
     const companyOptions = document.getElementById('editCompany').options;
     for (let i = 0; i < companyOptions.length; i++) {
@@ -230,7 +227,7 @@ function closeModalBuss() {
 }
 
 function saveChangesBuss() {
-    const id = document.getElementById('BusId').value;
+    const idBus = document.getElementById('BusId').value;
     const plate = document.getElementById('editBusPlate').value;
     const selectedSeatId = document.getElementById('editSeatCount').value;
     const selectedBusType = document.getElementById('editBusType').value;
@@ -242,14 +239,15 @@ function saveChangesBuss() {
     console.log(selectedCompanyId);
 
     const updatedData = {
-        id,
+        idBus,
         plate,
         selectedSeatId,
         selectedBusType,
         selectedCompanyId
     };
+    console.log(updatedData);
 
-    fetch(`/admin-bus/bus/update/${id}`, {
+    fetch(`/admin-bus/bus/update/${idBus}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

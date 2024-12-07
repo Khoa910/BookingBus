@@ -90,7 +90,7 @@ public class AdminController {
             accounts.forEach(account -> {
                 // Tạo Map đại diện cho từng người dùng
                 Map<String, String> userMap = new HashMap<>();
-//                userMap.put("id", String.valueOf(account.getId()));
+                userMap.put("idU", String.valueOf(account.getId()));
                 userMap.put("username", account.getUsername());
                 userMap.put("password", account.getPassword());
                 userMap.put("full_nameA", account.getFull_name());
