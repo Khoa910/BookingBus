@@ -2,7 +2,7 @@ $(document).ready(function () {
     const ctx = document.getElementById('statisticsChart').getContext('2d');
     let chart;
 
-    function createChart(labels, data) {
+    function createChart(labels, data, label) {
         if (chart) {
             chart.destroy(); // Hủy biểu đồ cũ nếu đã tồn tại
         }
@@ -11,7 +11,7 @@ $(document).ready(function () {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Tổng doanh thu',
+                    label: label,
                     data: data,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -36,7 +36,7 @@ $(document).ready(function () {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Doanh thu'
+                            text: 'Doanh thu (VNĐ)'
                         }
                     }
                 }
@@ -46,14 +46,33 @@ $(document).ready(function () {
 
     function fetchData(filter) {
         $.get('/admin-payment/payment-statistics-data', function (data) {
-            const stats = filter === 'monthly' ? data.monthlyPayments : data.dailyPayments;
-            const labels = stats.map((_, index) => filter === 'monthly' ? `Tháng ${index + 1}` : `Ngày ${index + 1}`);
-            const values = stats.map(stat => stat);
-            createChart(labels, values);
+            let stats;
+            let labels;
+            let labelText;
+
+            if (filter === 'daily') {
+                stats = data.dailyPayments;
+                labels = Object.keys(stats); // Ngày: yyyy-MM-dd
+                labelText = 'Doanh thu theo ngày';
+            } else if (filter === 'monthly') {
+                stats = data.monthlyPayments;
+                labels = Object.keys(stats); // Tháng: yyyy-MM
+                labelText = 'Doanh thu theo tháng';
+            } else if (filter === 'yearly') {
+                stats = data.yearlyPayments;
+                labels = Object.keys(stats); // Năm: yyyy
+                labelText = 'Doanh thu theo năm';
+            }
+
+            const values = Object.values(stats); // Giá trị doanh thu
+            createChart(labels, values, labelText);
         });
     }
 
-    fetchData('monthly');
+    // Mặc định hiển thị theo ngày
+    fetchData('daily');
+
+    // Thay đổi chế độ hiển thị
     $('#filter').on('change', function () {
         const filter = $(this).val();
         fetchData(filter);

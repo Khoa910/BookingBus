@@ -24,6 +24,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -40,111 +41,71 @@ public class APaymentController {
     @GetMapping("/payment-statistics")
     public String getPaymentStatistics(Model model) {
         // Fetch the payment statistics data
-        Map<String, List<Integer>> paymentData = getPaymentStatisticsData();
+        Map<String, Map<String, Integer>> paymentData = getPaymentStatisticsData();
 
         // Add the data to the Model
-        model.addAttribute("monthlyPayments", paymentData.get("monthlyPayments"));
         model.addAttribute("dailyPayments", paymentData.get("dailyPayments"));
+        model.addAttribute("monthlyPayments", paymentData.get("monthlyPayments"));
+        model.addAttribute("yearlyPayments", paymentData.get("yearlyPayments"));
 
         return "admin/statistical";
     }
 
+
     @GetMapping("/payment-statistics-data")
     @ResponseBody
-    public Map<String, List<Integer>> getPaymentStatisticsData() {
+    public Map<String, Map<String, Integer>> getPaymentStatisticsData() {
+        // Lấy danh sách tất cả thanh toán từ dịch vụ
         List<Payment> payments = ApaymentService.getAllPayments2();
 
-        // Process payments to get monthly and daily data
-        List<Integer> monthlyPayments = getMonthlyPayments(payments);
-        List<Integer> dailyPayments = getDailyPayments(payments);
+        // Lọc các thanh toán có trạng thái "success"
+        List<Payment> successfulPayments = payments.stream()
+                .filter(payment -> "success".equalsIgnoreCase(payment.getStatus()))
+                .collect(Collectors.toList());
 
-        // Return data as a JSON map
-        Map<String, List<Integer>> responseData = new HashMap<>();
-        responseData.put("monthlyPayments", monthlyPayments);
+        // Tính toán doanh thu
+        Map<String, Integer> dailyPayments = getPaymentsByDay(successfulPayments);
+        Map<String, Integer> monthlyPayments = getPaymentsByMonth(successfulPayments);
+        Map<String, Integer> yearlyPayments = getPaymentsByYear(successfulPayments);
+
+        // Trả dữ liệu dưới dạng JSON
+        Map<String, Map<String, Integer>> responseData = new HashMap<>();
         responseData.put("dailyPayments", dailyPayments);
+        responseData.put("monthlyPayments", monthlyPayments);
+        responseData.put("yearlyPayments", yearlyPayments);
 
-        return responseData;  // Return the data as JSON
+        return responseData;
     }
 
-    private List<Integer> getMonthlyPayments(List<Payment> payments) {
-        // Logic to sum payments by month
-        List<Integer> result = new ArrayList<>(Collections.nCopies(12, 0)); // Initialize with 0 for each month
+    //Thống kê theo ngày
+    private Map<String, Integer> getPaymentsByDay(List<Payment> payments) {
+        Map<String, Integer> dailyPayments = new HashMap<>();
         for (Payment payment : payments) {
-            int month = payment.getPayment_time().getMonthValue() - 1; // Adjust for zero indexing
-            result.set(month, result.get(month) + payment.getAmount().intValue());
+            String day = payment.getPayment_time().toLocalDate().toString(); // yyyy-MM-dd
+            dailyPayments.put(day, dailyPayments.getOrDefault(day, 0) + payment.getAmount().intValue());
         }
-        return result;
+        return dailyPayments;
     }
 
-    private List<Integer> getDailyPayments(List<Payment> payments) {
-        // Logic to sum payments by day (assuming payments within a month)
-        List<Integer> result = new ArrayList<>(Collections.nCopies(31, 0)); // Initialize with 0 for each day
+    //Thống kê theo tháng
+    private Map<String, Integer> getPaymentsByMonth(List<Payment> payments) {
+        Map<String, Integer> monthlyPayments = new HashMap<>();
         for (Payment payment : payments) {
-            int day = payment.getPayment_time().getDayOfMonth() - 1; // Adjust for zero indexing
-            result.set(day, result.get(day) + payment.getAmount().intValue());
+            String month = payment.getPayment_time().getYear() + "-" + String.format("%02d", payment.getPayment_time().getMonthValue()); // yyyy-MM
+            monthlyPayments.put(month, monthlyPayments.getOrDefault(month, 0) + payment.getAmount().intValue());
         }
-        return result;
+        return monthlyPayments;
     }
 
-//    @GetMapping("/payment-chart")
-//    public void generatePaymentChart(@RequestParam("viewType") String viewType, HttpServletResponse response) throws IOException {
-//        // Lấy danh sách tất cả các payment
-//        List<Payment> payments = ApaymentService.getAllPayments2();
-//
-//        // Tạo dataset dựa trên viewType
-//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//        if ("monthly".equalsIgnoreCase(viewType)) {
-//            Map<String, Integer> monthlyData = getMonthlyPaymentData(payments);
-//            for (Map.Entry<String, Integer> entry : monthlyData.entrySet()) {
-//                dataset.addValue(entry.getValue(), "Thanh Toán (VND)", entry.getKey());
-//            }
-//        } else if ("daily".equalsIgnoreCase(viewType)) {
-//            Map<String, Integer> dailyData = getDailyPaymentData(payments);
-//            for (Map.Entry<String, Integer> entry : dailyData.entrySet()) {
-//                dataset.addValue(entry.getValue(), "Thanh Toán (VND)", entry.getKey());
-//            }
-//        } else {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Loại thống kê không hợp lệ");
-//        }
-//
-//        // Tạo biểu đồ
-//        String chartTitle = "Thống Kê Thanh Toán Theo " + ("monthly".equalsIgnoreCase(viewType) ? "Tháng" : "Ngày");
-//        String xAxisLabel = "monthly".equalsIgnoreCase(viewType) ? "Tháng" : "Ngày";
-//        JFreeChart chart = ChartFactory.createBarChart(
-//                chartTitle,   // Tiêu đề
-//                xAxisLabel,   // Nhãn trục X
-//                "Số Tiền (VND)", // Nhãn trục Y
-//                dataset,      // Dataset
-//                PlotOrientation.VERTICAL, // Hướng biểu đồ
-//                false, true, false // Các tùy chọn legend, tooltips, URLs
-//        );
-//
-//        // Cấu hình màu sắc
-//        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, new Color(54, 162, 235));
-//
-//        // Xuất biểu đồ dưới dạng PNG
-//        response.setContentType("image/png");
-//        ChartUtils.writeChartAsPNG(response.getOutputStream(), chart, 800, 600);
-//    }
-//
-//    // Hàm xử lý dữ liệu theo tháng
-//    private Map<String, Integer> getMonthlyPaymentData(List<Payment> payments) {
-//        Map<String, Integer> monthlyData = new TreeMap<>();
-//        payments.forEach(payment -> {
-//            String month = "Tháng " + payment.getPayment_time().getMonthValue();
-//            monthlyData.put(month, monthlyData.getOrDefault(month, 0) + payment.getAmount().intValue());
-//        });
-//        return monthlyData;
-//    }
-//
-//    // Hàm xử lý dữ liệu theo ngày
-//    private Map<String, Integer> getDailyPaymentData(List<Payment> payments) {
-//        Map<String, Integer> dailyData = new TreeMap<>();
-//        payments.forEach(payment -> {
-//            String day = "Ngày " + payment.getPayment_time().getDayOfMonth();
-//            dailyData.put(day, dailyData.getOrDefault(day, 0) + payment.getAmount().intValue());
-//        });
-//        return dailyData;
-//    }
+    //Thống kê theo năm
+    private Map<String, Integer> getPaymentsByYear(List<Payment> payments) {
+        Map<String, Integer> yearlyPayments = new HashMap<>();
+        for (Payment payment : payments) {
+            String year = String.valueOf(payment.getPayment_time().getYear()); // yyyy
+            yearlyPayments.put(year, yearlyPayments.getOrDefault(year, 0) + payment.getAmount().intValue());
+        }
+        return yearlyPayments;
+    }
+
 }
 

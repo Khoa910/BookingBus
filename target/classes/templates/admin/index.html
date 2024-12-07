@@ -57,13 +57,13 @@
                 </a>
             </li>
             <li>
-                <a href="#" id="manage-seat-link">
-                    <img src="https://cdn-icons-png.flaticon.com/128/1683/1683707.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">
-                    <span class="nav-text">
-                               Chỗ ngồi
-                            </span>
-                </a>
-            </li>
+<!--                <a href="#" id="manage-seat-link">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/128/1683/1683707.png" alt="Quản lý tài khoản" style="width: 50px; height: 50px; margin-right: 20px;">-->
+<!--                    <span class="nav-text">-->
+<!--                               Chỗ ngồi-->
+<!--                            </span>-->
+<!--                </a>-->
+<!--            </li>-->
             <li>
                 <a href="#" id="manage-seat-type-link">
                     <img src="https://cdn-icons-png.flaticon.com/128/17386/17386784.png" alt="Loại chỗ ngồi" style="width: 50px; height: 50px; margin-right: 20px;">
@@ -152,15 +152,15 @@
             })
             .catch(error => console.error('Error loading trip form:', error));
     });
-    document.getElementById('manage-seat-link').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent page reload
-        fetch('/admin-seater/seat')  // Assuming '/admin/trip' is the URL for your trip form
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('dashboard-content').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading trip form:', error));
-    });
+    // document.getElementById('manage-seat-link').addEventListener('click', function (event) {
+    //     event.preventDefault(); // Prevent page reload
+    //     fetch('/admin-seater/seat')  // Assuming '/admin/trip' is the URL for your trip form
+    //         .then(response => response.text())
+    //         .then(html => {
+    //             document.getElementById('dashboard-content').innerHTML = html;
+    //         })
+    //         .catch(error => console.error('Error loading trip form:', error));
+    // });
     document.getElementById('manage-seat-type-link').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent page reload
         fetch('/admin-type/type')  // Assuming '/admin/trip' is the URL for your trip form
@@ -196,16 +196,16 @@
             const ctx = document.getElementById('statisticsChart').getContext('2d');
             let chart;
 
-            function createChart(labels, data) {
+            function createChart(labels, data, label) {
                 if (chart) {
-                    chart.destroy(); // Hủy biểu đồ cũ nếu đã tồn tại
+                    chart.destroy();
                 }
                 chart = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Tổng doanh thu',
+                            label: label,
                             data: data,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
@@ -230,7 +230,7 @@
                                 beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: 'Doanh thu'
+                                    text: 'Doanh thu (VNĐ)'
                                 }
                             }
                         }
@@ -240,19 +240,36 @@
 
             function fetchData(filter) {
                 $.get('/admin-payment/payment-statistics-data', function (data) {
-                    const stats = filter === 'monthly' ? data.monthlyPayments : data.dailyPayments;
-                    const labels = stats.map((_, index) => filter === 'monthly' ? `Tháng ${index + 1}` : `Ngày ${index + 1}`);
-                    const values = stats.map(stat => stat);
-                    createChart(labels, values);
+                    let stats;
+                    let labels;
+                    let labelText;
+
+                    if (filter === 'daily') {
+                        stats = data.dailyPayments;
+                        labels = Object.keys(stats);
+                        labelText = 'Doanh thu theo ngày';
+                    } else if (filter === 'monthly') {
+                        stats = data.monthlyPayments;
+                        labels = Object.keys(stats);
+                        labelText = 'Doanh thu theo tháng';
+                    } else if (filter === 'yearly') {
+                        stats = data.yearlyPayments;
+                        labels = Object.keys(stats);
+                        labelText = 'Doanh thu theo năm';
+                    }
+
+                    const values = Object.values(stats);
+                    createChart(labels, values, labelText);
                 });
             }
 
-            fetchData('monthly');
+            fetchData('daily'); // Mặc định theo ngày
             $('#filter').on('change', function () {
                 const filter = $(this).val();
                 fetchData(filter);
             });
         });
+
     }
 
 </script>
