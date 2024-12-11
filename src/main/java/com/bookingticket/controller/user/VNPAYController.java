@@ -88,7 +88,7 @@ public class VNPAYController {
                 System.out.println("User Not Logged In: " + session.getAttribute("userId"));
                 emailService.sendBookingConfirmationEmail(email,name,scheduleID,seatIds,price,departureTime,address,phone);
                 for ( String seat : seats) {
-                    ticketRequest.setUser_id(4L);
+                    ticketRequest.setUser_id(21L);
                     ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
                     ticketRequest.setSeat_number(seat);
                     ticketRequest.setPrice(BigDecimal.valueOf(price));
@@ -97,12 +97,8 @@ public class VNPAYController {
                 }
             }
             else{
-                String username = (String) session.getAttribute("username");
-                String email1 = (String) session.getAttribute("email");
-                System.out.println("User Logged In");
-                emailService.sendBookingConfirmationEmail(email1,username,scheduleID,seatIds,price,departureTime,address,phone);
                 for ( String seat : seats) {
-                    ticketRequest.setUser_id(userRepository.findUserByUsername(username).getId());
+                    ticketRequest.setUser_id(21L);
                     ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
                     ticketRequest.setSeat_number(seat);
                     ticketRequest.setPrice(BigDecimal.valueOf(price));
@@ -124,7 +120,7 @@ public class VNPAYController {
         session.setAttribute("departureDate", null);
         session.setAttribute("departureTime", null);
         return paymentStatus == 1 ? "ordersuccess" : "orderfail";
-}
+    }
     public static ArrayList<String> splitString(String input) {
         // Loại bỏ dấu ngoặc vuông [] trước khi xử lý
         input = input.substring(1, input.length() - 1);  // Loại bỏ dấu ngoặc vuông

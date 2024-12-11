@@ -50,8 +50,8 @@ public class PaymentController {
             @RequestParam("departureTime") String departureTime,
             HttpSession session,
             Model model) throws MessagingException {
-            ArrayList<String> seats = new ArrayList<>();
-            seats =  splitString(seatIds);
+        ArrayList<String> seats = new ArrayList<>();
+        seats =  splitString(seatIds);
 
 
         if (paymentMethod.equals("mobile-vnpay")) {
@@ -67,15 +67,15 @@ public class PaymentController {
             session.setAttribute("total", (int) Math.round(totalAmount));
             session.setAttribute("departureDate", departureDate);
             session.setAttribute("departureTime", departureTime);
-                return "redirect:/mobile-vnpay";
-            }
-            if (paymentMethod.equals("cash-cash")) {
+            return "redirect:/mobile-vnpay";
+        }
+        if (paymentMethod.equals("cash-cash")) {
             TicketRequest ticketRequest = new TicketRequest();
             if(session.getAttribute("userId") != null) {
                 System.out.println("User Not Logged In: " + session.getAttribute("userId"));
                 emailService.sendBookingConfirmationEmail(email,name,scheduleID,seatIds,price,departureTime,address,phone);
                 for ( String seat : seats) {
-                    ticketRequest.setUser_id(4L);
+                    ticketRequest.setUser_id(21L);
                     ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
                     ticketRequest.setSeat_number(seat);
                     ticketRequest.setPrice(BigDecimal.valueOf(price));
@@ -84,10 +84,10 @@ public class PaymentController {
                 }
             }
             else{
-               String username = (String) session.getAttribute("username");
-               String email1 = (String) session.getAttribute("email");
-               System.out.println("User Logged In");
-               emailService.sendBookingConfirmationEmail(email1,username,scheduleID,seatIds,price,departureTime,address,phone);
+                String username = (String) session.getAttribute("username");
+                String email1 = (String) session.getAttribute("email");
+                System.out.println("User Logged In");
+                emailService.sendBookingConfirmationEmail(email1,username,scheduleID,seatIds,price,departureTime,address,phone);
                 for ( String seat : seats) {
                     ticketRequest.setUser_id(userRepository.findUserByUsername(username).getId());
                     ticketRequest.setBus_id(busScheduleRepository.findByIdQuery(scheduleID).getBus().getId());
@@ -97,9 +97,9 @@ public class PaymentController {
                     System.out.println(ticketService.bookTicket(ticketRequest));
                 }
             }
-            }
-            return "success-booking"; // Trang thông báo thất bại
         }
+        return "success-booking"; // Trang thông báo thất bại
+    }
     public static ArrayList<String> splitString(String input) {
         // Loại bỏ dấu ngoặc vuông [] trước khi xử lý
         input = input.substring(1, input.length() - 1);  // Loại bỏ dấu ngoặc vuông
