@@ -197,3 +197,27 @@ INSERT INTO `payment` (`ticket_id`, `payment_method`, `amount`, `payment_time`, 
     (3, 'CREDIT', 120000, '2024-11-06 09:30:00', 'PENDING'),
     (4, 'CASH', 180000, '2024-11-06 10:00:00', 'FAILURE'),
     (5, 'BANKING', 160000, '2024-11-06 11:30:00', 'PENDING');
+
+-- Thêm bảng seattype
+CREATE TABLE IF NOT EXISTS seattype (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(255),
+    seat_count INT
+);
+
+-- Thêm dữ liệu mẫu cho seattype
+INSERT INTO seattype (description, seat_count) VALUES
+('Ghế ngồi', 30),
+('Giường nằm', 40);
+
+-- Thêm cột seat_type_id vào bảng bus nếu chưa có
+ALTER TABLE bus ADD COLUMN IF NOT EXISTS seat_type_id BIGINT;
+
+-- Thiết lập khóa ngoại cho seat_type_id nếu cần
+ALTER TABLE bus
+    ADD CONSTRAINT fk_bus_seattype
+    FOREIGN KEY (seat_type_id) REFERENCES seattype(id);
+
+-- Gán seat_type_id cho các xe bus hiện có (ví dụ: 1 là Ghế ngồi, 2 là Giường nằm)
+UPDATE bus SET seat_type_id = 2 WHERE bus_type = 'SLEEPER';
+UPDATE bus SET seat_type_id = 1 WHERE bus_type = 'SEATED';
